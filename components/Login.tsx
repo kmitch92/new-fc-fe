@@ -41,11 +41,12 @@ export default function Login() {
       }
     }
     router.push('/home');
+    return;
   }
 
   return (
-    <div className="hero min-h-screen bg-base-200">
-      <div className="hero-content flex-col ">
+    <div className="hero min-h-screen bg-base-100">
+      <form className="hero-content flex-col ">
         <h1 className="text-2xl sm:text-5xl font-extrabold text-primary">
           {isLoggingIn ? 'LOGIN' : 'REGISTER'}
         </h1>
@@ -84,21 +85,21 @@ export default function Login() {
           </div>
         )}
         <button
-          className="btn text-accent sm:btn-wide btn-primary text-lg"
+          className="btn text-base-100 sm:btn-wide btn-primary text-lg"
           onClick={submitHandler}
         >
           {!isLoggingIn ? 'Register' : 'Login'}
         </button>
-        <h3 className="text-neutral prose">
+        <h3 className="text-secondary prose">
           {isLoggingIn ? "Haven't registered yet?" : 'Already registered?'}
         </h3>
         <button
-          className="btn text-accent btn-primary "
+          className="btn text-base-100 btn-primary "
           onClick={() => setIsLoggingIn(!isLoggingIn)}
         >
           {isLoggingIn ? 'Register' : 'Login'}
         </button>
-      </div>
+      </form>
     </div>
   );
 }

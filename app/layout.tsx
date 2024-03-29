@@ -1,10 +1,10 @@
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
 import './globals.css';
 import Navbar from '@/components/Navbar';
 import { AuthProvider } from '@/contexts/AuthContext';
-
-const inter = Inter({ subsets: ['latin'] });
+import Footer from '@/components/Footer';
+import { ThemeProvider } from '@/contexts/ThemeContext';
+import { ClientThemeWrapper } from '@/contexts/ClientThemeWrapper';
 
 export const metadata: Metadata = {
   title: 'Flash Cards',
@@ -13,19 +13,22 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
-    <AuthProvider>
-      <html lang="en">
-        <body className={inter.className}>
-          <>
-            <Navbar />
-            {children}
-          </>
-        </body>
-      </html>
-    </AuthProvider>
+    <html>
+      <body>
+        <ThemeProvider>
+          <ClientThemeWrapper>
+            <AuthProvider>
+              <Navbar />
+              {children}
+              <Footer />
+            </AuthProvider>
+          </ClientThemeWrapper>
+        </ThemeProvider>
+      </body>
+    </html>
   );
 }
