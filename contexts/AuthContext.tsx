@@ -7,14 +7,19 @@ import React, {
   createContext,
   ReactNode,
 } from 'react';
-import { auth } from '../api/firebaseAuth';
+import { auth } from '../app/api/firebaseAuth';
 import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
+  signInWithPopup,
   signOut,
   onAuthStateChanged,
+  signInWithRedirect,
 } from 'firebase/auth';
 // import { doc, getDoc } from 'firebase/firestore';
+import { GoogleAuthProvider } from 'firebase/auth';
+
+const provider = new GoogleAuthProvider();
 
 export interface AuthContextType {
   currentUser: any | null;
@@ -50,7 +55,19 @@ export function AuthProvider({ children }: Props) {
   }
 
   function login(email: string, password: string) {
-    return signInWithEmailAndPassword(auth, email, password);
+    // return signInWithEmailAndPassword(auth, email, password)
+    return signInWithRedirect(auth, provider).catch(function (error) {
+      // Handle Errors here.
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      if (errorCode === 'auth/wrong-password') {
+        alert('Wrong password.');
+      } else {
+        alert(errorMessage);
+        debugger;
+      }
+      console.log(error);
+    });
   }
 
   function logout() {

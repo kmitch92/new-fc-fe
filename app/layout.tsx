@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import Navbar from '@/components/Navbar';
-import { AuthProvider } from '@/contexts/AuthContext';
+// import { AuthProvider } from '@/contexts/AuthContext';
 import Footer from '@/components/Footer';
 import { ThemeProvider } from '@/contexts/ThemeContext';
 import { ClientThemeWrapper } from '@/contexts/ClientThemeWrapper';
@@ -19,15 +19,15 @@ export default function RootLayout({
   return (
     <html>
       <body>
+        {/* <AuthProvider> */}
         <ThemeProvider>
           <ClientThemeWrapper>
-            <AuthProvider>
-              <Navbar />
-              {children}
-              <Footer />
-            </AuthProvider>
+            <Navbar />
+            {children}
+            <Footer />
           </ClientThemeWrapper>
         </ThemeProvider>
+        {/* </AuthProvider> */}
       </body>
     </html>
   );

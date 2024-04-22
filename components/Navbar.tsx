@@ -2,6 +2,7 @@ import React from 'react';
 import Themer from './Themer';
 import MenuIcon from '@mui/icons-material/Menu';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import SignOutIcon from './SignOutIcon';
 
 const Navbar = () => {
   return (
@@ -39,7 +40,11 @@ const Navbar = () => {
       <div className="flex-1">
         <a className="btn btn-ghost text-xl">Flashcards</a>
       </div>
-      <Themer />
+
+      <div className="flex-none">
+        <Themer />
+        <SignOutIcon />
+      </div>
       <div className="flex-none">
         <button className="btn btn-square btn-ghost">
           <MoreHorizIcon />
