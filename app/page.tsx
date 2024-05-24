@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 
 export default async function Home() {
   const sess = await auth();
-  // console.log(sess?.user);
+  console.dir(sess);
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">

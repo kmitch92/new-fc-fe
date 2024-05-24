@@ -1,5 +1,14 @@
 import NextAuth, { NextAuthOptions, getServerSession } from 'next-auth';
 import type {
+  User,
+  Session,
+  Awaitable,
+  DefaultSession,
+  Account,
+  Profile,
+} from 'next-auth';
+import type { JWT } from 'next-auth/jwt';
+import type {
   GetServerSidePropsContext,
   NextApiRequest,
   NextApiResponse,
@@ -38,6 +47,27 @@ const options: NextAuthOptions = {
       },
     }),
   ],
+  session: {
+    strategy: 'jwt',
+    maxAge: 24 * 60 * 60,
+  },
+  callbacks: {
+    async jwt(params: { token: JWT; account: Account | null }): Promise<any> {
+      let { token, account } = params;
+      if (account) {
+        token.accessToken = account.access_token;
+        token.id = account.id;
+      }
+
+      return token;
+    },
+
+    async session(params: { session: Session; token: JWT }): Promise<any> {
+      let { session, token } = params;
+      session.accessToken = (token.accessToken as string) || undefined;
+      return session;
+    },
+  },
   debug: false,
 };
 export async function auth(

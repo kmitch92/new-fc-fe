@@ -28,49 +28,51 @@ export default function Login({
       }
     }
   }
+  //
 
   return (
-    <form className="hero-content flex-col ">
-      <h1 className="text-2xl sm:text-5xl font-extrabold text-primary">
-        LOGIN
-      </h1>
-      {error && (
-        <div className="prose w-full p-3 max-w-[40ch] border rounded-md border-rose-400 bg-rose-400 text-base-100">
-          {error}
-        </div>
-      )}
-      <input
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        type="email"
-        name="email"
-        autoComplete="on"
-        placeholder="Email Address"
-        className="prose input input-bordered w-full p-2 max-w-[40ch]  border-primary input-primary border-2"
-      />
-      <input
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        type="password"
-        name="password"
-        autoComplete="on"
-        placeholder="Password"
-        className="input bg-base-100 input-bordered input-primary w-full p-2 max-w-[40ch]  border-primary border-2"
-      />
+    // <form className="hero-content flex-col ">
+    //   <h1 className="text-2xl sm:text-5xl font-extrabold text-primary">
+    //     LOGIN
+    //   </h1>
+    //   {error && (
+    //     <div className="prose w-full p-3 max-w-[40ch] border rounded-md border-rose-400 bg-rose-400 text-base-100">
+    //       {error}
+    //     </div>
+    //   )}
+    //   <input
+    //     value={email}
+    //     onChange={(e) => setEmail(e.target.value)}
+    //     type="email"
+    //     name="email"
+    //     autoComplete="on"
+    //     placeholder="Email Address"
+    //     className="prose input input-bordered w-full p-2 max-w-[40ch]  border-primary input-primary border-2"
+    //   />
+    //   <input
+    //     value={password}
+    //     onChange={(e) => setPassword(e.target.value)}
+    //     type="password"
+    //     name="password"
+    //     autoComplete="on"
+    //     placeholder="Password"
+    //     className="input bg-base-100 input-bordered input-primary w-full p-2 max-w-[40ch]  border-primary border-2"
+    //   />
 
-      <button
-        className="btn text-base-100 sm:btn-wide btn-primary text-lg"
-        onClick={submitHandler}
-      >
-        Login
-      </button>
-      <h3 className="text-secondary prose">Haven't registered yet?</h3>
-      <button
-        className="btn text-base-100 btn-primary "
-        onClick={() => setIsLoggingIn(false)}
-      >
-        Register
-      </button>
-    </form>
+    //   <button
+    //     className="btn text-base-100 sm:btn-wide btn-primary text-lg"
+    //     onClick={submitHandler}
+    //   >
+    //     Login
+    //   </button>
+    //   <h3 className="text-secondary prose">Haven't registered yet?</h3>
+    //   <button
+    //     className="btn text-base-100 btn-primary "
+    //     onClick={() => setIsLoggingIn(false)}
+    //   >
+    //     Register
+    //   </button>
+    // </form>
+    <h1>Blah</h1>
   );
 }
