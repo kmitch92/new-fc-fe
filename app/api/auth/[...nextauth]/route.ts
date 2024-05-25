@@ -1,12 +1,5 @@
 import NextAuth, { NextAuthOptions, getServerSession } from 'next-auth';
-import type {
-  User,
-  Session,
-  Awaitable,
-  DefaultSession,
-  Account,
-  Profile,
-} from 'next-auth';
+import type { Session, Account } from 'next-auth';
 import type { JWT } from 'next-auth/jwt';
 import type {
   GetServerSidePropsContext,
@@ -26,18 +19,19 @@ const options: NextAuthOptions = {
     CredentialsProvider({
       name: 'Credentials',
       credentials: {
-        username: { label: 'Username:', type: 'text' },
+        email: { label: 'Email:', type: 'email' },
         password: { label: 'Password:', type: 'password' },
       },
       async authorize(credentials): Promise<any> {
         //retrieve user data here to verify with credentials
         const user = {
           id: 1,
-          name: 'kielmitchell8@gmail.com',
+          name: 'Kiel Mitchell',
+          email: 'kielmitchell8@gmail.com',
           password: '1Painter',
         };
         if (
-          credentials?.username === user.name &&
+          credentials?.email === user.email &&
           credentials?.password === user.password
         ) {
           return user;
@@ -58,7 +52,6 @@ const options: NextAuthOptions = {
         token.accessToken = account.access_token;
         token.id = account.id;
       }
-
       return token;
     },
 
@@ -68,7 +61,7 @@ const options: NextAuthOptions = {
       return session;
     },
   },
-  debug: false,
+  debug: process.env.NODE_ENV === 'development',
 };
 export async function auth(
   ...args:

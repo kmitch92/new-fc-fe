@@ -14,7 +14,9 @@
     "@mui/icons-material": "^5.15.14",
     "@mui/material": "^5.15.14",
     "@tailwindcss/typography": "^0.5.12",
+    "bcryptjs": "^2.4.3",
     "firebase": "^10.9.0",
+    "mongoose": "^8.4.0",
     "mui": "^0.0.1",
     "next": "14.1.4",
     "next-auth": "^4.24.7",
@@ -23,6 +25,7 @@
     "react-dom": "^18"
   },
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
