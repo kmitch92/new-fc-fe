@@ -5,9 +5,15 @@ import type {
   GetServerSidePropsContext,
   NextApiRequest,
   NextApiResponse,
+  NextApiHandler,
 } from 'next';
+import { getUserByEmail } from '../../utils/user.controller';
+import { IUserFE } from '../../models/user';
+import { MySession, MyUser, Credentials } from '../../types/auth-types';
+import bcrypt from 'bcryptjs';
 import GoogleProvider from 'next-auth/providers/google';
 import CredentialsProvider from 'next-auth/providers/credentials';
+import type { UserX } from '../../utils/user.controller';
 
 const options: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
@@ -23,21 +29,22 @@ const options: NextAuthOptions = {
         password: { label: 'Password:', type: 'password' },
       },
       async authorize(credentials): Promise<any> {
+        const { email, password } = credentials as Credentials;
+        const user: UserX | null = await getUserByEmail(email);
         //retrieve user data here to verify with credentials
-        const user = {
-          id: 1,
-          name: 'Kiel Mitchell',
-          email: 'kielmitchell8@gmail.com',
-          password: '1Painter',
-        };
-        if (
-          credentials?.email === user.email &&
-          credentials?.password === user.password
-        ) {
-          return user;
-        } else {
-          return null;
+
+        if (!user) {
+          throw new Error('No User Found');
         }
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+          throw new Error('Password doesnt Match');
+        }
+        return {
+          id: user._id,
+          name: user.name,
+          email: user.email,
+        };
       },
     }),
   ],

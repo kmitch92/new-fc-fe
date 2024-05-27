@@ -3,7 +3,8 @@ import { IUserFE } from '../models/user';
 import connectDB from '../db';
 import bcryptjs from 'bcryptjs';
 
-type UserX = Omit<IUserFE, 'createdAt' | 'updatedAt'>;
+export type UserX = Omit<IUserFE, 'createdAt' | 'updatedAt'>;
+
 export const createUser = async (user: UserX) => {
   console.log('Request to add user: ', user);
   console.log(await connectDB());
@@ -18,4 +19,12 @@ export const createUser = async (user: UserX) => {
   if (finduser) throw new Error('User Found, Change Email');
   const newUser = await UserModel.create(userAdded);
   return newUser;
+};
+
+export const getUserByEmail = async (email: string) => {
+  const user: UserX | null = await UserModel.findOne({
+    email,
+  });
+  if (!user) throw new Error('No User Found');
+  return user;
 };
