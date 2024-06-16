@@ -3,6 +3,7 @@ import './globals.css';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { ThemeProvider } from '@/contexts/ThemeContext';
+import { ClientThemeWrapper } from '@/contexts/ClientThemeWrapper';
 
 export const metadata: Metadata = {
   title: 'Flash Cards',
@@ -18,9 +19,11 @@ export default function RootLayout({
     <html>
       <body>
         <ThemeProvider>
-          <Navbar />
-          {children}
-          <Footer />
+          <ClientThemeWrapper>
+            <Navbar />
+            {children}
+            <Footer />
+          </ClientThemeWrapper>
         </ThemeProvider>
       </body>
     </html>

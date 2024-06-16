@@ -6,7 +6,7 @@ interface ThemeContextType {
   changeTheme: Function;
 }
 
-const dummyInitial: ThemeContextType = {
+const initialTheme: ThemeContextType = {
   theme: 'winter',
   changeTheme: () => {},
 };
@@ -15,7 +15,7 @@ type Props = {
   children: React.ReactNode;
 };
 
-const ThemeContext = createContext<ThemeContextType>(dummyInitial);
+const ThemeContext = createContext<ThemeContextType>(initialTheme);
 
 function ThemeProvider({ children }: Props) {
   const [theme, setTheme] = useState<string>('winter');
