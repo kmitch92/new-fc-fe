@@ -7,13 +7,10 @@ import type {
   NextApiResponse,
   NextApiHandler,
 } from 'next';
-import { getUserByEmail } from '../../utils/user.controller';
-import { IUserFE } from '../../models/user';
 import { MySession, MyUser, Credentials } from '../../types/auth-types';
 import bcrypt from 'bcryptjs';
 import GoogleProvider from 'next-auth/providers/google';
-import CredentialsProvider from 'next-auth/providers/credentials';
-import type { UserX } from '../../utils/user.controller';
+import GithubProvider from 'next-auth/providers/github';
 
 const options: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
@@ -22,32 +19,12 @@ const options: NextAuthOptions = {
       clientId: process.env.GOOGLE_ID,
       clientSecret: process.env.GOOGLE_SECRET,
     }),
-    CredentialsProvider({
-      name: 'Credentials',
-      credentials: {
-        email: { label: 'Email:', type: 'email' },
-        password: { label: 'Password:', type: 'password' },
-      },
-      async authorize(credentials): Promise<any> {
-        const { email, password } = credentials as Credentials;
-        const user: UserX | null = await getUserByEmail(email);
-        //retrieve user data here to verify with credentials
-
-        if (!user) {
-          throw new Error('No User Found');
-        }
-        const isMatch = await bcrypt.compare(password, user.password);
-        if (!isMatch) {
-          throw new Error('Password doesnt Match');
-        }
-        return {
-          id: user._id,
-          name: user.name,
-          email: user.email,
-        };
-      },
+    GithubProvider({
+      clientId: process.env.GITHUB_ID as string,
+      clientSecret: process.env.GITHUB_SECRET as string,
     }),
   ],
+
   session: {
     strategy: 'jwt',
     maxAge: 24 * 60 * 60,
@@ -79,6 +56,6 @@ export async function auth(
   return getServerSession(...args, options);
 }
 
-const handler = NextAuth(options);
+const handler: NextApiHandler = NextAuth(options);
 
 export { handler as GET, handler as POST };

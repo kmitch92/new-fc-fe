@@ -3,6 +3,7 @@ import Themer from './Themer';
 import MenuIcon from '@mui/icons-material/Menu';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import SignOutIcon from './SignOutIcon';
+import Link from 'next/link';
 
 const Navbar = () => {
   return (
@@ -38,12 +39,16 @@ const Navbar = () => {
         </div>
       </div>
       <div className="flex-1">
-        <a className="btn btn-ghost text-xl">Flashcards</a>
+        <Link className="btn btn-ghost text-xl" href="/">
+          Flashcards
+        </Link>
       </div>
 
       <div className="flex-none">
         <Themer />
-        <SignOutIcon />
+        <Link href={'/sign-out'}>
+          <SignOutIcon />
+        </Link>
       </div>
       <div className="flex-none">
         <button className="btn btn-square btn-ghost">
