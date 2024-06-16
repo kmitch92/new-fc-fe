@@ -1,18 +1,30 @@
 - update sign out so you are confronted with a confirm modal
-- bring in shadcn/ui - if daisyui doesn't work with it, get rid of daisy
 - make it so that jwt and user sessions are persisted on the DB
+    - on sign-in, callback fires sign in request to the mongodb. it either finds a user or creates one as initial basic functionality
+    - find out how to update sessions in next-auth. adding the log in provider would be useful, add would mongo id of user.
+    - then, pass jwt to db so that session can be initiated. needs to check expiry or request log in again. front end need to re-request log-in if not. 
 - create card component
+    - look at schemas on back-end to see what fields should be added.
+    the form should have the exact same layout as the final card - edit should transform card into form with fields autofilled with previous value.
+    getting add card done quickly is important as needed to start testing
+    - add delete card functionality 
 - create deck component
-- add create card functionality
-- add edit card functionality
-- add delete card functionality 
+    - like a deck of cards with the front turned over - dect title in middle, titles of cards behind showing like slightly splayed
 - create spaced repetition algorithm logic
+    - should be relatively straightforward, there was a paper detailing the optimum algorithm.
+    - certain new fields may need to be added to card other than review dates etc.
 - add review card functionality
-- create user dashboard
-- create file upload for mass card import
+    - will need to tell you how many reviews per deck, how many decks with reviews and total review numbers.
+    - will need to add a progress bar which tells you how far through your reviews you are.
+- create user dashboard. great templates available on shadcn blocks 
+    - metrics on usage
+    - browse cards and decks using shadcn data tables and pagination, clicking one brings it up as a modal for editing.   
+- create file upload for mass card import - also necessary for img upload.
 - create app logo
 - create initial ai contact point for card gen
 - create pipeline for saving notes to user db, langchain iteration, flashcard creation, and final user edit/approve stage.
+- create a 'find more cards' button, which calls llm, searches based on card content, brings in info and generates cards. should bring in links as well.
+-create a create variants ai call that feeds in the card info and creates cards that come at it from other directions.
 - create minimal browser extension for dispatching user notes to db
 - create payments system via stripe API so that user can buy credits or a monthly membership.
 - create a data-viz page where people can see metrics for their interactions with the app
