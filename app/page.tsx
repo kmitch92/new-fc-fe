@@ -5,8 +5,8 @@ export default async function Home() {
   const sess = await auth();
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="hero w-300 h-200 bg-base-200 p-4 rounded-2xl prose flex flex-row items-center justify-center gap-8">
+    <main className="flex min-h-screen flex-col items-center justify-between p-12">
+      <div className="hero w-auto h-48 px-6 rounded-2xl prose shadow-lg flex flex-row items-center justify-center gap-4">
         {sess?.user?.image && (
           <div className="w-24 mask mask-hexagon">
             <img src={sess?.user?.image as string} />

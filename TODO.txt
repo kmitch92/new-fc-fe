@@ -1,0 +1,22 @@
+- update sign out so you are confronted with a confirm modal
+- bring in shadcn/ui - if daisyui doesn't work with it, get rid of daisy
+- make it so that jwt and user sessions are persisted on the DB
+- create card component
+- create deck component
+- add create card functionality
+- add edit card functionality
+- add delete card functionality 
+- create spaced repetition algorithm logic
+- add review card functionality
+- create user dashboard
+- create file upload for mass card import
+- create app logo
+- create initial ai contact point for card gen
+- create pipeline for saving notes to user db, langchain iteration, flashcard creation, and final user edit/approve stage.
+- create minimal browser extension for dispatching user notes to db
+- create payments system via stripe API so that user can buy credits or a monthly membership.
+- create a data-viz page where people can see metrics for their interactions with the app
+- create a feature suggestion/ feedback form for users to give tips on how to improve app.
+- create make public functionality for decks - allow people to contribute to gated decks by email invite, fully public decks, or make decks forkable - this could even have logic to make you aware of new cards added since you forked - do you want to update by pulling new cards, or alternatively let you know if the deck has been taken private and no further updates
+- create store for decks - don't have to be free - they have to sign terms to saythey have image rights
+- create an in built ai assisted image search for useful reference images for cards.

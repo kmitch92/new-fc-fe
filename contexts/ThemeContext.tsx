@@ -1,44 +1,9 @@
 'use client';
-import { useEffect, useState, createContext } from 'react';
 
-interface ThemeContextType {
-  theme: string;
-  changeTheme: Function;
+import * as React from 'react';
+import { ThemeProvider as NextThemesProvider } from 'next-themes';
+import { type ThemeProviderProps } from 'next-themes/dist/types';
+
+export function ThemeProvider({ children, ...props }: ThemeProviderProps) {
+  return <NextThemesProvider {...props}>{children}</NextThemesProvider>;
 }
-
-const initialTheme: ThemeContextType = {
-  theme: 'winter',
-  changeTheme: () => {},
-};
-
-type Props = {
-  children: React.ReactNode;
-};
-
-const ThemeContext = createContext<ThemeContextType>(initialTheme);
-
-function ThemeProvider({ children }: Props) {
-  const [theme, setTheme] = useState<string>('winter');
-  const [isMounted, setIsMounted] = useState(false);
-
-  useEffect(() => {
-    setIsMounted(true);
-    const localTheme = localStorage.getItem('theme') || 'winter';
-    setTheme(localTheme);
-  }, []);
-
-  if (!isMounted) return <></>;
-
-  const changeTheme = (theme: string) => {
-    setTheme(theme);
-    localStorage.setItem('theme', theme);
-  };
-
-  return (
-    <ThemeContext.Provider value={{ theme, changeTheme }}>
-      {children}
-    </ThemeContext.Provider>
-  );
-}
-
-export { ThemeProvider, ThemeContext };

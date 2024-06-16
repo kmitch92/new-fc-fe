@@ -1,9 +1,8 @@
 import type { Metadata } from 'next';
 import './globals.css';
-import Navbar from '@/components/Navbar';
+import { Navbar } from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { ThemeProvider } from '@/contexts/ThemeContext';
-import { ClientThemeWrapper } from '@/contexts/ClientThemeWrapper';
 
 export const metadata: Metadata = {
   title: 'Flash Cards',
@@ -18,12 +17,15 @@ export default function RootLayout({
   return (
     <html>
       <body>
-        <ThemeProvider>
-          <ClientThemeWrapper>
-            <Navbar />
-            {children}
-            <Footer />
-          </ClientThemeWrapper>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <Navbar />
+          {children}
+          <Footer />
         </ThemeProvider>
       </body>
     </html>
