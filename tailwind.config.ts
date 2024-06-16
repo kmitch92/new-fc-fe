@@ -27,6 +27,10 @@ const config: Config = {
   daisyui: {
     themes: ['winter', 'forest'],
   },
-  plugins: [require('@tailwindcss/typography'), require('daisyui')],
+  plugins: [
+    require('@tailwindcss/typography'),
+    require('daisyui'),
+    require('tailwindcss-animate'),
+  ],
 };
 export default config;
