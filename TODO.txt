@@ -32,3 +32,5 @@
 - create make public functionality for decks - allow people to contribute to gated decks by email invite, fully public decks, or make decks forkable - this could even have logic to make you aware of new cards added since you forked - do you want to update by pulling new cards, or alternatively let you know if the deck has been taken private and no further updates
 - create store for decks - don't have to be free - they have to sign terms to saythey have image rights
 - create an in built ai assisted image search for useful reference images for cards.
+- add custom log in, log out, error etc. pages for next auth
+- extend auth for credentials and sign up, if classic way is difficult, consider creating a custom oauth provider
