@@ -7,7 +7,7 @@ import Link from 'next/link';
 
 const Navbar = () => {
   return (
-    <div className="navbar bg-base-100">
+    <div className="navbar bg-base-200">
       <div className="flex-none">
         <div className="drawer drawer-start">
           <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
