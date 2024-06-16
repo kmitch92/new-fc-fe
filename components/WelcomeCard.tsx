@@ -9,7 +9,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { MySession } from '@/app/api/types/auth-types';
+import { Button } from './ui/button';
 
 interface WelcomeCardProps {
   session: Session;
@@ -17,18 +17,23 @@ interface WelcomeCardProps {
 
 export function WelcomeCard({ session }: WelcomeCardProps) {
   return (
-    <Card className="w-[350px]">
+    <Card className="w-3/4">
       <CardHeader>
-        <CardTitle>Welcome!</CardTitle>
+        <CardTitle>Welcome, {session.user?.name}!</CardTitle>
         <CardDescription>Get ready to learn!</CardDescription>
       </CardHeader>
       <CardContent>
-        <img src={session.user?.image as string} className="size-32" />
+        <img
+          src={session.user?.image as string}
+          className="size-32 rounded-md"
+        />
       </CardContent>
       <CardFooter className="flex justify-between">
         <p>
-          You are logged in as <strong>{session.user?.name}</strong>.
+          You have <strong>XX reviews</strong> in <strong>XX decks</strong>.
+          <br /> Ready to get started?
         </p>
+        <Button>Start learning</Button>
       </CardFooter>
     </Card>
   );

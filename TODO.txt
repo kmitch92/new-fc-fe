@@ -2,7 +2,8 @@
 - make it so that jwt and user sessions are persisted on the DB
     - on sign-in, callback fires sign in request to the mongodb. it either finds a user or creates one as initial basic functionality
     - find out how to update sessions in next-auth. adding the log in provider would be useful, add would mongo id of user.
-    - then, pass jwt to db so that session can be initiated. needs to check expiry or request log in again. front end need to re-request log-in if not. 
+    - then, pass jwt to db so that session can be initiated. needs to check expiry or request log in again. front end need to re-request log-in if not.
+    - find away to link provider accounts on the back-end. user uses account dashboard to pick between multiple photos, details, etc. - any one login links to the agglomeration and passes back chosen details 
 - create card component
     - look at schemas on back-end to see what fields should be added.
     the form should have the exact same layout as the final card - edit should transform card into form with fields autofilled with previous value.
