@@ -15,6 +15,12 @@ import {
   navigationMenuTriggerStyle,
 } from '@/components/ui/navigation-menu';
 
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover';
+
 import { ModeToggle } from './ModeToggle';
 import MenuIcon from '@mui/icons-material/Menu';
 import { ExitIcon } from '@radix-ui/react-icons';
@@ -142,15 +148,21 @@ export function Navbar() {
           </NavigationMenuList>
         </NavigationMenu>
 
-        <NavigationMenu className="mr-4">
+        <NavigationMenu className="mr-6">
           <NavigationMenuList>
-            <NavigationMenuItem>
+            <NavigationMenuItem className="mr-2 mb-[1px]">
               <ModeToggle />
             </NavigationMenuItem>
             <NavigationMenuItem>
-              <Button variant="ghost" size="icon">
-                <ExitIcon onClick={() => signOut()} className="scale-125" />
-              </Button>
+              <Popover>
+                <PopoverTrigger>
+                  <ExitIcon className="scale-125" />
+                </PopoverTrigger>
+                <PopoverContent className="mr-8 flex flex-col gap-4">
+                  <p>Are you sure you want to sign out?</p>
+                  <Button onClick={() => signOut()}>Sign Out</Button>
+                </PopoverContent>
+              </Popover>
             </NavigationMenuItem>
           </NavigationMenuList>
         </NavigationMenu>
