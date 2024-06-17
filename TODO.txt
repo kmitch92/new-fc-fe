@@ -1,4 +1,3 @@
-- update sign out so you are confronted with a confirm modal
 - make it so that jwt and user sessions are persisted on the DB
     - on sign-in, callback fires sign in request to the mongodb. it either finds a user or creates one as initial basic functionality
     - find out how to update sessions in next-auth. adding the log in provider would be useful, add would mongo id of user.
