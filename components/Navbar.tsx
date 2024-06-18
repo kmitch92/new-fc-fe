@@ -120,7 +120,7 @@ export function Navbar() {
           </NavigationMenuList>
         </NavigationMenu>
 
-        <NavigationMenu>
+        <NavigationMenu className="mr-24">
           <NavigationMenuList>
             <NavigationMenuItem>
               <NavigationMenuTrigger>Components</NavigationMenuTrigger>
