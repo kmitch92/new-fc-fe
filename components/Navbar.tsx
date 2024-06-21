@@ -68,7 +68,7 @@ const components: { title: string; href: string; description: string }[] = [
 
 export function Navbar() {
   return (
-    <div className="flex flex-col justify-start z-10">
+    <div className="flex flex-col justify-start z-10 bg-background mb-2 pb-2">
       <div className="w-full h-auto flex flex-row justify-between items-center mt-2">
         <NavigationMenu>
           <NavigationMenuList>
@@ -174,7 +174,7 @@ export function Navbar() {
           </NavigationMenuList>
         </NavigationMenu>
       </div>
-      <Separator className="my-2" />
+      <Separator className="my-1" />
     </div>
   );
 }

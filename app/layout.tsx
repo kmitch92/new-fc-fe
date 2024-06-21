@@ -16,18 +16,26 @@ export default function RootLayout({
 }) {
   return (
     <html>
-      <body>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
+      <ThemeProvider
+        attribute="class"
+        defaultTheme="system"
+        enableSystem
+        disableTransitionOnChange
+      >
+        <body
+          style={{
+            backgroundImage: 'url(/inflicted.png)',
+            boxSizing: 'border-box',
+            boxShadow: 'inset 0 0 500px 200px hsl(var(--background))',
+          }}
         >
-          <Navbar />
-          {children}
-          <Footer />
-        </ThemeProvider>
-      </body>
+          <div style={{ all: 'unset' }}>
+            <Navbar />
+            {children}
+            <Footer />
+          </div>
+        </body>
+      </ThemeProvider>
     </html>
   );
 }
