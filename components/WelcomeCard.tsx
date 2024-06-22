@@ -17,7 +17,7 @@ interface WelcomeCardProps {
 
 export function WelcomeCard({ session }: WelcomeCardProps) {
   return (
-    <Card className="w-3/4">
+    <Card className="w-[400px] h-[500px]">
       <CardHeader>
         <CardTitle>Welcome, {session.user?.name}!</CardTitle>
         <CardDescription>Get ready to learn!</CardDescription>
