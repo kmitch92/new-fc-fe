@@ -1,5 +1,6 @@
 import NextAuth, { NextAuthOptions, getServerSession } from 'next-auth';
-import type { Session, Account } from 'next-auth';
+import { UserModel } from '../../types/user-model';
+import type { Session, Account, User } from 'next-auth';
 import type { JWT } from 'next-auth/jwt';
 import type {
   GetServerSidePropsContext,
@@ -7,10 +8,10 @@ import type {
   NextApiResponse,
   NextApiHandler,
 } from 'next';
-import { MySession, MyUser, Credentials } from '../../types/auth-types';
-import bcrypt from 'bcryptjs';
 import GoogleProvider from 'next-auth/providers/google';
 import GithubProvider from 'next-auth/providers/github';
+import { connectDB } from '../../db';
+import { Profile } from 'next-auth';
 
 const options: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
@@ -43,6 +44,31 @@ const options: NextAuthOptions = {
       let { session, token } = params;
       session.accessToken = (token.accessToken as string) || undefined;
       return session;
+    },
+
+    async signIn(params: { user: User }): Promise<any> {
+      const { user } = params;
+      console.log('Sign In Callback', params);
+      try {
+        await connectDB();
+        // Check if user exists in DB
+        const existingUser = await UserModel.findOne({ email: user.email });
+        if (existingUser) {
+          console.log('User already exists in DB');
+          return true;
+        }
+        // Create new user
+        const newUser = await UserModel.create({
+          name: user.name as string,
+          email: user.email as string,
+          image: user.image as string,
+        });
+        console.log('New User Created: ', newUser);
+        return true;
+      } catch (error) {
+        console.error('Error Signing In: ', error);
+        return false;
+      }
     },
   },
   debug: process.env.NODE_ENV === 'development',
