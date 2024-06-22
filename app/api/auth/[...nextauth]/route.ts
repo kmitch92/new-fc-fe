@@ -1,5 +1,5 @@
 import NextAuth, { NextAuthOptions, getServerSession } from 'next-auth';
-import { UserModel } from '../../types/user-model';
+import { MUser } from '../../types/user-model';
 import type { Session, Account, User } from 'next-auth';
 import type { JWT } from 'next-auth/jwt';
 import type {
@@ -11,7 +11,6 @@ import type {
 import GoogleProvider from 'next-auth/providers/google';
 import GithubProvider from 'next-auth/providers/github';
 import { connectDB } from '../../db';
-import { Profile } from 'next-auth';
 
 const options: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
@@ -48,17 +47,17 @@ const options: NextAuthOptions = {
 
     async signIn(params: { user: User }): Promise<any> {
       const { user } = params;
-      console.log('Sign In Callback', params);
+      console.log('Sign In Callback', user);
       try {
         await connectDB();
         // Check if user exists in DB
-        const existingUser = await UserModel.findOne({ email: user.email });
+        const existingUser = await MUser.findOne({ email: user.email });
         if (existingUser) {
           console.log('User already exists in DB');
           return true;
         }
         // Create new user
-        const newUser = await UserModel.create({
+        const newUser = await MUser.create({
           name: user.name as string,
           email: user.email as string,
           image: user.image as string,

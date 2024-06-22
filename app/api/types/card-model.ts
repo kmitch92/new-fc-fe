@@ -59,5 +59,4 @@ export const CardSchema: Schema = new Schema<ICard>({
   },
 });
 
-export const CardModel =
-  mongoose.models.CardModel || model<ICard>('Card', CardSchema);
+export const MCard = mongoose.models.MCard || model<ICard>('MCard', CardSchema);
