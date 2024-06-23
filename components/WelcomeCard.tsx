@@ -1,3 +1,4 @@
+'use client';
 import * as React from 'react';
 import type { Session } from 'next-auth';
 
@@ -10,14 +11,16 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Button } from './ui/button';
-
+import { useRouter } from 'next/navigation';
 interface WelcomeCardProps {
   session: Session;
 }
 
 export function WelcomeCard({ session }: WelcomeCardProps) {
+  const router = useRouter();
+
   return (
-    <Card className="w-[400px] h-[500px]">
+    <Card className="w-[300px] h-[400px]">
       <CardHeader>
         <CardTitle>Welcome, {session.user?.name}!</CardTitle>
         <CardDescription>Get ready to learn!</CardDescription>
@@ -28,12 +31,12 @@ export function WelcomeCard({ session }: WelcomeCardProps) {
           className="size-32 rounded-md"
         />
       </CardContent>
-      <CardFooter className="flex justify-between">
+      <CardFooter className="flex flex-col gap-8">
         <p>
           You have <strong>XX reviews</strong> in <strong>XX decks</strong>.
           <br /> Ready to get started?
         </p>
-        <Button>Start learning</Button>
+        <Button onClick={() => router.push('/learn')}>Start learning</Button>
       </CardFooter>
     </Card>
   );

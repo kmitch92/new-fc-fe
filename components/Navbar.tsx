@@ -24,45 +24,41 @@ import {
 import { ModeToggle } from './ModeToggle';
 import MenuIcon from '@mui/icons-material/Menu';
 import { ExitIcon } from '@radix-ui/react-icons';
+import { LogOut, Settings } from 'lucide-react';
 import { signOut } from 'next-auth/react';
 import { Button } from './ui/button';
 import { Separator } from './ui/separator';
 
 const components: { title: string; href: string; description: string }[] = [
   {
-    title: 'Alert Dialog',
-    href: '/docs/primitives/alert-dialog',
-    description:
-      'A modal dialog that interrupts the user with important content and expects a response.',
+    title: 'Blah',
+    href: '',
+    description: 'Blah Blah Blah Blah',
   },
   {
-    title: 'Hover Card',
-    href: '/docs/primitives/hover-card',
-    description:
-      'For sighted users to preview content available behind a link.',
+    title: 'Blah',
+    href: '',
+    description: 'Blah Blah Blah Blah.',
   },
   {
-    title: 'Progress',
-    href: '/docs/primitives/progress',
-    description:
-      'Displays an indicator showing the completion progress of a task, typically displayed as a progress bar.',
+    title: 'Blah',
+    href: '',
+    description: 'Blah Blah Blah Blah.',
   },
   {
-    title: 'Scroll-area',
-    href: '/docs/primitives/scroll-area',
-    description: 'Visually or semantically separates content.',
+    title: 'Blah',
+    href: '',
+    description: 'Blah Blah Blah Blah.',
   },
   {
-    title: 'Tabs',
-    href: '/docs/primitives/tabs',
-    description:
-      'A set of layered sections of content—known as tab panels—that are displayed one at a time.',
+    title: 'Blah',
+    href: '',
+    description: 'Blah Blah Blah Blah.',
   },
   {
-    title: 'Tooltip',
-    href: '/docs/primitives/tooltip',
-    description:
-      'A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.',
+    title: 'Blah',
+    href: '',
+    description: 'Blah Blah Blah Blah.',
   },
 ];
 
@@ -88,24 +84,19 @@ export function Navbar() {
                           shadcn/ui
                         </div>
                         <p className="text-sm leading-tight text-muted-foreground">
-                          Beautifully designed components that you can copy and
-                          paste into your apps. Accessible. Customizable. Open
-                          Source.
+                          Blah Blah Blah Blah.
                         </p>
                       </a>
                     </NavigationMenuLink>
                   </li>
-                  <ListItem href="/docs" title="Introduction">
-                    Re-usable components built using Radix UI and Tailwind CSS.
+                  <ListItem href="" title="Blah">
+                    Blah Blah Blah Blah
                   </ListItem>
-                  <ListItem href="/docs/installation" title="Installation">
-                    How to install dependencies and structure your app.
+                  <ListItem href="" title="Blah">
+                    Blah Blah Blah Blah.
                   </ListItem>
-                  <ListItem
-                    href="/docs/primitives/typography"
-                    title="Typography"
-                  >
-                    Styles for headings, paragraphs, lists...etc
+                  <ListItem href="" title="">
+                    Blah Blah Blah Blah
                   </ListItem>
                 </ul>
               </NavigationMenuContent>
@@ -123,7 +114,7 @@ export function Navbar() {
         <NavigationMenu className="mr-24">
           <NavigationMenuList>
             <NavigationMenuItem>
-              <NavigationMenuTrigger>Components</NavigationMenuTrigger>
+              <NavigationMenuTrigger>Blah</NavigationMenuTrigger>
               <NavigationMenuContent>
                 <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
                   {components.map((component) => (
@@ -148,22 +139,25 @@ export function Navbar() {
             <NavigationMenuItem>
               <Link href="/docs" legacyBehavior passHref>
                 <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                  Documentation
+                  Blah
                 </NavigationMenuLink>
               </Link>
             </NavigationMenuItem>
           </NavigationMenuList>
         </NavigationMenu>
 
-        <NavigationMenu className="mr-6">
+        <NavigationMenu className="flex flex-row justify-between gap-8 items-center  mr-6">
           <NavigationMenuList>
-            <NavigationMenuItem className="mr-2 mb-[1px]">
-              <ModeToggle />
+            <NavigationMenuItem className="mr-2">
+              <Settings />
             </NavigationMenuItem>
             <NavigationMenuItem>
+              <ModeToggle />
+            </NavigationMenuItem>
+            <NavigationMenuItem className="mt-[3.5px] mr-2">
               <Popover>
                 <PopoverTrigger>
-                  <ExitIcon className="scale-125" />
+                  <LogOut />
                 </PopoverTrigger>
                 <PopoverContent className="mr-8 flex flex-col gap-4">
                   <p>Are you sure you want to sign out?</p>
