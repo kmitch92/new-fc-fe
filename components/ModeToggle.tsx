@@ -12,15 +12,23 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 
+import useHasMounted from '@/lib/hooks/hasMounted';
+
 export function ModeToggle() {
   const { theme, setTheme } = useTheme();
+  const hasMounted = useHasMounted();
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" size="icon" className="mr-6">
-          {theme === 'dark' ? <Sun /> : <MoonStar />}
-          <span className="sr-only">Toggle theme</span>
+          {hasMounted && theme === 'dark' ? (
+            <Sun />
+          ) : hasMounted ? (
+            <MoonStar />
+          ) : (
+            `Loading...`
+          )}
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">

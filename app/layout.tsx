@@ -3,7 +3,6 @@ import './globals.css';
 import { Navbar } from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { ThemeProvider } from '@/contexts/ThemeContext';
-
 export const metadata: Metadata = {
   title: 'Flash Cards',
   description: 'Remembering Intelligently',

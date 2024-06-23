@@ -11,7 +11,6 @@ import {
   Users,
 } from 'lucide-react';
 
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
@@ -77,10 +76,10 @@ export function LearnDashboard() {
             Blah
           </Link>
           <Link
-            href="#"
+            href="/learn/create-card"
             className="text-muted-foreground transition-colors hover:text-foreground"
           >
-            Blah
+            Add
           </Link>
         </nav>
         <Sheet>
