@@ -149,12 +149,16 @@ export function Navbar() {
         <NavigationMenu className="flex flex-row justify-between gap-8 items-center  mr-6">
           <NavigationMenuList>
             <NavigationMenuItem className="mr-2">
-              <Settings />
+              <Link href="/settings" legacyBehavior passHref>
+                <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                  <Settings />
+                </NavigationMenuLink>
+              </Link>
             </NavigationMenuItem>
             <NavigationMenuItem>
               <ModeToggle />
             </NavigationMenuItem>
-            <NavigationMenuItem className="mt-[3.5px] mr-2">
+            <NavigationMenuItem className="mt-[4px] mr-2">
               <Popover>
                 <PopoverTrigger>
                   <LogOut />
