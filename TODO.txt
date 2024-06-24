@@ -21,6 +21,7 @@ O - make it so that jwt and user sessions are persisted on the DB
     - metrics on usage
     - browse cards and decks using shadcn data tables and pagination, clicking one brings it up as a modal for editing.   
 - create file upload for mass card import - also necessary for img upload.
+- seems to be an error where mongodb doesnt initialise if not via sign in - ie the jwt session is still active from previous log in
 - create app logo
 - create initial ai contact point for card gen
 - create pipeline for saving notes to user db, langchain iteration, flashcard creation, and final user edit/approve stage.

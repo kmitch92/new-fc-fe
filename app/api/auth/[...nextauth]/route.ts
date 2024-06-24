@@ -42,10 +42,11 @@ const options: NextAuthOptions = {
     async session(params: { session: Session; token: JWT }): Promise<any> {
       let { session, token } = params;
       const userEmail = session.user?.email;
-      const dbUser = await MUser.findOne({ email: userEmail });
-      if (!dbUser) {
+      const dbJSONUser = await MUser.findOne({ email: userEmail });
+      if (!dbJSONUser) {
         throw new Error('User not found');
       }
+      const dbUser = JSON.parse(JSON.stringify(dbJSONUser));
       session.user = {
         id: dbUser._id,
         name: dbUser.name,
