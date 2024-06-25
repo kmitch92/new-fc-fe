@@ -70,16 +70,16 @@ export function LearnDashboard() {
             Blah
           </Link>
           <Link
-            href="#"
+            href="learn/create-deck"
             className="text-muted-foreground transition-colors hover:text-foreground"
           >
-            Blah
+            Add Deck
           </Link>
           <Link
             href="/learn/create-card"
             className="text-muted-foreground transition-colors hover:text-foreground"
           >
-            Add
+            Add Card
           </Link>
         </nav>
         <Sheet>

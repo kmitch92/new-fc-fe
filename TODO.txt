@@ -1,4 +1,5 @@
-
+ -  Differentiate addDeck dashboard from addCard dashboard
+ - create api utils files for all db funcs needed - look at all old backend for details
 O - make it so that jwt and user sessions are persisted on the DB
    X - on sign-in, callback fires sign in request to the mongodb. it either finds a user or creates one as initial basic functionality
     - find out how to update sessions in next-auth. adding the log in provider would be useful, add would mongo id of user.
@@ -17,10 +18,10 @@ O - make it so that jwt and user sessions are persisted on the DB
 - add review card functionality
     - will need to tell you how many reviews per deck, how many decks with reviews and total review numbers.
     - will need to add a progress bar which tells you how far through your reviews you are.
-- create user dashboard. great templates available on shadcn blocks 
-    - metrics on usage
-    - browse cards and decks using shadcn data tables and pagination, clicking one brings it up as a modal for editing.   
-- create file upload for mass card import - also necessary for img upload.
+X- create user dashboard. great templates available on shadcn blocks 
+O  - metrics on usage
+O    - browse cards and decks using shadcn data tables and pagination, clicking one brings it up as a modal for editing.   
+O- create file upload for mass card import - also necessary for img upload.
 - seems to be an error where mongodb doesnt initialise if not via sign in - ie the jwt session is still active from previous log in
 - create app logo
 - create initial ai contact point for card gen
