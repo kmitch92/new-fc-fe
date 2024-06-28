@@ -1,15 +1,48 @@
 import { connectDB } from "./db";
-import { MCard } from "./types/card-model";
-import { MUser } from "./types/user-model";
-import { MDeck } from "./types/deck-model";
+import { MCard, ICard } from "./types/card-model";
+import { MUser, IUser } from "./types/user-model";
+import { IDeck, MDeck } from "./types/deck-model";
+
+interface IResponse {
+    status: number;
+    message: string;
+    [key: string]: ICard | IDeck | IUser | string | number;
+}
+
+class Response implements IResponse {
+    status: number;
+    message: string;
+    [key: string]: ICard | IDeck | IUser | string | number;
+    constructor({ status, message, ...rest }: IResponse) {
+        this.status = status;
+        this.message = message;
+        Object.assign(this, rest);
+    }
+}
 
 // post a deck
-export const postDeck = async(req,res = {}) => {
+interface IPostDeck {
+    name: string;
+    description: string;
+    cards:? ICard[];
+}
+
+export const postDeck = async({name, description, cards = []}: IPostDeck) => {
     try {
         await connectDB();
-        const { title, description, cards, user } = req.body;
-        const deck = await MDeck.create({ title, description, cards, user });
-        res.status(201).json(deck);
+        const newDeck = await MDeck.create({
+            name,
+            description,
+            cards,
+            dateCreated: new Date(),
+            lastUpdated: new Date(),
+        });
+        return new Response({
+            status: 201,
+            message: 'Deck created successfully',
+            deck: newDeck,
+        });
+        })
     } catch (err) {
         res.status(400).json({ error: err });
     }
