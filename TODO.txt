@@ -1,12 +1,14 @@
- -  Differentiate addDeck dashboard from addCard dashboard
- - create api utils files for all db funcs needed - look at all old backend for details
-O - make it so that jwt and user sessions are persisted on the DB
-   X - on sign-in, callback fires sign in request to the mongodb. it either finds a user or creates one as initial basic functionality
-    - find out how to update sessions in next-auth. adding the log in provider would be useful, add would mongo id of user.
-    - then, pass jwt to db so that session can be initiated. needs to check expiry or request log in again. front end need to re-request log-in if not.
-    - find away to link provider accounts on the back-end. user uses account dashboard to pick between multiple photos, details, etc. - any one login links to the agglomeration and passes back chosen details 
-- create card component
+- Differentiate addDeck dashboard from addCard dashboard
+- hook addDeck dashboard up to db funcs
+- hook addCard dashboard up to db funcs
+- hook user settings dashboard up to db funcs
+- create browse cards dashboard for card editing, deletion etc
+- hook browse cards up to db funcs.
+- implement redux for storing important information about the user session
+
+- finish card component
     - look at schemas on back-end to see what fields should be added.
+    - make the layout respond to card type chosen
     the form should have the exact same layout as the final card - edit should transform card into form with fields autofilled with previous value.
     getting add card done quickly is important as needed to start testing
     - add delete card functionality 
@@ -15,13 +17,18 @@ O - make it so that jwt and user sessions are persisted on the DB
 - create spaced repetition algorithm logic
     - should be relatively straightforward, there was a paper detailing the optimum algorithm.
     - certain new fields may need to be added to card other than review dates etc.
+    - consider future parameters for user extension
 - add review card functionality
     - will need to tell you how many reviews per deck, how many decks with reviews and total review numbers.
     - will need to add a progress bar which tells you how far through your reviews you are.
-X- create user dashboard. great templates available on shadcn blocks 
+X- create user dashboard. great templates available on shadcn blocks
+- update welcome card so that reviews are apparent on entering app 
 O  - metrics on usage
 O    - browse cards and decks using shadcn data tables and pagination, clicking one brings it up as a modal for editing.   
 O- create file upload for mass card import - also necessary for img upload.
+- create s3 bucket for image/media storage
+    - do proper research ahead of time to secure bucket and limit types of media uploads possible.
+    - limit storage dependent on credits.
 - seems to be an error where mongodb doesnt initialise if not via sign in - ie the jwt session is still active from previous log in
 - create app logo
 - create initial ai contact point for card gen
@@ -30,10 +37,12 @@ O- create file upload for mass card import - also necessary for img upload.
 -create a create variants ai call that feeds in the card info and creates cards that come at it from other directions.
 - create minimal browser extension for dispatching user notes to db
 - create payments system via stripe API so that user can buy credits or a monthly membership.
+- create cost breakdown component that calculates cost of credits per action
 - create a data-viz page where people can see metrics for their interactions with the app
 - create a feature suggestion/ feedback form for users to give tips on how to improve app.
 - create make public functionality for decks - allow people to contribute to gated decks by email invite, fully public decks, or make decks forkable - this could even have logic to make you aware of new cards added since you forked - do you want to update by pulling new cards, or alternatively let you know if the deck has been taken private and no further updates
-- create store for decks - don't have to be free - they have to sign terms to saythey have image rights
+- create store for decks - don't have to be free - they have to sign terms to say they have image rights
 - create an in built ai assisted image search for useful reference images for cards.
 - add custom log in, log out, error etc. pages for next auth
 - extend auth for credentials and sign up, if classic way is difficult, consider creating a custom oauth provider
+- consider using leaflet or similar library for user to annotate images
