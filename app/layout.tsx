@@ -17,9 +17,10 @@ export default function RootLayout({
     <html>
       <body
         style={{
-          backgroundImage: 'url(/inflicted.png)',
+          backgroundImage: 'url(/crosses-variant.png)',
           boxSizing: 'border-box',
-          boxShadow: 'inset 0 0 500px 200px hsl(var(--background))',
+          boxShadow:
+            'inset 0 0 500px 200px hsl(var(--background)), inset 0 0 600px 300px hsl(var(--background))',
         }}
       >
         <ThemeProvider

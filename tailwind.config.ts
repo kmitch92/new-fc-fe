@@ -20,7 +20,7 @@ const config = {
     extend: {
       backgroundImage: {
         pattern1: "url('/gplay.png')",
-        pattern2: "url('/inflicted.png')",
+        pattern2: "url('/crosses-variant.png')",
         pattern3: "url('/worn-dots.png')",
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
       },
