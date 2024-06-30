@@ -116,7 +116,7 @@ export const getDecksInfoByUserId = async (userId: ObjectId) => {
         new Response({
           status: 200,
           message: 'Deck returned successfully',
-          decks: deckInfos,
+          decks: deckInfos.map((deckInfo) => deckInfo.deck),
         })
       )
     );

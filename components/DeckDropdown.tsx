@@ -1,6 +1,5 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { Bird, Rabbit, Turtle } from 'lucide-react';
 import { Label } from '@/components/ui/label';
 import {
   Select,
@@ -22,14 +21,10 @@ export const DeckDropdown = ({ sessionUser }: any) => {
     const user = JSON.parse(sessionUser.value);
     const deckInfoRes = getDecksInfoByUserId(user.id);
     deckInfoRes.then((response: IResponse) => {
-      const deckInfos = response.decks as any[];
-      console.log('deckInfos', deckInfos);
-      const decks = deckInfos.map((deck: any) => {
-        return deck.deck;
-      });
-      setDecksInfo(decks);
+      const deckInfos = response.decks as IDeckInfo[];
+      console.log(deckInfos);
+      setDecksInfo(deckInfos);
       setDropdownLoading(false);
-      console.log(sessionUser, decksInfo);
     });
   }, []);
 
