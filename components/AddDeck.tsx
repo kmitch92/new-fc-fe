@@ -25,6 +25,14 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
+import { postDeck } from '@/lib/api/handlers';
+
+const handlePostDeck = async (formData: FormData) => {
+  const name = formData.get('name') as string;
+  const description = formData.get('description') as string;
+
+  await postDeck({ name, description, cards: [] });
+};
 
 export function AddDeck() {
   const [open, setOpen] = React.useState(false);
@@ -43,7 +51,7 @@ export function AddDeck() {
               Provide a title and description for the new deck.
             </DialogDescription>
           </DialogHeader>
-          <AddDeckForm />
+          <AddDeckForm setOpen={setOpen} />
         </DialogContent>
       </Dialog>
     );
@@ -61,7 +69,7 @@ export function AddDeck() {
             Provide a title and description for the new deck.
           </DrawerDescription>
         </DrawerHeader>
-        <AddDeckForm className="px-4" />
+        <AddDeckForm className="px-4" setOpen={setOpen} />
         <DrawerFooter className="pt-2">
           <DrawerClose asChild>
             <Button variant="outline">Cancel</Button>
@@ -71,22 +79,37 @@ export function AddDeck() {
     </Drawer>
   );
 }
+interface AddDeckFormProps {
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  className?: string;
+}
 
-function AddDeckForm({ className }: React.ComponentProps<'form'>) {
+function AddDeckForm({ className, setOpen }: AddDeckFormProps) {
   return (
-    <form className={cn('grid items-start gap-4', className)}>
+    <form
+      className={cn('grid items-start gap-4', className)}
+      action={(form) => {
+        return handlePostDeck(form), setOpen(false);
+      }}
+    >
       <fieldset className="gap-6 w-96 h-auto rounded-lg border p-4">
         <legend className="-ml-1 px-1 text-sm font-medium">New Deck</legend>
         <div>
           <div className="grid gap-3">
             <Label htmlFor="title-input">Deck Title</Label>
-            <Input id="title-input" type="text" placeholder="Title..." />
+            <Input
+              id="title-input"
+              type="text"
+              name="name"
+              placeholder="Title..."
+            />
           </div>
           <div className="grid gap-3 my-8">
             <Label htmlFor="description-input">Deck Description</Label>
             <Textarea
               id="description-input"
               placeholder="Description..."
+              name="description"
               className="min-h-[9.5rem]"
             />
           </div>

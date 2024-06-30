@@ -9,24 +9,20 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { getUserById } from '@/lib/api/handlers';
-import { IResponse } from '@/lib/api/types/types';
-import { IUser } from '@/lib/api/models/user-model';
+import { getDecksInfoByUserId } from '@/lib/api/handlers';
+import { IDeckInfo, IResponse } from '@/lib/api/types/types';
 import { ObjectId } from 'mongoose';
 
 export const DeckDropdown = ({ sessionUser }: any) => {
-  const [decksIds, setDeckIds] = useState<ObjectId[]>([]);
+  const [decksInfo, setDecksInfo] = useState<IDeckInfo[]>([]);
   const [selectedDeck, setSelectedDeck] = useState<ObjectId | null>(null);
 
   useEffect(() => {
     const user = JSON.parse(sessionUser.value);
-    console.log(user);
-    const userResponse = getUserById(user.id);
-    userResponse.then((response: IResponse) => {
-      console.log(response);
-      const returnedUser = response.user as IUser;
-      console.log(returnedUser);
-      setDeckIds(returnedUser.decks);
+    const deckInfoRes = getDecksInfoByUserId(user._id);
+    deckInfoRes.then((response: IResponse) => {
+      const deckInfos = response.decks as IDeckInfo[];
+      setDecksInfo(deckInfos);
     });
   }, []);
 
@@ -40,27 +36,28 @@ export const DeckDropdown = ({ sessionUser }: any) => {
         >
           <SelectValue
             placeholder={
-              decksIds.length > 0 ? 'Choose a deck' : 'No Decks to show'
+              decksInfo?.length ? 'Choose a deck' : 'No Decks to show'
             }
           />
         </SelectTrigger>
         <SelectContent>
-          {decksIds.map((deckId) => (
-            <SelectItem key={deckId.toString()} value={deckId.toString()}>
-              <div className="flex items-start gap-3 text-muted-foreground">
-                <Bird className="size-5" />
-                <div className="grid gap-0.5">
-                  <p>
-                    Deck
-                    <span className="font-medium text-foreground">Name</span>
-                  </p>
-                  <p className="text-xs" data-description>
-                    Deck Description
-                  </p>
+          {decksInfo?.length &&
+            decksInfo.map((deckInfo) => (
+              <SelectItem key={deckInfo.name} value={deckInfo.name}>
+                <div className="flex items-start gap-3 text-muted-foreground">
+                  <Bird className="size-5" />
+                  <div className="grid gap-0.5">
+                    <p>
+                      Deck
+                      <span className="font-medium text-foreground">Name</span>
+                    </p>
+                    <p className="text-xs" data-description>
+                      Deck Description
+                    </p>
+                  </div>
                 </div>
-              </div>
-            </SelectItem>
-          ))}
+              </SelectItem>
+            ))}
         </SelectContent>
       </Select>
     </>

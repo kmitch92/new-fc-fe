@@ -5,7 +5,7 @@ import { MUser, IUser } from './models/user-model';
 import { IDeck, MDeck } from './models/deck-model';
 import { ObjectId } from 'mongoose';
 import { spacedRepetition } from '../spaced-repetition/spacedRepetition';
-import { IResponse } from './types/types';
+import { IResponse, IDeckInfo } from './types/types';
 
 class Response implements IResponse {
   status: number;
@@ -18,7 +18,8 @@ class Response implements IResponse {
     | IUser
     | IUser[]
     | string
-    | number;
+    | number
+    | IDeckInfo;
   constructor({ status, message, ...rest }: IResponse) {
     this.status = status;
     this.message = message;
@@ -97,6 +98,70 @@ export const getDeckById = async (id: ObjectId) => {
     );
   }
 };
+
+export const getDecksInfoByUserId = async (userId: ObjectId) => {
+  try {
+    await connectDB();
+    const user = await MUser.findById(userId);
+    const deckIds: ObjectId[] = user.decks;
+    const promisedDeckInfos = deckIds.map((deckId) => {
+      return getDeckInfoById(deckId);
+    });
+    const deckInfos = await Promise.all(promisedDeckInfos);
+    return JSON.parse(
+      JSON.stringify(
+        new Response({
+          status: 200,
+          message: 'Deck returned successfully',
+          decks: deckInfos,
+        })
+      )
+    );
+  } catch (err) {
+    let message = 'Unknown Error';
+    if (err instanceof Error) message = err.message;
+    return JSON.parse(
+      JSON.stringify(
+        new Response({
+          status: 500,
+          message: message,
+        })
+      )
+    );
+  }
+};
+
+export const getDeckInfoById = async (id: ObjectId) => {
+  try {
+    await connectDB();
+    const deck = await MDeck.findById(id);
+    return JSON.parse(
+      JSON.stringify(
+        new Response({
+          status: 200,
+          message: 'Deck returned successfully',
+          deck: {
+            id: deck._id,
+            name: deck.name,
+            description: deck.description,
+          },
+        })
+      )
+    );
+  } catch (err) {
+    let message = 'Unknown Error';
+    if (err instanceof Error) message = err.message;
+    return JSON.parse(
+      JSON.stringify(
+        new Response({
+          status: 500,
+          message: message,
+        })
+      )
+    );
+  }
+};
+
 // update a deck with one or many new cards
 export const addCardsToDeckById = async (cards: ICard[], deckId: ObjectId) => {
   try {

@@ -1,3 +1,4 @@
+import { ObjectId } from 'mongoose';
 import { ICard } from '../models/card-model';
 import { IDeck } from '../models/deck-model';
 import { IUser } from '../models/user-model';
@@ -13,5 +14,12 @@ export interface IResponse {
     | IUser
     | IUser[]
     | string
-    | number;
+    | number
+    | IDeckInfo;
+}
+
+export interface IDeckInfo {
+  id: ObjectId;
+  name: string;
+  description: string;
 }
