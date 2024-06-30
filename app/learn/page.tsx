@@ -39,8 +39,10 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { AddDeck } from '@/components/AddDeck';
+import { useServerSessionUser } from '@/lib/hooks/useServerSession';
 
-export default function Learn() {
+export default async function Learn() {
+  const sessionUser = await useServerSessionUser();
   return (
     <div className="flex min-h-screen w-full flex-col">
       <header className="sticky top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6">
@@ -70,7 +72,11 @@ export default function Learn() {
           >
             Blah
           </Link>
-          <AddDeck />
+          {sessionUser?.id ? (
+            <AddDeck userId={sessionUser?.id} />
+          ) : (
+            'Loading...'
+          )}
           <Link
             href="/learn/create-card"
             className="text-muted-foreground transition-colors hover:text-foreground"

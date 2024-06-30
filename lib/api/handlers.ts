@@ -34,11 +34,10 @@ interface IPostDeck {
   cards: ICard[] | null | undefined;
 }
 
-export const postDeck = async ({
-  name,
-  description,
-  cards = [],
-}: IPostDeck) => {
+export const postDeck = async (
+  userId: string,
+  { name, description, cards = [] }: IPostDeck
+) => {
   try {
     await connectDB();
     const newDeck = await MDeck.create({
@@ -47,6 +46,10 @@ export const postDeck = async ({
       cards,
       dateCreated: new Date(),
       lastUpdated: new Date(),
+    });
+    await MUser.findByIdAndUpdate(userId, {
+      $addToSet: { decks: newDeck._id },
+      lastUpdated: Date.now(),
     });
     return JSON.parse(
       JSON.stringify(

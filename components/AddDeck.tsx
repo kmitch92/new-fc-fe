@@ -27,14 +27,16 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { postDeck } from '@/lib/api/handlers';
 
-const handlePostDeck = async (formData: FormData) => {
+const handlePostDeck = async (userId: string, formData: FormData) => {
   const name = formData.get('name') as string;
   const description = formData.get('description') as string;
 
-  await postDeck({ name, description, cards: [] });
+  await postDeck(userId, { name, description, cards: [] });
 };
-
-export function AddDeck() {
+interface AddDeckProps {
+  userId: string;
+}
+export function AddDeck({ userId }: AddDeckProps) {
   const [open, setOpen] = React.useState(false);
   const isDesktop = useMediaQuery('(min-width: 768px)');
 
@@ -51,7 +53,7 @@ export function AddDeck() {
               Provide a title and description for the new deck.
             </DialogDescription>
           </DialogHeader>
-          <AddDeckForm setOpen={setOpen} />
+          <AddDeckForm setOpen={setOpen} userId={userId} />
         </DialogContent>
       </Dialog>
     );
@@ -69,7 +71,7 @@ export function AddDeck() {
             Provide a title and description for the new deck.
           </DrawerDescription>
         </DrawerHeader>
-        <AddDeckForm className="px-4" setOpen={setOpen} />
+        <AddDeckForm className="px-4" setOpen={setOpen} userId={userId} />
         <DrawerFooter className="pt-2">
           <DrawerClose asChild>
             <Button variant="outline">Cancel</Button>
@@ -82,14 +84,15 @@ export function AddDeck() {
 interface AddDeckFormProps {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   className?: string;
+  userId: string;
 }
 
-function AddDeckForm({ className, setOpen }: AddDeckFormProps) {
+function AddDeckForm({ className, setOpen, userId }: AddDeckFormProps) {
   return (
     <form
       className={cn('grid items-start gap-4', className)}
       action={(form) => {
-        return handlePostDeck(form), setOpen(false);
+        return handlePostDeck(userId, form), setOpen(false);
       }}
     >
       <fieldset className="gap-6 w-96 h-auto rounded-lg border p-4">
