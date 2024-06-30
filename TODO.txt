@@ -1,6 +1,5 @@
-- Differentiate addDeck dashboard from addCard dashboard
-- hook addDeck dashboard up to db funcs
 - hook addCard dashboard up to db funcs
+    - create different card forms for different card types - maybe start with type answer (and reversed option), cloze, and dropdown, with these generating different cardExamples.
 - hook user settings dashboard up to db funcs
 - create browse cards dashboard for card editing, deletion etc
 - hook browse cards up to db funcs.
