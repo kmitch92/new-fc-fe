@@ -9,29 +9,36 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { getDecksInfoByUserId } from '@/lib/api/handlers';
-import { IDeckInfo, IResponse } from '@/lib/api/types/types';
-import { ObjectId } from 'mongoose';
+import { IDeckInfo, IResponse, ISessionUser } from '@/lib/api/types/types';
 
-export const DeckDropdown = ({ sessionUser }: any) => {
+interface DeckDropdownProps {
+  sessionUser: ISessionUser;
+  setDeck: React.Dispatch<React.SetStateAction<IDeckInfo | undefined>>;
+}
+export const DeckDropdown = ({ sessionUser, setDeck }: DeckDropdownProps) => {
   const [decksInfo, setDecksInfo] = useState<IDeckInfo[]>([]);
   const [dropdownLoading, setDropdownLoading] = useState<boolean>(true);
-  const [selectedDeck, setSelectedDeck] = useState<ObjectId | null>(null);
 
   useEffect(() => {
-    const user = JSON.parse(sessionUser.value);
-    const deckInfoRes = getDecksInfoByUserId(user.id);
-    deckInfoRes.then((response: IResponse) => {
-      const deckInfos = response.decks as IDeckInfo[];
-      console.log(deckInfos);
-      setDecksInfo(deckInfos);
-      setDropdownLoading(false);
-    });
+    if (sessionUser) {
+      const deckInfoRes = getDecksInfoByUserId(sessionUser.id);
+      deckInfoRes.then((response: IResponse) => {
+        const deckInfos = response.decks as IDeckInfo[];
+        console.log(deckInfos);
+        setDecksInfo(deckInfos);
+        setDropdownLoading(false);
+      });
+    }
   }, []);
+
+  const handleDropdownClick = (e: string) => {
+    setDeck(decksInfo[parseInt(e)]);
+  };
 
   return (
     <>
       <Label htmlFor="choose-deck">Add to Deck:</Label>
-      <Select>
+      <Select onValueChange={(e) => handleDropdownClick(e)}>
         <SelectTrigger
           id="choose-deck"
           className="items-start [&_[data-description]]:hidden"
@@ -48,8 +55,8 @@ export const DeckDropdown = ({ sessionUser }: any) => {
         </SelectTrigger>
         <SelectContent>
           {decksInfo?.length &&
-            decksInfo.map((deckInfo) => (
-              <SelectItem key={deckInfo.name} value={deckInfo.name}>
+            decksInfo.map((deckInfo, idx) => (
+              <SelectItem key={deckInfo.name} value={idx.toString()}>
                 <div className="flex items-start gap-3 text-muted-foreground">
                   <div className="grid gap-0.5">
                     <p className="font-medium">{deckInfo.name}</p>

@@ -23,3 +23,10 @@ export interface IDeckInfo {
   name: string;
   description: string;
 }
+
+export interface ISessionUser {
+  id: string;
+  name: string;
+  email: string;
+  image: string;
+}

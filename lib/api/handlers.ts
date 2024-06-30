@@ -102,7 +102,7 @@ export const getDeckById = async (id: ObjectId) => {
   }
 };
 
-export const getDecksInfoByUserId = async (userId: ObjectId) => {
+export const getDecksInfoByUserId = async (userId: string) => {
   try {
     await connectDB();
     const user = await MUser.findById(userId);

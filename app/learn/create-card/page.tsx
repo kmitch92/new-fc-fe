@@ -1,8 +1,10 @@
 import { Share } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { AddCardDashboard } from '@/components/AddCardDashboard';
+import { useServerSessionUser } from '@/lib/hooks/useServerSession';
 
-export default function CreateCard() {
+export default async function CreateCard() {
+  const sessionUser = await useServerSessionUser();
   return (
     <section className="grid h-screen w-full px-4">
       <div className="flex flex-col">
@@ -17,7 +19,7 @@ export default function CreateCard() {
             Something
           </Button>
         </header>
-        <AddCardDashboard />
+        {sessionUser && <AddCardDashboard sessionUser={sessionUser} />}
       </div>
     </section>
   );

@@ -16,13 +16,19 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { IDeckInfo } from '@/lib/api/types/types';
 
-export function CardExample() {
+interface CardExampleProps {
+  deck: IDeckInfo | undefined;
+}
+
+export function CardExample({ deck }: CardExampleProps) {
+  console.log(deck);
   return (
     <Card className="w-[450px]">
       <CardHeader>
         <CardTitle>CARD QUESTION</CardTitle>
-        <CardDescription>CARD SUBTITLE</CardDescription>
+        <CardDescription>Deck: {deck?.name || 'Choose Deck'}</CardDescription>
       </CardHeader>
       <CardContent>
         <img

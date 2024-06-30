@@ -1,3 +1,5 @@
+'use client';
+import { useState, useEffect } from 'react';
 import { Bird, CornerDownLeft, Rabbit, Turtle } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -12,11 +14,20 @@ import {
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { CardExample } from '@/components/CardExample';
-import { useServerSessionUser } from '@/lib/hooks/useServerSession';
 import { DeckDropdown } from './DeckDropdown';
+import { IDeckInfo, ISessionUser } from '@/lib/api/types/types';
 
-export const AddCardDashboard = () => {
-  const session = useServerSessionUser();
+interface AddCardDashboardProps {
+  sessionUser: ISessionUser;
+}
+
+export const AddCardDashboard = ({ sessionUser }: AddCardDashboardProps) => {
+  const [deck, setDeck] = useState<IDeckInfo | undefined>();
+  const [cardType, setCardType] = useState<string>('');
+
+  useEffect(() => {
+    console.log(deck);
+  }, []);
 
   return (
     <main className="grid flex-1 gap-4 overflow-hidden p-4 md:grid-cols-2 lg:grid-cols-3">
@@ -33,7 +44,7 @@ export const AddCardDashboard = () => {
               {/*
                 deck selection 
                  */}
-              <DeckDropdown sessionUser={session} />
+              <DeckDropdown sessionUser={sessionUser} setDeck={setDeck} />
               {/*
                Card Type selection
                */}
@@ -154,7 +165,7 @@ export const AddCardDashboard = () => {
           Output
         </Badge>
 
-        <CardExample />
+        <CardExample deck={deck} />
         <div className="flex items-center p-3 pt-0">
           <Button type="submit" size="sm" className="ml-auto gap-1.5 mt-8 ">
             Send Message
