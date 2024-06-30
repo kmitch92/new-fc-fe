@@ -1,5 +1,4 @@
 import { Bird, CornerDownLeft, Rabbit, Turtle } from 'lucide-react';
-
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -13,8 +12,12 @@ import {
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { CardExample } from '@/components/CardExample';
+import { useServerSessionUser } from '@/lib/hooks/useServerSession';
+import { DeckDropdown } from './DeckDropdown';
 
 export const AddCardDashboard = () => {
+  const session = useServerSessionUser();
+
   return (
     <main className="grid flex-1 gap-4 overflow-hidden p-4 md:grid-cols-2 lg:grid-cols-3">
       <div
@@ -27,6 +30,13 @@ export const AddCardDashboard = () => {
               Card Fields
             </legend>
             <div className="grid gap-3">
+              {/*
+                deck selection 
+                 */}
+              <DeckDropdown sessionUser={session} />
+              {/*
+               Card Type selection
+               */}
               <Label htmlFor="model">Card Type</Label>
               <Select>
                 <SelectTrigger
@@ -86,6 +96,9 @@ export const AddCardDashboard = () => {
                   </SelectItem>
                 </SelectContent>
               </Select>
+              {/*
+               rest 
+               */}
             </div>
             <div className="grid gap-3">
               <Label htmlFor="temperature">

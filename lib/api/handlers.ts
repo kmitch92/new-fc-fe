@@ -1,23 +1,11 @@
+'use server';
 import { connectDB } from './db';
-import { MCard, ICard } from './types/card-model';
-import { MUser, IUser } from './types/user-model';
-import { IDeck, MDeck } from './types/deck-model';
+import { MCard, ICard } from './models/card-model';
+import { MUser, IUser } from './models/user-model';
+import { IDeck, MDeck } from './models/deck-model';
 import { ObjectId } from 'mongoose';
-import { spacedRepetition } from '../../lib/spaced-repetition/spacedRepetition';
-
-interface IResponse {
-  status: number;
-  message: string;
-  [key: string]:
-    | ICard
-    | ICard[]
-    | IDeck
-    | IDeck[]
-    | IUser
-    | IUser[]
-    | string
-    | number;
-}
+import { spacedRepetition } from '../spaced-repetition/spacedRepetition';
+import { IResponse } from './types/types';
 
 class Response implements IResponse {
   status: number;
@@ -59,18 +47,26 @@ export const postDeck = async ({
       dateCreated: new Date(),
       lastUpdated: new Date(),
     });
-    return new Response({
-      status: 201,
-      message: 'Deck created successfully',
-      deck: newDeck,
-    });
+    return JSON.parse(
+      JSON.stringify(
+        new Response({
+          status: 201,
+          message: 'Deck created successfully',
+          deck: newDeck,
+        })
+      )
+    );
   } catch (err) {
     let message = 'Unknown Error';
     if (err instanceof Error) message = err.message;
-    return new Response({
-      status: 500,
-      message: message,
-    });
+    return JSON.parse(
+      JSON.stringify(
+        new Response({
+          status: 500,
+          message: message,
+        })
+      )
+    );
   }
 };
 
@@ -79,18 +75,26 @@ export const getDeckById = async (id: ObjectId) => {
   try {
     await connectDB();
     const deck = await MDeck.findById(id);
-    return new Response({
-      status: 200,
-      message: 'Deck returned successfully',
-      deck: deck,
-    });
+    return JSON.parse(
+      JSON.stringify(
+        new Response({
+          status: 200,
+          message: 'Deck returned successfully',
+          deck: deck,
+        })
+      )
+    );
   } catch (err) {
     let message = 'Unknown Error';
     if (err instanceof Error) message = err.message;
-    return new Response({
-      status: 500,
-      message: message,
-    });
+    return JSON.parse(
+      JSON.stringify(
+        new Response({
+          status: 500,
+          message: message,
+        })
+      )
+    );
   }
 };
 // update a deck with one or many new cards
@@ -116,18 +120,26 @@ export const addCardsToDeckById = async (cards: ICard[], deckId: ObjectId) => {
       $addToSet: { cards: newCards },
       lastUpdated: Date.now(),
     });
-    return new Response({
-      status: 200,
-      message: `Cards added successfully to deck ${deckId}`,
-      cards: newCards,
-    });
+    return JSON.parse(
+      JSON.stringify(
+        new Response({
+          status: 200,
+          message: `Cards added successfully to deck ${deckId}`,
+          cards: newCards,
+        })
+      )
+    );
   } catch (err) {
     let message = 'Unknown Error';
     if (err instanceof Error) message = err.message;
-    return new Response({
-      status: 500,
-      message: message,
-    });
+    return JSON.parse(
+      JSON.stringify(
+        new Response({
+          status: 500,
+          message: message,
+        })
+      )
+    );
   }
 };
 
@@ -150,18 +162,26 @@ export const updateNextReview = async (
       new Date(),
       success
     );
-    return new Response({
-      status: 200,
-      message: `Card updated successfully, next to be reviewed on ${deck.card.nextReview}`,
-      card: card,
-    });
+    return JSON.parse(
+      JSON.stringify(
+        new Response({
+          status: 200,
+          message: `Card updated successfully, next to be reviewed on ${deck.card.nextReview}`,
+          card: card,
+        })
+      )
+    );
   } catch (err) {
     let message = 'Unknown Error';
     if (err instanceof Error) message = err.message;
-    return new Response({
-      status: 500,
-      message: message,
-    });
+    return JSON.parse(
+      JSON.stringify(
+        new Response({
+          status: 500,
+          message: message,
+        })
+      )
+    );
   }
 };
 
@@ -188,17 +208,25 @@ export const updateExistingCard = async (
       },
       { new: true }
     );
-    return new Response({
-      status: 200,
-      message: 'Card updated successfully',
-    });
+    return JSON.parse(
+      JSON.stringify(
+        new Response({
+          status: 200,
+          message: 'Card updated successfully',
+        })
+      )
+    );
   } catch (err) {
     let message = 'Unknown Error';
     if (err instanceof Error) message = err.message;
-    return new Response({
-      status: 500,
-      message: message,
-    });
+    return JSON.parse(
+      JSON.stringify(
+        new Response({
+          status: 500,
+          message: message,
+        })
+      )
+    );
   }
 };
 
@@ -211,17 +239,25 @@ export const deleteCardByIds = async (deckId: ObjectId, cardId: ObjectId) => {
       { $pull: { cards: { _id: cardId } } },
       { new: true }
     );
-    return new Response({
-      status: 200,
-      message: 'Card deleted successfully',
-    });
+    return JSON.parse(
+      JSON.stringify(
+        new Response({
+          status: 200,
+          message: 'Card deleted successfully',
+        })
+      )
+    );
   } catch (err) {
     let message = 'Unknown Error';
     if (err instanceof Error) message = err.message;
-    return new Response({
-      status: 500,
-      message: message,
-    });
+    return JSON.parse(
+      JSON.stringify(
+        new Response({
+          status: 500,
+          message: message,
+        })
+      )
+    );
   }
 };
 
@@ -238,17 +274,25 @@ export const updateDeckDetailsById = async (
       newDescription,
       lastUpdated: Date.now(),
     });
-    return new Response({
-      status: 200,
-      message: 'Deck details updated successfully',
-    });
+    return JSON.parse(
+      JSON.stringify(
+        new Response({
+          status: 200,
+          message: 'Deck details updated successfully',
+        })
+      )
+    );
   } catch (err) {
     let message = 'Unknown Error';
     if (err instanceof Error) message = err.message;
-    return new Response({
-      status: 500,
-      message: message,
-    });
+    return JSON.parse(
+      JSON.stringify(
+        new Response({
+          status: 500,
+          message: message,
+        })
+      )
+    );
   }
 };
 
@@ -257,17 +301,25 @@ export const deleteDeckById = async (deckId: ObjectId) => {
   try {
     await connectDB();
     await MDeck.findByIdAndDelete(deckId);
-    return new Response({
-      status: 200,
-      message: 'Deck deleted successfully',
-    });
+    return JSON.parse(
+      JSON.stringify(
+        new Response({
+          status: 200,
+          message: 'Deck deleted successfully',
+        })
+      )
+    );
   } catch (err) {
     let message = 'Unknown Error';
     if (err instanceof Error) message = err.message;
-    return new Response({
-      status: 500,
-      message: message,
-    });
+    return JSON.parse(
+      JSON.stringify(
+        new Response({
+          status: 500,
+          message: message,
+        })
+      )
+    );
   }
 };
 
@@ -276,33 +328,82 @@ export const getUserByEmail = async (email: string) => {
   try {
     await connectDB();
     const user = await MUser.findOne({ email });
-    return new Response({
-      status: 200,
-      message: 'User returned successfully',
-      user: user,
-    });
+    return JSON.parse(
+      JSON.stringify(
+        new Response({
+          status: 200,
+          message: 'User returned successfully',
+          user: user,
+        })
+      )
+    );
   } catch (err) {
     let message = 'Unknown Error';
     if (err instanceof Error) message = err.message;
-    return new Response({
-      status: 500,
-      message: message,
-    });
+    return JSON.parse(
+      JSON.stringify(
+        new Response({
+          status: 500,
+          message: message,
+        })
+      )
+    );
   }
 };
 
 // get user by id
-export const updateUserById = async (userId: ObjectId, updatedUser: IUser) => {
+export const getUserById = async (userId: ObjectId) => {
   try {
     await connectDB();
-    await MUser.findByIdAndUpdate(userId, updatedUser);
+    const user = await MUser.findById(userId);
+    return JSON.parse(
+      JSON.stringify(
+        new Response({
+          status: 200,
+          message: 'User returned successfully',
+          user: user,
+        })
+      )
+    );
   } catch (err) {
     let message = 'Unknown Error';
     if (err instanceof Error) message = err.message;
-    return new Response({
-      status: 500,
-      message: message,
-    });
+    return JSON.parse(
+      JSON.stringify(
+        new Response({
+          status: 500,
+          message: message,
+        })
+      )
+    );
+  }
+};
+
+// update user by id
+export const updateUserById = async (userId: ObjectId, updatedUser: IUser) => {
+  try {
+    await connectDB();
+    const user = await MUser.findByIdAndUpdate(userId, updatedUser);
+    return JSON.parse(
+      JSON.stringify(
+        new Response({
+          status: 200,
+          message: 'User updated successfully',
+          user: user,
+        })
+      )
+    );
+  } catch (err) {
+    let message = 'Unknown Error';
+    if (err instanceof Error) message = err.message;
+    return JSON.parse(
+      JSON.stringify(
+        new Response({
+          status: 500,
+          message: message,
+        })
+      )
+    );
   }
 };
 
@@ -311,16 +412,24 @@ export const deleteUserById = async (userId: ObjectId) => {
   try {
     await connectDB();
     await MUser.findByIdAndDelete(userId);
-    return new Response({
-      status: 200,
-      message: 'User deleted successfully',
-    });
+    return JSON.parse(
+      JSON.stringify(
+        new Response({
+          status: 200,
+          message: 'User deleted successfully',
+        })
+      )
+    );
   } catch (err) {
     let message = 'Unknown Error';
     if (err instanceof Error) message = err.message;
-    return new Response({
-      status: 500,
-      message: message,
-    });
+    return JSON.parse(
+      JSON.stringify(
+        new Response({
+          status: 500,
+          message: message,
+        })
+      )
+    );
   }
 };

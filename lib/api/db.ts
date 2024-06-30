@@ -1,3 +1,4 @@
+'use server';
 import mongoose from 'mongoose';
 const connectionUrl = process.env.MONGODB_URI as string;
 export const connectDB = async () => {

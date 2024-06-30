@@ -26,7 +26,8 @@ export function CardExample() {
       </CardHeader>
       <CardContent>
         <img
-          src="blah not meant to work"
+          style={{ objectFit: 'cover' }}
+          src="https://res.cloudinary.com/totalmerchandise/image/fetch/f_auto,q_auto:eco,w_500/https://www.totalmerchandise.co.uk/media/Playing_Card_Sets_1.jpg"
           alt="stand in for where an image could go"
           className="border border-white rounded-md p-4 my-4 h-36 w-full"
         />
