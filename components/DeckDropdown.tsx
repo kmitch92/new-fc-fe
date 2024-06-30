@@ -15,14 +15,21 @@ import { ObjectId } from 'mongoose';
 
 export const DeckDropdown = ({ sessionUser }: any) => {
   const [decksInfo, setDecksInfo] = useState<IDeckInfo[]>([]);
+  const [dropdownLoading, setDropdownLoading] = useState<boolean>(true);
   const [selectedDeck, setSelectedDeck] = useState<ObjectId | null>(null);
 
   useEffect(() => {
     const user = JSON.parse(sessionUser.value);
-    const deckInfoRes = getDecksInfoByUserId(user._id);
+    const deckInfoRes = getDecksInfoByUserId(user.id);
     deckInfoRes.then((response: IResponse) => {
-      const deckInfos = response.decks as IDeckInfo[];
-      setDecksInfo(deckInfos);
+      const deckInfos = response.decks as any[];
+      console.log('deckInfos', deckInfos);
+      const decks = deckInfos.map((deck: any) => {
+        return deck.deck;
+      });
+      setDecksInfo(decks);
+      setDropdownLoading(false);
+      console.log(sessionUser, decksInfo);
     });
   }, []);
 
@@ -36,7 +43,11 @@ export const DeckDropdown = ({ sessionUser }: any) => {
         >
           <SelectValue
             placeholder={
-              decksInfo?.length ? 'Choose a deck' : 'No Decks to show'
+              dropdownLoading
+                ? 'Loading...'
+                : decksInfo?.length
+                ? 'Choose a deck'
+                : 'No Decks to show'
             }
           />
         </SelectTrigger>
@@ -45,14 +56,10 @@ export const DeckDropdown = ({ sessionUser }: any) => {
             decksInfo.map((deckInfo) => (
               <SelectItem key={deckInfo.name} value={deckInfo.name}>
                 <div className="flex items-start gap-3 text-muted-foreground">
-                  <Bird className="size-5" />
                   <div className="grid gap-0.5">
-                    <p>
-                      Deck
-                      <span className="font-medium text-foreground">Name</span>
-                    </p>
+                    <p className="font-medium">{deckInfo.name}</p>
                     <p className="text-xs" data-description>
-                      Deck Description
+                      {deckInfo.description}
                     </p>
                   </div>
                 </div>
