@@ -16,6 +16,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { CardExample } from '@/components/CardExample';
 import { DeckDropdown } from './DeckDropdown';
 import { IDeckInfo, ISessionUser } from '@/lib/api/types/types';
+import { Checkbox } from './ui/checkbox';
 
 interface AddCardDashboardProps {
   sessionUser: ISessionUser;
@@ -29,6 +30,10 @@ export const AddCardDashboard = ({ sessionUser }: AddCardDashboardProps) => {
   const [cardExtra, setCardExtra] = useState<string>('');
   const [cardImage, setCardImage] = useState<string>('');
   const [cardTags, setCardTags] = useState<string[]>([]);
+  const [subfieldChecked, setSubfieldChecked] = useState<boolean>(false);
+  const [subfieldValue, setSubfieldValue] = useState<string>('');
+  const [extraFieldChecked, setExtraFieldChecked] = useState<boolean>(false);
+  const [extraFieldValue, setExtraFieldValue] = useState<string>('');
 
   useEffect(() => {
     console.log(deck);
@@ -37,9 +42,8 @@ export const AddCardDashboard = ({ sessionUser }: AddCardDashboardProps) => {
   const handleCardTypeChange = (e: string) => {
     setCardType(e);
   };
-  const handleQuestionChange = (e: React.ChangeEvent) => {
+  const handleQuestionChange = (e: React.BaseSyntheticEvent) => {
     e.preventDefault();
-    //@ts-ignore
     e?.target?.value && setCardQuestion(e.target.value);
   };
   return (
@@ -51,7 +55,7 @@ export const AddCardDashboard = ({ sessionUser }: AddCardDashboardProps) => {
         <form className="grid w-full items-start gap-6">
           <fieldset className="grid gap-6 rounded-lg border p-4">
             <legend className="-ml-1 px-1 text-sm font-medium">
-              Card Fields
+              Card Front Fields
             </legend>
             <div className="grid gap-3">
               {/*
@@ -70,9 +74,40 @@ export const AddCardDashboard = ({ sessionUser }: AddCardDashboardProps) => {
                   onChange={(e: React.ChangeEvent) => handleQuestionChange(e)}
                 />
               </div>
+              <div className="flex-row gap-2">
+                <p>
+                  Add subfield?
+                  <Checkbox
+                    className="ml-4"
+                    onCheckedChange={(checked) =>
+                      checked != 'indeterminate' && setSubfieldChecked(checked)
+                    }
+                  />
+                </p>
+              </div>
+              {subfieldChecked && (
+                <div className="grid gap-3">
+                  <Label htmlFor="subfield">Subfield</Label>
+                  <Input
+                    id="subfield"
+                    type="text"
+                    placeholder="Subfield..."
+                    onChange={(e: React.BaseSyntheticEvent) =>
+                      setSubfieldValue(e.target.value)
+                    }
+                  />
+                </div>
+              )}
               {/*
                Card Type selection
                */}
+            </div>
+          </fieldset>
+          <fieldset className="grid gap-6 rounded-lg border p-4">
+            <legend className="-ml-1 px-1 text-sm font-medium">
+              Card Back Fields
+            </legend>
+            <div>
               <Label htmlFor="cardType">Card Type</Label>
               <Select onValueChange={handleCardTypeChange}>
                 <SelectTrigger
@@ -137,10 +172,17 @@ export const AddCardDashboard = ({ sessionUser }: AddCardDashboardProps) => {
                */}
             </div>
             <div className="grid gap-3">
-              <Label htmlFor="temperature">
-                Replace this field with something else
+              <Label htmlFor="details">
+                Extra details to display upon receiving the answer.
               </Label>
-              <Input id="temperature" type="number" placeholder="0.4" />
+              <Input
+                id="details"
+                type="text"
+                placeholder="Extra details..."
+                onChange={(e: React.BaseSyntheticEvent) =>
+                  setCardExtra(e.target.value)
+                }
+              />
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div className="grid gap-3">
@@ -151,32 +193,6 @@ export const AddCardDashboard = ({ sessionUser }: AddCardDashboardProps) => {
                 <Label htmlFor="top-k">And another</Label>
                 <Input id="top-k" type="number" placeholder="0.0" />
               </div>
-            </div>
-          </fieldset>
-          <fieldset className="grid gap-6 rounded-lg border p-4">
-            <legend className="-ml-1 px-1 text-sm font-medium">
-              Some thing
-            </legend>
-            <div className="grid gap-3">
-              <Label htmlFor="role">field X</Label>
-              <Select defaultValue="system">
-                <SelectTrigger>
-                  <SelectValue placeholder="Select a role" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="system">blah</SelectItem>
-                  <SelectItem value="user">dii</SelectItem>
-                  <SelectItem value="assistant">bloop</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="grid gap-3">
-              <Label htmlFor="content">final field</Label>
-              <Textarea
-                id="content"
-                placeholder="You are a..."
-                className="min-h-[9.5rem]"
-              />
             </div>
           </fieldset>
         </form>
@@ -194,6 +210,7 @@ export const AddCardDashboard = ({ sessionUser }: AddCardDashboardProps) => {
           deck={deck}
           card={{
             frontField: cardQuestion,
+            subfield: subfieldChecked ? subfieldValue : '',
             answerType: cardType,
             backField: cardAnswer,
             extraField: cardExtra,

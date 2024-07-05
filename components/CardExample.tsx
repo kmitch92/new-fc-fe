@@ -84,10 +84,11 @@ export function CardExample({ deck, card }: CardExampleProps) {
         <form>
           <div className="grid w-full items-center gap-4">
             <div className="flex flex-col space-y-1.5">
-              <Label htmlFor="question">Question</Label>
-              <h3 id="question">
+              <Label htmlFor="question">Question:</Label>
+              <h1 id="question">
                 {card?.frontField ?? 'Question Required...'}
-              </h3>
+              </h1>
+              {card?.subfield && <p>{card.subfield}</p>}
             </div>
             <div className="flex flex-col space-y-1.5">
               {renderAnswerField(card?.answerType || '', card?.backField || '')}
