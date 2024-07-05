@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 
 export interface ICard extends Document {
   frontField: string;
+  subfield?: string;
   backField: string;
   extraField?: string;
   imageURL?: string;
@@ -19,6 +20,9 @@ export const CardSchema: Schema = new Schema<ICard>({
   frontField: {
     type: String,
     required: true,
+  },
+  subfield: {
+    type: String,
   },
   backField: {
     type: String,

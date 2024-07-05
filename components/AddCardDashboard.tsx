@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Bird, CornerDownLeft, Rabbit, Turtle } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -24,11 +24,24 @@ interface AddCardDashboardProps {
 export const AddCardDashboard = ({ sessionUser }: AddCardDashboardProps) => {
   const [deck, setDeck] = useState<IDeckInfo | undefined>();
   const [cardType, setCardType] = useState<string>('');
+  const [cardQuestion, setCardQuestion] = useState<string>('');
+  const [cardAnswer, setCardAnswer] = useState<string>('');
+  const [cardExtra, setCardExtra] = useState<string>('');
+  const [cardImage, setCardImage] = useState<string>('');
+  const [cardTags, setCardTags] = useState<string[]>([]);
 
   useEffect(() => {
     console.log(deck);
   }, []);
 
+  const handleCardTypeChange = (e: string) => {
+    setCardType(e);
+  };
+  const handleQuestionChange = (e: React.ChangeEvent) => {
+    e.preventDefault();
+    //@ts-ignore
+    e?.target?.value && setCardQuestion(e.target.value);
+  };
   return (
     <main className="grid flex-1 gap-4 overflow-hidden p-4 md:grid-cols-2 lg:grid-cols-3">
       <div
@@ -45,62 +58,74 @@ export const AddCardDashboard = ({ sessionUser }: AddCardDashboardProps) => {
                 deck selection 
                  */}
               <DeckDropdown sessionUser={sessionUser} setDeck={setDeck} />
+
+              <div className="grid gap-3">
+                <Label htmlFor="question">
+                  Type the question or prompt as it should appear on the card.
+                </Label>
+                <Input
+                  id="question"
+                  type="text"
+                  placeholder="Question..."
+                  onChange={(e: React.ChangeEvent) => handleQuestionChange(e)}
+                />
+              </div>
               {/*
                Card Type selection
                */}
-              <Label htmlFor="model">Card Type</Label>
-              <Select>
+              <Label htmlFor="cardType">Card Type</Label>
+              <Select onValueChange={handleCardTypeChange}>
                 <SelectTrigger
-                  id="model"
+                  id="cardType"
                   className="items-start [&_[data-description]]:hidden"
                 >
                   <SelectValue placeholder="Choose card type" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="genesis">
+                  <SelectItem value="type">
                     <div className="flex items-start gap-3 text-muted-foreground">
                       <Rabbit className="size-5" />
                       <div className="grid gap-0.5">
                         <p>
-                          type 1
+                          {'Answer mode: '}
                           <span className="font-medium text-foreground">
-                            blah
+                            Type
                           </span>
                         </p>
                         <p className="text-xs" data-description>
-                          blah blah blah.
+                          Type in your answer.
                         </p>
                       </div>
                     </div>
                   </SelectItem>
-                  <SelectItem value="explorer">
+                  <SelectItem value="bigtype">
                     <div className="flex items-start gap-3 text-muted-foreground">
                       <Bird className="size-5" />
                       <div className="grid gap-0.5">
                         <p>
-                          blah blah blah
+                          {'Answer mode: '}
                           <span className="font-medium text-foreground">
-                            type 2
+                            {'Type (expanded)'}
                           </span>
                         </p>
                         <p className="text-xs" data-description>
-                          blah di blah
+                          Type in an expanded area.
                         </p>
                       </div>
                     </div>
                   </SelectItem>
-                  <SelectItem value="quantum">
+                  <SelectItem value="dropdown">
                     <div className="flex items-start gap-3 text-muted-foreground">
                       <Turtle className="size-5" />
                       <div className="grid gap-0.5">
                         <p>
-                          type 3 bloop
+                          {'Answer mode: '}
                           <span className="font-medium text-foreground">
-                            bloop di bloop
+                            Dropdown
                           </span>
                         </p>
                         <p className="text-xs" data-description>
-                          ba dum dum tsh
+                          Multiple choice selection from a dropdown.
                         </p>
                       </div>
                     </div>
@@ -165,10 +190,20 @@ export const AddCardDashboard = ({ sessionUser }: AddCardDashboardProps) => {
           Output
         </Badge>
 
-        <CardExample deck={deck} />
+        <CardExample
+          deck={deck}
+          card={{
+            frontField: cardQuestion,
+            answerType: cardType,
+            backField: cardAnswer,
+            extraField: cardExtra,
+            imageURL: cardImage,
+            tags: cardTags,
+          }}
+        />
         <div className="flex items-center p-3 pt-0">
           <Button type="submit" size="sm" className="ml-auto gap-1.5 mt-8 ">
-            Send Message
+            Submit Card
             <CornerDownLeft className="size-3.5" />
           </Button>
         </div>

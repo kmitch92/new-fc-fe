@@ -8,6 +8,7 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import {
   Select,
@@ -16,14 +17,57 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { IDeckInfo } from '@/lib/api/types/types';
+import { IDeckInfo, ICardInfo } from '@/lib/api/types/types';
 
 interface CardExampleProps {
   deck: IDeckInfo | undefined;
+  card: ICardInfo | undefined;
 }
 
-export function CardExample({ deck }: CardExampleProps) {
-  console.log(deck);
+const renderAnswerField = (cardType: string, backfield: string) => {
+  switch (cardType) {
+    case 'type':
+      return (
+        <Input
+          id="answer"
+          type="text"
+          placeholder="Answer"
+          value={backfield}
+          onChange={(e) => console.log(e.target.value)}
+        />
+      );
+    case 'bigtype':
+      return (
+        <Textarea
+          id="answer"
+          placeholder="Answer"
+          value={backfield}
+          onChange={(e) => console.log(e.target.value)}
+        />
+      );
+    case 'dropdown':
+      return (
+        <>
+          <Label htmlFor="dropdown">Select Option</Label>
+          <Select>
+            <SelectTrigger id="dropdown">
+              <SelectValue placeholder="...Or by Select" />
+            </SelectTrigger>
+            <SelectContent position="popper">
+              <SelectItem value="Option 1">Option 1</SelectItem>
+              <SelectItem value="Option 2">Option 2</SelectItem>
+              <SelectItem value="Option 3">Option 3</SelectItem>
+              <SelectItem value="Option 4">Option 4</SelectItem>
+            </SelectContent>
+          </Select>
+        </>
+      );
+    default:
+      return <h3>Card Type Required</h3>;
+  }
+};
+
+export function CardExample({ deck, card }: CardExampleProps) {
   return (
     <Card className="w-[450px]">
       <CardHeader>
@@ -40,30 +84,16 @@ export function CardExample({ deck }: CardExampleProps) {
         <form>
           <div className="grid w-full items-center gap-4">
             <div className="flex flex-col space-y-1.5">
-              <Label htmlFor="input">Input Option</Label>
-              <Input id="input" placeholder="You could answer via Input." />
+              <Label htmlFor="question">Question</Label>
+              <h3 id="question">
+                {card?.frontField ?? 'Question Required...'}
+              </h3>
             </div>
             <div className="flex flex-col space-y-1.5">
-              <Label htmlFor="select">Select Option</Label>
-              <Select>
-                <SelectTrigger id="framework">
-                  <SelectValue placeholder="...Or by Select" />
-                </SelectTrigger>
-                <SelectContent position="popper">
-                  <SelectItem value="Option 1">Option 1</SelectItem>
-                  <SelectItem value="Option 2">Option 2</SelectItem>
-                  <SelectItem value="Option 3">Option 3</SelectItem>
-                  <SelectItem value="Option 4">Option 4</SelectItem>
-                </SelectContent>
-              </Select>
+              {renderAnswerField(card?.answerType || '', card?.backField || '')}
             </div>
           </div>
         </form>
-        <p className="mt-4">
-          figure out a stand in for cloze, and experiment with other input
-          types. eventually images and clickable areas will have to be
-          implemented
-        </p>
       </CardContent>
       <CardFooter className="flex justify-between">
         <Button variant="outline">Skip</Button>

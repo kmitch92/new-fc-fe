@@ -24,6 +24,15 @@ export interface IDeckInfo {
   description: string;
 }
 
+export interface ICardInfo {
+  frontField: string;
+  backField: string;
+  extraField?: string;
+  imageURL?: string;
+  tags?: string[];
+  answerType: string;
+}
+
 export interface ISessionUser {
   id: string;
   name: string;
