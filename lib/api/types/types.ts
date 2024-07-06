@@ -27,7 +27,7 @@ export interface IDeckInfo {
 export interface ICardInfo {
   frontField: string;
   subfield?: string;
-  backField: string;
+  backField: string | string[];
   extraField?: string;
   imageURL?: string;
   tags?: string[];

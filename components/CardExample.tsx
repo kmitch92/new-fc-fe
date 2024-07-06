@@ -24,7 +24,7 @@ interface CardExampleProps {
   card: ICardInfo | undefined;
 }
 
-const renderAnswerField = (cardType: string, backfield: string) => {
+const renderAnswerField = (cardType: string, backfield: string | string[]) => {
   switch (cardType) {
     case 'type':
       return (
@@ -54,10 +54,10 @@ const renderAnswerField = (cardType: string, backfield: string) => {
               <SelectValue placeholder="...Or by Select" />
             </SelectTrigger>
             <SelectContent position="popper">
-              <SelectItem value="Option 1">Option 1</SelectItem>
-              <SelectItem value="Option 2">Option 2</SelectItem>
-              <SelectItem value="Option 3">Option 3</SelectItem>
-              <SelectItem value="Option 4">Option 4</SelectItem>
+              <SelectItem value={backfield[0]}>{backfield[0]}</SelectItem>
+              <SelectItem value={backfield[1]}>{backfield[1]}</SelectItem>
+              <SelectItem value={backfield[2]}>{backfield[2]}</SelectItem>
+              <SelectItem value={backfield[3]}>{backfield[3]}</SelectItem>
             </SelectContent>
           </Select>
         </>

@@ -24,7 +24,6 @@ export const DeckDropdown = ({ sessionUser, setDeck }: DeckDropdownProps) => {
       const deckInfoRes = getDecksInfoByUserId(sessionUser.id);
       deckInfoRes.then((response: IResponse) => {
         const deckInfos = response.decks as IDeckInfo[];
-        console.log(deckInfos);
         setDecksInfo(deckInfos);
         setDropdownLoading(false);
       });

@@ -12,7 +12,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Textarea } from '@/components/ui/textarea';
 import { CardExample } from '@/components/CardExample';
 import { DeckDropdown } from './DeckDropdown';
 import { IDeckInfo, ISessionUser } from '@/lib/api/types/types';
@@ -22,11 +21,13 @@ interface AddCardDashboardProps {
   sessionUser: ISessionUser;
 }
 
+const multipleChoiceOptions = ['Option 1', 'Option 2', 'Option 3', 'Option 4'];
+
 export const AddCardDashboard = ({ sessionUser }: AddCardDashboardProps) => {
   const [deck, setDeck] = useState<IDeckInfo | undefined>();
   const [cardType, setCardType] = useState<string>('');
   const [cardQuestion, setCardQuestion] = useState<string>('');
-  const [cardAnswer, setCardAnswer] = useState<string>('');
+  const [cardAnswer, setCardAnswer] = useState<string | string[]>('');
   const [cardExtra, setCardExtra] = useState<string>('');
   const [cardImage, setCardImage] = useState<string>('');
   const [cardTags, setCardTags] = useState<string[]>([]);
@@ -41,6 +42,9 @@ export const AddCardDashboard = ({ sessionUser }: AddCardDashboardProps) => {
 
   const handleCardTypeChange = (e: string) => {
     setCardType(e);
+    if (cardType === 'dropdown') {
+      setCardAnswer(multipleChoiceOptions);
+    } else setCardAnswer('');
   };
   const handleQuestionChange = (e: React.BaseSyntheticEvent) => {
     e.preventDefault();
@@ -167,10 +171,13 @@ export const AddCardDashboard = ({ sessionUser }: AddCardDashboardProps) => {
                   </SelectItem>
                 </SelectContent>
               </Select>
-              {/*
+            </div>
+            {/*
                rest 
                */}
-            </div>
+
+            {renderAnswerField(cardType, setCardAnswer)}
+
             <div className="grid gap-3">
               <Label htmlFor="details">
                 Extra details to display upon receiving the answer.
@@ -226,5 +233,50 @@ export const AddCardDashboard = ({ sessionUser }: AddCardDashboardProps) => {
         </div>
       </div>
     </main>
+  );
+};
+
+const renderAnswerField = (
+  type: string,
+  setCardAnswer: React.Dispatch<React.SetStateAction<string | string[]>>
+) => {
+  return type === 'dropdown' ? (
+    <div className="grid gap-3">
+      <fieldset className="grid gap-6 rounded-lg border p-4 bg-background">
+        <legend className="-ml-1 px-1 text-sm font-medium">
+          Multiple Choice Answer Options - only one correct answer
+        </legend>
+        {multipleChoiceOptions.map((option, idx) => (
+          <div className="grid gap-2">
+            <Input
+              id={`answer-option${idx}`}
+              type="text"
+              placeholder={`Option ${idx + 1}`}
+              onChange={(e: React.BaseSyntheticEvent) =>
+                setCardAnswer((state) => [
+                  ...state.slice(0, idx),
+                  e.target.value,
+                  ...state.slice(idx + 1),
+                ])
+              }
+            />
+          </div>
+        ))}
+      </fieldset>
+    </div>
+  ) : (
+    <div className="grid gap-3">
+      <Label htmlFor="answer">
+        Type the answer as it should appear on the card.
+      </Label>
+      <Input
+        id="answer"
+        type="text"
+        placeholder="Answer..."
+        onChange={(e: React.BaseSyntheticEvent) =>
+          setCardAnswer(e.target.value)
+        }
+      />
+    </div>
   );
 };
