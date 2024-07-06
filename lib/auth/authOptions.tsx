@@ -47,6 +47,7 @@ export const authOptions: NextAuthOptions = {
         name: dbUser.name,
         email: dbUser.email,
         image: dbUser.image,
+        tagsUsed: dbUser.tagsUsed,
       };
       session.accessToken = (token.accessToken as string) || undefined;
       return session;

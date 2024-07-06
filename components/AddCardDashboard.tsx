@@ -1,5 +1,5 @@
 'use client';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Dispatch } from 'react';
 import { Bird, CornerDownLeft, Rabbit, Turtle } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -16,6 +16,20 @@ import { CardExample } from '@/components/CardExample';
 import { DeckDropdown } from './DeckDropdown';
 import { IDeckInfo, ISessionUser } from '@/lib/api/types/types';
 import { Checkbox } from './ui/checkbox';
+import { Check, ChevronsUpDown } from 'lucide-react';
+import { cn } from '@/lib/utils';
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+} from '@/components/ui/command';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover';
 
 interface AddCardDashboardProps {
   sessionUser: ISessionUser;
@@ -31,14 +45,13 @@ export const AddCardDashboard = ({ sessionUser }: AddCardDashboardProps) => {
   const [cardExtra, setCardExtra] = useState<string>('');
   const [cardImage, setCardImage] = useState<string>('');
   const [cardTags, setCardTags] = useState<string[]>([]);
+  const [addCardTagValue, setAddCardTagValue] = useState<string>('');
   const [subfieldChecked, setSubfieldChecked] = useState<boolean>(false);
   const [subfieldValue, setSubfieldValue] = useState<string>('');
   const [extraFieldChecked, setExtraFieldChecked] = useState<boolean>(false);
   const [extraFieldValue, setExtraFieldValue] = useState<string>('');
 
-  useEffect(() => {
-    console.log(deck);
-  }, []);
+  useEffect(() => {}, []);
 
   const handleCardTypeChange = (e: string) => {
     setCardType(e);
@@ -193,12 +206,40 @@ export const AddCardDashboard = ({ sessionUser }: AddCardDashboardProps) => {
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div className="grid gap-3">
-                <Label htmlFor="top-p">Some field</Label>
-                <Input id="top-p" type="number" placeholder="0.7" />
+                <Label htmlFor="add-tag">Add Tags</Label>
+                <Input
+                  id="add-tag"
+                  type="text"
+                  placeholder="add a tag for this card"
+                  onChange={(e: React.BaseSyntheticEvent) =>
+                    setAddCardTagValue(e.target.value)
+                  }
+                  onKeyDown={(e: React.KeyboardEvent) => {
+                    if (e.key === 'Enter') {
+                      setCardTags((state) => [...state, addCardTagValue]);
+                      setAddCardTagValue('');
+                    }
+                  }}
+                />
               </div>
               <div className="grid gap-3">
-                <Label htmlFor="top-k">And another</Label>
-                <Input id="top-k" type="number" placeholder="0.0" />
+                <Label>Existing Tags</Label>
+                {renderTagsComboBox(sessionUser.tagsUsed, setCardTags)}
+              </div>
+              <div className="flex-wrap">
+                {cardTags.map((tag) => (
+                  <Badge
+                    variant="default"
+                    className="bg-primary"
+                    onClick={() =>
+                      setCardTags((state) =>
+                        state.filter((item) => item !== tag)
+                      )
+                    }
+                  >
+                    {tag}
+                  </Badge>
+                ))}
               </div>
             </div>
           </fieldset>
@@ -246,7 +287,7 @@ const renderAnswerField = (
         <legend className="-ml-1 px-1 text-sm font-medium">
           Multiple Choice Answer Options - only one correct answer
         </legend>
-        {multipleChoiceOptions.map((option, idx) => (
+        {multipleChoiceOptions.map((_, idx) => (
           <div className="grid gap-2">
             <Input
               id={`answer-option${idx}`}
@@ -278,5 +319,68 @@ const renderAnswerField = (
         }
       />
     </div>
+  );
+};
+
+const renderTagsComboBox = (
+  userTags: string[],
+  setCardTags: React.Dispatch<React.SetStateAction<string[]>>
+) => {
+  const [open, setOpen] = React.useState(false);
+  const [value, setValue] = React.useState('');
+  const [tagsRender] = React.useState<Record<string, string>[]>(
+    userTags?.length
+      ? userTags.map((tag: string) => ({ value: tag, label: tag }))
+      : []
+  );
+
+  return (
+    <Popover open={open} onOpenChange={setOpen}>
+      <PopoverTrigger asChild>
+        <Button
+          variant="outline"
+          role="combobox"
+          aria-expanded={open}
+          className="w-[200px] justify-between"
+        >
+          {value
+            ? tagsRender.find((tag) => tag.value === value)?.label
+            : 'Select tag...'}
+          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className="w-[200px] p-0">
+        <Command>
+          <CommandInput placeholder="Search tags..." />
+          <CommandEmpty>No tag found.</CommandEmpty>
+          <CommandGroup>
+            {tagsRender.map((tag) => (
+              <CommandItem
+                key={tag.value}
+                value={tag.value}
+                onSelect={(currentValue) => {
+                  setValue(currentValue === value ? '' : currentValue);
+                  setCardTags((state) =>
+                    state.includes(currentValue)
+                      ? state.filter((tag) => tag !== currentValue)
+                      : [...state, currentValue]
+                  );
+                  setValue('');
+                  setOpen(false);
+                }}
+              >
+                <Check
+                  className={cn(
+                    'mr-2 h-4 w-4',
+                    value === tag.value ? 'opacity-100' : 'opacity-0'
+                  )}
+                />
+                {tag.label}
+              </CommandItem>
+            ))}
+          </CommandGroup>
+        </Command>
+      </PopoverContent>
+    </Popover>
   );
 };

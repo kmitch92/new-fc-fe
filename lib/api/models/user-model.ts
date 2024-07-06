@@ -9,6 +9,7 @@ export interface IUser extends Document {
   credits: number;
   decks: Schema.Types.ObjectId[];
   orphanCards: Schema.Types.ObjectId[];
+  tagsUsed: string[];
   createdAt: Date;
   lastLogin: Date;
   profile: {
@@ -57,6 +58,11 @@ const UserSchema: Schema = new Schema<IUser>({
   },
   orphanCards: {
     type: [Schema.Types.ObjectId],
+    required: true,
+    default: [],
+  },
+  tagsUsed: {
+    type: [String],
     required: true,
     default: [],
   },
