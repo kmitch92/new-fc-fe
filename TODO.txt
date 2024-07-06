@@ -1,5 +1,10 @@
 - hook addCard dashboard up to db funcs
-    - create different card forms for different card types - maybe start with type answer (and reversed option), cloze, and dropdown, with these generating different cardExamples.
+    - add zod validation to card example before submission
+    - hook up snackbars to provide useful errors if validation fails.
+    - if validation passes submit card to deck and add new tags to user tags
+    - tidy up card example components style
+    - componentise all reusable subcomponents
+    - use addcarddashboard to create edit card dashboard - should be little to change.
 - hook user settings dashboard up to db funcs
 - create browse cards dashboard for card editing, deletion etc
 - hook browse cards up to db funcs.
