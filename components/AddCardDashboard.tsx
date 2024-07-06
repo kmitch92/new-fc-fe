@@ -30,6 +30,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
+import { Separator } from '@/components/ui/separator';
 
 interface AddCardDashboardProps {
   sessionUser: ISessionUser;
@@ -43,13 +44,12 @@ export const AddCardDashboard = ({ sessionUser }: AddCardDashboardProps) => {
   const [cardQuestion, setCardQuestion] = useState<string>('');
   const [cardAnswer, setCardAnswer] = useState<string | string[]>('');
   const [cardExtra, setCardExtra] = useState<string>('');
+  const [cardImageChecked, setCardImageChecked] = useState<boolean>(false);
   const [cardImage, setCardImage] = useState<string>('');
   const [cardTags, setCardTags] = useState<string[]>([]);
   const [addCardTagValue, setAddCardTagValue] = useState<string>('');
   const [subfieldChecked, setSubfieldChecked] = useState<boolean>(false);
   const [subfieldValue, setSubfieldValue] = useState<string>('');
-  const [extraFieldChecked, setExtraFieldChecked] = useState<boolean>(false);
-  const [extraFieldValue, setExtraFieldValue] = useState<string>('');
 
   useEffect(() => {}, []);
 
@@ -91,6 +91,31 @@ export const AddCardDashboard = ({ sessionUser }: AddCardDashboardProps) => {
                   onChange={(e: React.ChangeEvent) => handleQuestionChange(e)}
                 />
               </div>
+              <div className="flex-row gap-2">
+                <p>
+                  Add image by URL?
+                  <Checkbox
+                    className="ml-4"
+                    onCheckedChange={(checked) =>
+                      checked != 'indeterminate' && setCardImageChecked(checked)
+                    }
+                  />
+                </p>
+              </div>
+              {cardImageChecked && (
+                <div className="grid gap-3">
+                  <Label htmlFor="card-image-url">Card Image URL</Label>
+                  <Input
+                    id="card-image-url"
+                    type="text"
+                    placeholder="Subfield..."
+                    onChange={(e: React.BaseSyntheticEvent) =>
+                      setCardImage(e.target.value)
+                    }
+                  />
+                </div>
+              )}
+              <Separator />
               <div className="flex-row gap-2">
                 <p>
                   Add subfield?

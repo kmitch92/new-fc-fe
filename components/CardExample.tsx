@@ -76,12 +76,14 @@ export function CardExample({ deck, card }: CardExampleProps) {
         <CardDescription>Deck: {deck?.name || 'Choose Deck'}</CardDescription>
       </CardHeader>
       <CardContent>
-        <img
-          style={{ objectFit: 'cover' }}
-          src="https://res.cloudinary.com/totalmerchandise/image/fetch/f_auto,q_auto:eco,w_500/https://www.totalmerchandise.co.uk/media/Playing_Card_Sets_1.jpg"
-          alt="stand in for where an image could go"
-          className="border border-primary rounded-md p-4 my-4 h-36 w-full"
-        />
+        {card?.imageURL && (
+          <img
+            style={{ objectFit: 'cover' }}
+            src={card.imageURL}
+            alt="stand in for where an image could go"
+            className="border border-primary rounded-md p-4 my-4 h-36 w-full"
+          />
+        )}
 
         <div className="grid w-full items-center gap-4">
           <div className="flex flex-col space-y-1.5">
