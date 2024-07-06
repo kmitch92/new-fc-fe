@@ -32,6 +32,7 @@ import {
 } from '@/components/ui/popover';
 import { Separator } from '@/components/ui/separator';
 import { addCardsToDeckById } from '@/lib/api/handlers';
+import { set } from 'mongoose';
 
 interface AddCardDashboardProps {
   sessionUser: ISessionUser;
@@ -54,6 +55,13 @@ export const AddCardDashboard = ({ sessionUser }: AddCardDashboardProps) => {
 
   const handleSubmit = (card: ICardInfo, deckId: string) => {
     addCardsToDeckById([card], deckId);
+    setCardQuestion('');
+    setSubfieldValue('');
+    setCardType('');
+    typeof cardAnswer === 'string' ? setCardAnswer('') : setCardAnswer([]);
+    setCardExtra('');
+    setCardImage('');
+    setCardTags([]);
   };
 
   const handleCardTypeChange = (e: string) => {
@@ -92,6 +100,7 @@ export const AddCardDashboard = ({ sessionUser }: AddCardDashboardProps) => {
                   type="text"
                   placeholder="Question..."
                   onChange={(e: React.ChangeEvent) => handleQuestionChange(e)}
+                  value={cardQuestion}
                 />
               </div>
               <div className="flex-row gap-2">
@@ -140,6 +149,7 @@ export const AddCardDashboard = ({ sessionUser }: AddCardDashboardProps) => {
                     onChange={(e: React.BaseSyntheticEvent) =>
                       setSubfieldValue(e.target.value)
                     }
+                    value={subfieldValue}
                   />
                 </div>
               )}
@@ -248,6 +258,7 @@ export const AddCardDashboard = ({ sessionUser }: AddCardDashboardProps) => {
                       setAddCardTagValue('');
                     }
                   }}
+                  value={addCardTagValue}
                 />
               </div>
               <div className="grid gap-3">
