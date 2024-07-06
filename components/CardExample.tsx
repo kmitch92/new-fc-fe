@@ -81,20 +81,20 @@ export function CardExample({ deck, card }: CardExampleProps) {
           alt="stand in for where an image could go"
           className="border border-white rounded-md p-4 my-4 h-36 w-full"
         />
-        <form>
-          <div className="grid w-full items-center gap-4">
-            <div className="flex flex-col space-y-1.5">
-              <Label htmlFor="question">Question:</Label>
-              <h1 id="question">
-                {card?.frontField ?? 'Question Required...'}
-              </h1>
-              {card?.subfield && <p>{card.subfield}</p>}
-            </div>
-            <div className="flex flex-col space-y-1.5">
-              {renderAnswerField(card?.answerType || '', card?.backField || '')}
-            </div>
+
+        <div className="grid w-full items-center gap-4">
+          <div className="flex flex-col space-y-1.5">
+            <Label htmlFor="question">Question:</Label>
+            <h1 id="question">{card?.frontField ?? 'Question Required...'}</h1>
+            {card?.subfield && <p>{card.subfield}</p>}
           </div>
-        </form>
+          <div className="flex flex-col space-y-1.5">
+            {renderAnswerField(card?.answerType || '', card?.backField || '')}
+          </div>
+          <div>
+            <p>{card?.extraField}</p>
+          </div>
+        </div>
       </CardContent>
       <CardFooter className="flex justify-between">
         <Button variant="outline">Skip</Button>
