@@ -5,7 +5,7 @@ import { MUser, IUser } from './models/user-model';
 import { IDeck, MDeck } from './models/deck-model';
 import { ObjectId } from 'mongoose';
 import { spacedRepetition } from '../spaced-repetition/spacedRepetition';
-import { IResponse, IDeckInfo } from './types/types';
+import { IResponse, IDeckInfo, ICardInfo } from './types/types';
 
 class Response implements IResponse {
   status: number;
@@ -166,12 +166,16 @@ export const getDeckInfoById = async (id: ObjectId) => {
 };
 
 // update a deck with one or many new cards
-export const addCardsToDeckById = async (cards: ICard[], deckId: ObjectId) => {
+export const addCardsToDeckById = async (
+  cards: ICardInfo[],
+  deckId: string
+) => {
   try {
     await connectDB();
     const newCards = cards.map((card) => {
       return new MCard({
         frontField: card.frontField,
+        subfield: card.subfield || '',
         backField: card.backField,
         extraField: card.extraField || '',
         imageURL: card.imageURL || '',

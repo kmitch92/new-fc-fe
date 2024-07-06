@@ -14,7 +14,7 @@ import {
 } from '@/components/ui/select';
 import { CardExample } from '@/components/CardExample';
 import { DeckDropdown } from './DeckDropdown';
-import { IDeckInfo, ISessionUser } from '@/lib/api/types/types';
+import { ICardInfo, IDeckInfo, ISessionUser } from '@/lib/api/types/types';
 import { Checkbox } from './ui/checkbox';
 import { Check, ChevronsUpDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -31,6 +31,7 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover';
 import { Separator } from '@/components/ui/separator';
+import { addCardsToDeckById } from '@/lib/api/handlers';
 
 interface AddCardDashboardProps {
   sessionUser: ISessionUser;
@@ -51,7 +52,9 @@ export const AddCardDashboard = ({ sessionUser }: AddCardDashboardProps) => {
   const [subfieldChecked, setSubfieldChecked] = useState<boolean>(false);
   const [subfieldValue, setSubfieldValue] = useState<string>('');
 
-  useEffect(() => {}, []);
+  const handleSubmit = (card: ICardInfo, deckId: string) => {
+    addCardsToDeckById([card], deckId);
+  };
 
   const handleCardTypeChange = (e: string) => {
     setCardType(e);
@@ -290,7 +293,26 @@ export const AddCardDashboard = ({ sessionUser }: AddCardDashboardProps) => {
           }}
         />
         <div className="flex items-center p-3 pt-0">
-          <Button type="submit" size="sm" className="ml-auto gap-1.5 mt-8 ">
+          <Button
+            type="submit"
+            size="sm"
+            className="ml-auto gap-1.5 mt-8"
+            onClick={() => {
+              deck?.id &&
+                handleSubmit(
+                  {
+                    frontField: cardQuestion,
+                    subfield: subfieldChecked ? subfieldValue : '',
+                    answerType: cardType,
+                    backField: cardAnswer,
+                    extraField: cardExtra,
+                    imageURL: cardImage,
+                    tags: cardTags,
+                  },
+                  deck.id.toString()
+                );
+            }}
+          >
             Submit Card
             <CornerDownLeft className="size-3.5" />
           </Button>
