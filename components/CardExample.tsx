@@ -7,6 +7,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
@@ -79,7 +80,7 @@ export function CardExample({ deck, card }: CardExampleProps) {
           style={{ objectFit: 'cover' }}
           src="https://res.cloudinary.com/totalmerchandise/image/fetch/f_auto,q_auto:eco,w_500/https://www.totalmerchandise.co.uk/media/Playing_Card_Sets_1.jpg"
           alt="stand in for where an image could go"
-          className="border border-white rounded-md p-4 my-4 h-36 w-full"
+          className="border border-primary rounded-md p-4 my-4 h-36 w-full"
         />
 
         <div className="grid w-full items-center gap-4">
@@ -93,6 +94,14 @@ export function CardExample({ deck, card }: CardExampleProps) {
           </div>
           <div>
             <p>{card?.extraField}</p>
+          </div>
+          <div className="flex-wrap">
+            {card?.tags &&
+              card?.tags.map((tag) => (
+                <Badge variant="default" className="bg-primary mx-0.5 mt-1">
+                  {tag}
+                </Badge>
+              ))}
           </div>
         </div>
       </CardContent>

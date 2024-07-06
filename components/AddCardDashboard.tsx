@@ -226,21 +226,19 @@ export const AddCardDashboard = ({ sessionUser }: AddCardDashboardProps) => {
                 <Label>Existing Tags</Label>
                 {renderTagsComboBox(sessionUser.tagsUsed, setCardTags)}
               </div>
-              <div className="flex-wrap">
-                {cardTags.map((tag) => (
-                  <Badge
-                    variant="default"
-                    className="bg-primary"
-                    onClick={() =>
-                      setCardTags((state) =>
-                        state.filter((item) => item !== tag)
-                      )
-                    }
-                  >
-                    {tag}
-                  </Badge>
-                ))}
-              </div>
+            </div>
+            <div className="flex-wrap">
+              {cardTags.map((tag) => (
+                <Badge
+                  variant="default"
+                  className="bg-primary mx-0.5 mt-1"
+                  onClick={() =>
+                    setCardTags((state) => state.filter((item) => item !== tag))
+                  }
+                >
+                  {tag}
+                </Badge>
+              ))}
             </div>
           </fieldset>
         </form>
