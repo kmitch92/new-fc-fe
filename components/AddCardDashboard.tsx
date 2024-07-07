@@ -16,23 +16,10 @@ import { CardExample } from '@/components/CardExample';
 import { DeckDropdown } from './DeckDropdown';
 import { ICardInfo, IDeckInfo, ISessionUser } from '@/lib/api/types/types';
 import { Checkbox } from './ui/checkbox';
-import { Check, ChevronsUpDown } from 'lucide-react';
-import { cn } from '@/lib/utils';
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandList,
-  CommandItem,
-} from '@/components/ui/command';
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover';
 import { Separator } from '@/components/ui/separator';
 import { addCardsToDeckById, updateUserTagsById } from '@/lib/api/handlers';
+import { AnswerField } from './AnswerField';
+import { TagsComboBox } from './TagsComboBox';
 
 interface AddCardDashboardProps {
   sessionUser: ISessionUser;
@@ -231,7 +218,11 @@ export const AddCardDashboard = ({ sessionUser }: AddCardDashboardProps) => {
                rest 
                */}
 
-            {renderAnswerField(cardType, setCardAnswer, cardAnswer)}
+            <AnswerField
+              type={cardType}
+              setCardAnswer={setCardAnswer}
+              cardAnswer={cardAnswer}
+            />
 
             <div className="grid gap-3">
               <Label htmlFor="details">
@@ -268,7 +259,10 @@ export const AddCardDashboard = ({ sessionUser }: AddCardDashboardProps) => {
               </div>
               <div className="grid gap-3">
                 <Label>Existing Tags</Label>
-                {renderTagsComboBox(sessionUser.tagsUsed, setCardTags)}
+                <TagsComboBox
+                  userTags={sessionUser.tagsUsed}
+                  setCardTags={setCardTags}
+                />
               </div>
             </div>
             <div className="flex-wrap">
@@ -335,110 +329,5 @@ export const AddCardDashboard = ({ sessionUser }: AddCardDashboardProps) => {
         </div>
       </div>
     </main>
-  );
-};
-
-const renderAnswerField = (
-  type: string,
-  setCardAnswer: React.Dispatch<React.SetStateAction<string | string[]>>,
-  cardAnswer: string | string[]
-) => {
-  return type === 'dropdown' ? (
-    <div className="grid gap-3">
-      <fieldset className="grid gap-6 rounded-lg border p-4 bg-background">
-        <legend className="-ml-1 px-1 text-sm font-medium">
-          Multiple Choice Answer Options - only one correct answer
-        </legend>
-        {multipleChoiceOptions.map((_, idx) => (
-          <div className="grid gap-2">
-            <Input
-              id={`answer-option${idx}`}
-              type="text"
-              placeholder={`Option ${idx + 1}`}
-              onChange={(e: React.BaseSyntheticEvent) =>
-                setCardAnswer((state) => [
-                  ...state.slice(0, idx),
-                  e.target.value,
-                  ...state.slice(idx + 1),
-                ])
-              }
-            />
-          </div>
-        ))}
-      </fieldset>
-    </div>
-  ) : (
-    <div className="grid gap-3">
-      <Label htmlFor="answer">
-        Type the answer as it should appear on the card.
-      </Label>
-      <Input
-        id="answer"
-        type="text"
-        placeholder="Answer..."
-        onChange={(e: React.BaseSyntheticEvent) =>
-          setCardAnswer(e.target.value)
-        }
-        value={cardAnswer}
-      />
-    </div>
-  );
-};
-
-const renderTagsComboBox = (
-  userTags: string[],
-  setCardTags: React.Dispatch<React.SetStateAction<string[]>>
-) => {
-  const [open, setOpen] = React.useState(false);
-  const [value, setValue] = React.useState('');
-
-  console.log(userTags);
-
-  return (
-    <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>
-        <Button
-          variant="outline"
-          role="combobox"
-          aria-expanded={open}
-          className="w-[200px] justify-between"
-        >
-          {value ? userTags.find((tag) => tag === value) : 'Select tag...'}
-          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-        </Button>
-      </PopoverTrigger>
-      <PopoverContent className="w-[200px] p-0">
-        <Command>
-          <CommandInput placeholder="Search tags..." />
-          <CommandList>
-            <CommandEmpty>No tag found.</CommandEmpty>
-            <CommandGroup>
-              {userTags.length > 0
-                ? userTags.map((tag) => (
-                    <CommandItem
-                      key={tag}
-                      value={tag}
-                      onSelect={(currentValue) => {
-                        setValue(currentValue);
-                        setCardTags((existingTags) =>
-                          existingTags.length > 0
-                            ? existingTags.includes(currentValue)
-                              ? [...existingTags]
-                              : [...existingTags, currentValue]
-                            : [currentValue]
-                        );
-                        setValue('');
-                        setOpen(false);
-                      }}
-                    >
-                      <p>{tag}</p>
-                    </CommandItem>
-                  ))
-                : ''}
-            </CommandGroup>
-          </CommandList>
-        </Command>
-      </PopoverContent>
-    </Popover>
   );
 };
