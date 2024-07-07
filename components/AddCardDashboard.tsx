@@ -31,7 +31,7 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover';
 import { Separator } from '@/components/ui/separator';
-import { addCardsToDeckById } from '@/lib/api/handlers';
+import { addCardsToDeckById, updateUserTagsById } from '@/lib/api/handlers';
 import { set } from 'mongoose';
 
 interface AddCardDashboardProps {
@@ -55,6 +55,7 @@ export const AddCardDashboard = ({ sessionUser }: AddCardDashboardProps) => {
 
   const handleSubmit = (card: ICardInfo, deckId: string) => {
     addCardsToDeckById([card], deckId);
+    card.tags && updateUserTagsById(sessionUser.id, card.tags);
     setCardQuestion('');
     setSubfieldValue('');
     setCardType('');

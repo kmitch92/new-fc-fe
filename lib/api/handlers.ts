@@ -479,6 +479,33 @@ export const updateUserById = async (userId: ObjectId, updatedUser: IUser) => {
   }
 };
 
+// update user by id
+export const updateUserTagsById = async (userId: string, newTags: string[]) => {
+  try {
+    await connectDB();
+    await MUser.updateOne({ _id: userId }, { tagsUsed: newTags });
+    return JSON.parse(
+      JSON.stringify(
+        new Response({
+          status: 200,
+          message: 'Tags added successfully',
+        })
+      )
+    );
+  } catch (err) {
+    let message = 'Unknown Error';
+    if (err instanceof Error) message = err.message;
+    return JSON.parse(
+      JSON.stringify(
+        new Response({
+          status: 500,
+          message: message,
+        })
+      )
+    );
+  }
+};
+
 // delete user by id
 export const deleteUserById = async (userId: ObjectId) => {
   try {
