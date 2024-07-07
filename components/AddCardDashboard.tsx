@@ -124,6 +124,7 @@ export const AddCardDashboard = ({ sessionUser }: AddCardDashboardProps) => {
                     onChange={(e: React.BaseSyntheticEvent) =>
                       setCardImage(e.target.value)
                     }
+                    value={cardImage}
                   />
                 </div>
               )}
@@ -227,7 +228,7 @@ export const AddCardDashboard = ({ sessionUser }: AddCardDashboardProps) => {
                rest 
                */}
 
-            {renderAnswerField(cardType, setCardAnswer)}
+            {renderAnswerField(cardType, setCardAnswer, cardAnswer)}
 
             <div className="grid gap-3">
               <Label htmlFor="details">
@@ -240,6 +241,7 @@ export const AddCardDashboard = ({ sessionUser }: AddCardDashboardProps) => {
                 onChange={(e: React.BaseSyntheticEvent) =>
                   setCardExtra(e.target.value)
                 }
+                value={cardExtra}
               />
             </div>
             <div className="grid grid-cols-2 gap-4">
@@ -335,7 +337,8 @@ export const AddCardDashboard = ({ sessionUser }: AddCardDashboardProps) => {
 
 const renderAnswerField = (
   type: string,
-  setCardAnswer: React.Dispatch<React.SetStateAction<string | string[]>>
+  setCardAnswer: React.Dispatch<React.SetStateAction<string | string[]>>,
+  cardAnswer: string | string[]
 ) => {
   return type === 'dropdown' ? (
     <div className="grid gap-3">
@@ -373,6 +376,7 @@ const renderAnswerField = (
         onChange={(e: React.BaseSyntheticEvent) =>
           setCardAnswer(e.target.value)
         }
+        value={cardAnswer}
       />
     </div>
   );

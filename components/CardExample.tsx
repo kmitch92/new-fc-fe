@@ -19,6 +19,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { IDeckInfo, ICardInfo } from '@/lib/api/types/types';
+import { addCardsToDeckById } from '@/lib/api/handlers';
 
 interface CardExampleProps {
   deck: IDeckInfo | undefined;
@@ -70,7 +71,7 @@ const renderAnswerField = (cardType: string, backfield: string | string[]) => {
 
 export function CardExample({ deck, card }: CardExampleProps) {
   return (
-    <Card className="w-[450px]">
+    <Card className="w-[450px] min-h-[500px] ">
       <CardHeader>
         <CardTitle>CARD QUESTION</CardTitle>
         <CardDescription>Deck: {deck?.name || 'Choose Deck'}</CardDescription>
