@@ -1,5 +1,5 @@
 'use client';
-import React, { useState, useEffect, Dispatch } from 'react';
+import React, { useState } from 'react';
 import { Bird, CornerDownLeft, Rabbit, Turtle } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -23,6 +23,7 @@ import {
   CommandEmpty,
   CommandGroup,
   CommandInput,
+  CommandList,
   CommandItem,
 } from '@/components/ui/command';
 import {
@@ -32,7 +33,6 @@ import {
 } from '@/components/ui/popover';
 import { Separator } from '@/components/ui/separator';
 import { addCardsToDeckById, updateUserTagsById } from '@/lib/api/handlers';
-import { set } from 'mongoose';
 
 interface AddCardDashboardProps {
   sessionUser: ISessionUser;
@@ -52,6 +52,8 @@ export const AddCardDashboard = ({ sessionUser }: AddCardDashboardProps) => {
   const [addCardTagValue, setAddCardTagValue] = useState<string>('');
   const [subfieldChecked, setSubfieldChecked] = useState<boolean>(false);
   const [subfieldValue, setSubfieldValue] = useState<string>('');
+
+  console.log(sessionUser);
 
   const handleSubmit = (card: ICardInfo, deckId: string) => {
     addCardsToDeckById([card], deckId);
@@ -389,11 +391,8 @@ const renderTagsComboBox = (
 ) => {
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState('');
-  const [tagsRender] = React.useState<Record<string, string>[]>(
-    userTags?.length
-      ? userTags.map((tag: string) => ({ value: tag, label: tag }))
-      : []
-  );
+
+  console.log(userTags);
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -404,42 +403,46 @@ const renderTagsComboBox = (
           aria-expanded={open}
           className="w-[200px] justify-between"
         >
-          {value
-            ? tagsRender.find((tag) => tag.value === value)?.label
-            : 'Select tag...'}
+          {value ? userTags.find((tag) => tag === value) : 'Select tag...'}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-[200px] p-0">
         <Command>
           <CommandInput placeholder="Search tags..." />
-          <CommandEmpty>No tag found.</CommandEmpty>
-          <CommandGroup>
-            {tagsRender.map((tag) => (
-              <CommandItem
-                key={tag.value}
-                value={tag.value}
-                onSelect={(currentValue) => {
-                  setValue(currentValue === value ? '' : currentValue);
-                  setCardTags((state) =>
-                    state.includes(currentValue)
-                      ? state.filter((tag) => tag !== currentValue)
-                      : [...state, currentValue]
-                  );
-                  setValue('');
-                  setOpen(false);
-                }}
-              >
-                <Check
-                  className={cn(
-                    'mr-2 h-4 w-4',
-                    value === tag.value ? 'opacity-100' : 'opacity-0'
-                  )}
-                />
-                {tag.label}
-              </CommandItem>
-            ))}
-          </CommandGroup>
+          <CommandList>
+            <CommandEmpty>No tag found.</CommandEmpty>
+            <CommandGroup>
+              {userTags.length > 0
+                ? userTags.map((tag) => (
+                    <CommandItem
+                      key={tag}
+                      value={tag}
+                      onSelect={(currentValue) => {
+                        setValue(currentValue);
+                        setCardTags((existingTags) =>
+                          existingTags.length > 0
+                            ? existingTags.includes(currentValue)
+                              ? [...existingTags]
+                              : [...existingTags, currentValue]
+                            : [currentValue]
+                        );
+                        setValue('');
+                        setOpen(false);
+                      }}
+                    >
+                      <Check
+                        className={cn(
+                          'mr-2 h-4 w-4',
+                          value === tag ? 'opacity-100' : 'opacity-0'
+                        )}
+                      />
+                      {tag}
+                    </CommandItem>
+                  ))
+                : ''}
+            </CommandGroup>
+          </CommandList>
         </Command>
       </PopoverContent>
     </Popover>
