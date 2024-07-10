@@ -52,7 +52,7 @@ export default async function Learn() {
             className="flex items-center gap-2 text-lg font-semibold md:text-base"
           >
             <Package2 className="h-6 w-6" />
-            <span className="sr-only">Blah</span>
+            <span className="sr-only">Learn</span>
           </Link>
           <Link
             href="#"
@@ -79,9 +79,15 @@ export default async function Learn() {
           )}
           <Link
             href="/learn/create-card"
-            className="text-muted-foreground transition-colors hover:text-foreground"
+            className="text-foreground transition-colors hover:text-foreground w-20"
           >
-            Add Card
+            Add Cards
+          </Link>
+          <Link
+            href="/learn/edit-card"
+            className="text-foreground transition-colors hover:text-foreground w-20"
+          >
+            Edit Cards
           </Link>
         </nav>
         <Sheet>
@@ -149,7 +155,7 @@ export default async function Learn() {
             <DropdownMenuTrigger asChild>
               <Button variant="secondary" size="icon" className="rounded-full">
                 <CircleUser className="h-5 w-5" />
-                <span className="sr-only">Blah</span>
+                <span className="sr-only">hello</span>
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
