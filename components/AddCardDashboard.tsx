@@ -1,17 +1,10 @@
 'use client';
 import React, { useState } from 'react';
-import { Bird, CornerDownLeft, Rabbit, Turtle } from 'lucide-react';
+import { CornerDownLeft } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
 import { CardExample } from '@/components/CardExample';
 import { DeckDropdown } from './DeckDropdown';
 import { ICardInfo, IDeckInfo, ISessionUser } from '@/lib/api/types/types';
@@ -20,6 +13,7 @@ import { Separator } from '@/components/ui/separator';
 import { addCardsToDeckById, updateUserTagsById } from '@/lib/api/handlers';
 import { AnswerField } from './AnswerField';
 import { TagsComboBox } from './TagsComboBox';
+import { CardTypeDropdown } from './CardTypeDropdown';
 
 interface AddCardDashboardProps {
   sessionUser: ISessionUser;
@@ -153,67 +147,7 @@ export const AddCardDashboard = ({ sessionUser }: AddCardDashboardProps) => {
             <legend className="-ml-1 px-1 text-sm font-medium">
               Card Back Fields
             </legend>
-            <div>
-              <Label htmlFor="cardType">Card Type</Label>
-              <Select onValueChange={handleCardTypeChange}>
-                <SelectTrigger
-                  id="cardType"
-                  className="items-start [&_[data-description]]:hidden"
-                >
-                  <SelectValue placeholder="Choose card type" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="type">
-                    <div className="flex items-start gap-3 text-muted-foreground">
-                      <Rabbit className="size-5" />
-                      <div className="grid gap-0.5">
-                        <p>
-                          {'Answer mode: '}
-                          <span className="font-medium text-foreground">
-                            Type
-                          </span>
-                        </p>
-                        <p className="text-xs" data-description>
-                          Type in your answer.
-                        </p>
-                      </div>
-                    </div>
-                  </SelectItem>
-                  <SelectItem value="bigtype">
-                    <div className="flex items-start gap-3 text-muted-foreground">
-                      <Bird className="size-5" />
-                      <div className="grid gap-0.5">
-                        <p>
-                          {'Answer mode: '}
-                          <span className="font-medium text-foreground">
-                            {'Type (expanded)'}
-                          </span>
-                        </p>
-                        <p className="text-xs" data-description>
-                          Type in an expanded area.
-                        </p>
-                      </div>
-                    </div>
-                  </SelectItem>
-                  <SelectItem value="dropdown">
-                    <div className="flex items-start gap-3 text-muted-foreground">
-                      <Turtle className="size-5" />
-                      <div className="grid gap-0.5">
-                        <p>
-                          {'Answer mode: '}
-                          <span className="font-medium text-foreground">
-                            Dropdown
-                          </span>
-                        </p>
-                        <p className="text-xs" data-description>
-                          Multiple choice selection from a dropdown.
-                        </p>
-                      </div>
-                    </div>
-                  </SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
+            <CardTypeDropdown handleCardTypeChange={handleCardTypeChange} />
             {/*
                rest 
                */}
