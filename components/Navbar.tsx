@@ -69,39 +69,6 @@ export function Navbar() {
         <NavigationMenu>
           <NavigationMenuList>
             <NavigationMenuItem>
-              <NavigationMenuTrigger>
-                <MenuIcon />
-              </NavigationMenuTrigger>
-              <NavigationMenuContent>
-                <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
-                  <li className="row-span-3">
-                    <NavigationMenuLink asChild>
-                      <a
-                        className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
-                        href="/"
-                      >
-                        <div className="mb-2 mt-4 text-lg font-medium">
-                          FLASHCARDS
-                        </div>
-                        <p className="text-sm leading-tight text-muted-foreground">
-                          Blah Blah Blah Blah.
-                        </p>
-                      </a>
-                    </NavigationMenuLink>
-                  </li>
-                  <ListItem href="" title="Blah">
-                    Blah Blah Blah Blah
-                  </ListItem>
-                  <ListItem href="" title="Blah">
-                    Blah Blah Blah Blah.
-                  </ListItem>
-                  <ListItem href="" title="">
-                    Blah Blah Blah Blah
-                  </ListItem>
-                </ul>
-              </NavigationMenuContent>
-            </NavigationMenuItem>
-            <NavigationMenuItem>
               <Link href="/" legacyBehavior passHref>
                 <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                   FLASHCARDS
@@ -114,22 +81,6 @@ export function Navbar() {
         <NavigationMenu className="mr-24">
           <NavigationMenuList>
             <NavigationMenuItem>
-              <NavigationMenuTrigger>Blah</NavigationMenuTrigger>
-              <NavigationMenuContent>
-                <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
-                  {components.map((component) => (
-                    <ListItem
-                      key={component.title}
-                      title={component.title}
-                      href={component.href}
-                    >
-                      {component.description}
-                    </ListItem>
-                  ))}
-                </ul>
-              </NavigationMenuContent>
-            </NavigationMenuItem>
-            <NavigationMenuItem>
               <Link href="/learn" legacyBehavior passHref>
                 <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                   Learn
@@ -137,9 +88,9 @@ export function Navbar() {
               </Link>
             </NavigationMenuItem>
             <NavigationMenuItem>
-              <Link href="/docs" legacyBehavior passHref>
+              <Link href="/draggable" legacyBehavior passHref>
                 <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                  Blah
+                  Draggable
                 </NavigationMenuLink>
               </Link>
             </NavigationMenuItem>
@@ -148,13 +99,6 @@ export function Navbar() {
 
         <NavigationMenu className="flex flex-row justify-between gap-8 items-center  mr-6">
           <NavigationMenuList>
-            <NavigationMenuItem className="mr-2">
-              <Link href="/settings" legacyBehavior passHref>
-                <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                  <Settings />
-                </NavigationMenuLink>
-              </Link>
-            </NavigationMenuItem>
             <NavigationMenuItem>
               <ModeToggle />
             </NavigationMenuItem>
