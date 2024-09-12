@@ -216,7 +216,7 @@ export const addCardsToDeckById = async (
 };
 
 // update a card new nextReview dates
-export const updateNextReview = async (
+export const updateNextReviewAndEase = async (
   cardId: ObjectId,
   deckId: ObjectId,
   success: boolean
@@ -229,7 +229,7 @@ export const updateNextReview = async (
         $elemMatch: { _id: cardId },
       },
     });
-    deck.card.nectReview = spacedRepetition(
+    deck.card.nextReview = spacedRepetition(
       card.lastReviewed,
       new Date(),
       success

@@ -1,16 +1,20 @@
-// import { Share } from 'lucide-react';
-// import { Button } from '@/components/ui/button';
-// import { AddCardDashboard } from '@/components/AddCardDashboard';
 import { useServerSessionUser } from '@/lib/hooks/useServerSession';
 
 import { AddCardDashboard } from '@/components/AddCardDashboard';
 import { ISessionUser } from '@/lib/api/types/types';
 import { AddDeck } from '@/components/AddDeck';
+import { WelcomeCard } from '@/components/WelcomeCard';
+import { auth } from '../api/auth/[...nextauth]/route';
+import { Session } from 'next-auth';
 
 export default async function Draggable() {
   const sessionUser = (await useServerSessionUser()) as ISessionUser;
+  const sess = (await auth()) as Session;
   return (
-    <section className="h-screen w-full px-4">
+    <section className="h-[100vh] w-full px-4 grid grid-flow-col auto-cols-max">
+      <div>
+        <WelcomeCard session={sess} />
+      </div>
       <div>
         <AddDeck userId={sessionUser.id} isExposed={true} />
       </div>

@@ -59,9 +59,9 @@ export const AddCardDashboard = ({ sessionUser }: AddCardDashboardProps) => {
     e?.target?.value && setCardQuestion(e.target.value);
   };
   return (
-    <main className="grid flex-1 gap-4 overflow-hidden p-4 md:grid-cols-2 lg:grid-cols-3">
+    <div className="grid flex-1 gap-4 overflow-x-hidden rounded-lg border bg-background p-4 grid-cols-2">
       <div
-        className="relative hidden flex-col items-start gap-8 md:flex"
+        className="relative hidden flex-col items-start gap-8 md:flex col-span-1"
         x-chunk="dashboard-03-chunk-0"
       >
         <form className="grid w-full items-start gap-6">
@@ -216,14 +216,7 @@ export const AddCardDashboard = ({ sessionUser }: AddCardDashboardProps) => {
         </form>
       </div>
 
-      <div className="relative flex h-full min-h-[50vh] flex-col items-center rounded-xl bg-muted/50 p-4 lg:col-span-2">
-        <Badge
-          variant="outline"
-          className="absolute right-3 top-3 bg-background"
-        >
-          Output
-        </Badge>
-
+      <div className="relative flex h-full flex-col items-center rounded-xl bg-muted/50 p-4 col-span-1">
         <CardExample
           deck={deck}
           card={{
@@ -262,6 +255,6 @@ export const AddCardDashboard = ({ sessionUser }: AddCardDashboardProps) => {
           </Button>
         </div>
       </div>
-    </main>
+    </div>
   );
 };

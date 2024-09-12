@@ -14,6 +14,8 @@ export interface ICard extends Document {
   totalReviews: number;
   failedReviews: number;
   dateCreated: Date;
+  ease: number;
+  lastRandomMultiplier?: number;
 }
 
 export const CardSchema: Schema = new Schema<ICard>({
@@ -59,6 +61,15 @@ export const CardSchema: Schema = new Schema<ICard>({
   },
   dateCreated: {
     type: Date,
+    required: true,
+  },
+  ease: {
+    type: Number,
+    required: true,
+    default: 2,
+  },
+  lastRandomMultiplier: {
+    type: Number,
     required: true,
   },
 });
