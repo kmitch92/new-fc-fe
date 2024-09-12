@@ -229,11 +229,18 @@ export const updateNextReviewAndEase = async (
         $elemMatch: { _id: cardId },
       },
     });
-    deck.card.nextReview = spacedRepetition(
+    // deck.card.nextReview
+    const { newDate, newEase } = spacedRepetition(
       card.lastReviewed,
       new Date(),
-      success
+      success,
+      card.ease,
+      card.totalReviews
     );
+    deck.card.nextReview = newDate;
+    deck.card.ease = newEase;
+    deck.card.totalReviews += 1;
+
     return JSON.parse(
       JSON.stringify(
         new Response({

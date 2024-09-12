@@ -1,5 +1,5 @@
 interface SpacedRepetitionResult {
-  daysUntilNextReview: number;
+  newDate: Date;
   newEase: number;
 }
 
@@ -17,12 +17,14 @@ export const spacedRepetition = (
   if (success) {
     const multiplier = Math.random() * (1.3 - 1.0) + 1.0;
     const newDiff = diffDays * ease * multiplier;
+    const newDate = new Date(lastDate.getTime() + newDiff * oneDay);
     const newEase = updateEase(numberOfReviews, ease, success);
-    return { daysUntilNextReview: newDiff, newEase };
+    return { newDate, newEase };
   } else {
     const newDiff = diffDays * (1 / 4);
+    const newDate = new Date(lastDate.getTime() + newDiff * oneDay);
     const newEase = updateEase(numberOfReviews, ease, success);
-    return { daysUntilNextReview: newDiff, newEase };
+    return { newDate, newEase };
   }
 };
 
