@@ -71,7 +71,7 @@ const renderAnswerField = (cardType: string, backfield: string | string[]) => {
 
 export function CardExample({ deck, card }: CardExampleProps) {
   return (
-    <Card className="w-[450px] min-h-[500px] ">
+    <Card className="w-[95%] h-[85%] ">
       <CardHeader>
         <CardTitle>CARD QUESTION</CardTitle>
         <CardDescription>Deck: {deck?.name || 'Choose Deck'}</CardDescription>

@@ -6,6 +6,7 @@ import { AddDeck } from '@/components/AddDeck';
 import { WelcomeCard } from '@/components/WelcomeCard';
 import { auth } from '../api/auth/[...nextauth]/route';
 import { Session } from 'next-auth';
+import { CardInteractions } from '@/components/CardInteractions';
 
 export default async function Draggable() {
   const sessionUser = (await useServerSessionUser()) as ISessionUser;
@@ -19,7 +20,8 @@ export default async function Draggable() {
         <AddDeck userId={sessionUser.id} isExposed={true} />
       </div>
       <div className="w-[1000px] h-[300px]">
-        <AddCardDashboard sessionUser={sessionUser} />
+        {/* <AddCardDashboard sessionUser={sessionUser} /> */}
+        <CardInteractions sUser={sessionUser} />
       </div>
     </section>
   );
