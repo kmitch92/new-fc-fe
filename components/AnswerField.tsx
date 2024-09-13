@@ -18,9 +18,6 @@ export const AnswerField = ({
   return type === 'dropdown' ? (
     <div className="grid gap-3">
       <fieldset className="grid gap-6 rounded-lg border p-4 bg-background">
-        <legend className="-ml-1 px-1 text-sm font-medium">
-          Multiple Choice Answer Options - only one correct answer
-        </legend>
         {multipleChoiceOptions.map((_, idx) => (
           <div className="grid gap-2">
             <Input
@@ -41,9 +38,6 @@ export const AnswerField = ({
     </div>
   ) : (
     <div className="grid gap-3">
-      <Label htmlFor="answer">
-        Type the answer as it should appear on the card.
-      </Label>
       <Input
         id="answer"
         type="text"

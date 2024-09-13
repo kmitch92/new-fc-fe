@@ -14,6 +14,7 @@ import { addCardsToDeckById, updateUserTagsById } from '@/lib/api/handlers';
 import { AnswerField } from './AnswerField';
 import { TagsComboBox } from './TagsComboBox';
 import { CardTypeDropdown } from './CardTypeDropdown';
+import Typography from './Typography';
 
 interface AddCardDashboardProps {
   sessionUser: ISessionUser;
@@ -67,7 +68,7 @@ export const AddCardDashboard = ({ sessionUser }: AddCardDashboardProps) => {
         <form className="grid w-full items-start gap-6">
           <fieldset className="grid gap-6 rounded-lg border p-4 bg-background">
             <legend className="-ml-1 px-1 text-sm font-medium">
-              Card Front Fields
+              <Typography.Small text="Card Front Fields" />
             </legend>
             <div className="grid gap-3">
               {/*
@@ -76,35 +77,30 @@ export const AddCardDashboard = ({ sessionUser }: AddCardDashboardProps) => {
               <DeckDropdown sessionUser={sessionUser} setDeck={setDeck} />
 
               <div className="grid gap-3">
-                <Label htmlFor="question">
-                  Type the question or prompt as it should appear on the card.
-                </Label>
                 <Input
                   id="question"
                   type="text"
-                  placeholder="Question..."
+                  placeholder="Type question..."
                   onChange={(e: React.ChangeEvent) => handleQuestionChange(e)}
                   value={cardQuestion}
                 />
               </div>
-              <div className="flex-row gap-2">
-                <p>
-                  Add image by URL?
-                  <Checkbox
-                    className="ml-4"
-                    onCheckedChange={(checked) =>
-                      checked != 'indeterminate' && setCardImageChecked(checked)
-                    }
-                  />
-                </p>
+              <div className="flex justify-start ml-[1rem]">
+                <div className="w-[50%]">
+                  <Typography.Muted text="Image?" />
+                </div>
+                <Checkbox
+                  onCheckedChange={(checked) =>
+                    checked != 'indeterminate' && setCardImageChecked(checked)
+                  }
+                />
               </div>
               {cardImageChecked && (
                 <div className="grid gap-3">
-                  <Label htmlFor="card-image-url">Card Image URL</Label>
                   <Input
                     id="card-image-url"
                     type="text"
-                    placeholder="Subfield..."
+                    placeholder="Card Image URL"
                     onChange={(e: React.BaseSyntheticEvent) =>
                       setCardImage(e.target.value)
                     }
@@ -113,20 +109,18 @@ export const AddCardDashboard = ({ sessionUser }: AddCardDashboardProps) => {
                 </div>
               )}
               <Separator />
-              <div className="flex-row gap-2">
-                <p>
-                  Add subfield?
-                  <Checkbox
-                    className="ml-4"
-                    onCheckedChange={(checked) =>
-                      checked != 'indeterminate' && setSubfieldChecked(checked)
-                    }
-                  />
-                </p>
+              <div className="flex justify-start ml-[1rem]">
+                <div className="w-[50%]">
+                  <Typography.Muted text="Subfield?" />
+                </div>
+                <Checkbox
+                  onCheckedChange={(checked) =>
+                    checked != 'indeterminate' && setSubfieldChecked(checked)
+                  }
+                />
               </div>
               {subfieldChecked && (
                 <div className="grid gap-3">
-                  <Label htmlFor="subfield">Subfield</Label>
                   <Input
                     id="subfield"
                     type="text"
@@ -144,8 +138,8 @@ export const AddCardDashboard = ({ sessionUser }: AddCardDashboardProps) => {
             </div>
           </fieldset>
           <fieldset className="grid gap-6 rounded-lg border p-4 bg-background">
-            <legend className="-ml-1 px-1 text-sm font-medium">
-              Card Back Fields
+            <legend className="-ml-1 px-1">
+              <Typography.Small text="Card Back Fields" />
             </legend>
             <CardTypeDropdown handleCardTypeChange={handleCardTypeChange} />
             {/*
@@ -159,9 +153,6 @@ export const AddCardDashboard = ({ sessionUser }: AddCardDashboardProps) => {
             />
 
             <div className="grid gap-3">
-              <Label htmlFor="details">
-                Extra details to display upon receiving the answer.
-              </Label>
               <Input
                 id="details"
                 type="text"
@@ -172,13 +163,12 @@ export const AddCardDashboard = ({ sessionUser }: AddCardDashboardProps) => {
                 value={cardExtra}
               />
             </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div className="grid gap-3">
-                <Label htmlFor="add-tag">Add Tags</Label>
+            <div className="flex-col gap-4">
+              <div className="mb-2">
                 <Input
                   id="add-tag"
                   type="text"
-                  placeholder="add a tag for this card"
+                  placeholder="Add tags..."
                   onChange={(e: React.BaseSyntheticEvent) =>
                     setAddCardTagValue(e.target.value)
                   }
@@ -192,7 +182,6 @@ export const AddCardDashboard = ({ sessionUser }: AddCardDashboardProps) => {
                 />
               </div>
               <div className="grid gap-3">
-                <Label>Existing Tags</Label>
                 <TagsComboBox
                   userTags={sessionUser.tagsUsed}
                   setCardTags={setCardTags}

@@ -19,13 +19,12 @@ export const CardTypeDropdown = ({
 }: CardTypeDropdownProps) => {
   return (
     <div>
-      <Label htmlFor="cardType">Card Type</Label>
       <Select onValueChange={handleCardTypeChange}>
         <SelectTrigger
           id="cardType"
           className="items-start [&_[data-description]]:hidden"
         >
-          <SelectValue placeholder="Choose card type" />
+          <SelectValue placeholder="Card answer type" />
         </SelectTrigger>
         <SelectContent>
           <SelectItem value="type">
@@ -33,7 +32,6 @@ export const CardTypeDropdown = ({
               <Type className="size-5" />
               <div className="grid gap-0.5">
                 <p>
-                  {'Answer mode: '}
                   <span className="font-medium text-foreground">Type</span>
                 </p>
                 <p className="text-xs" data-description>
@@ -47,7 +45,6 @@ export const CardTypeDropdown = ({
               <Keyboard className="size-5" />
               <div className="grid gap-0.5">
                 <p>
-                  {'Answer mode: '}
                   <span className="font-medium text-foreground">
                     {'Type (expanded)'}
                   </span>
@@ -63,7 +60,6 @@ export const CardTypeDropdown = ({
               <SquareStack className="size-5" />
               <div className="grid gap-0.5">
                 <p>
-                  {'Answer mode: '}
                   <span className="font-medium text-foreground">Dropdown</span>
                 </p>
                 <p className="text-xs" data-description>

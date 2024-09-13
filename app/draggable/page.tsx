@@ -1,6 +1,5 @@
 import { useServerSessionUser } from '@/lib/hooks/useServerSession';
 
-import { AddCardDashboard } from '@/components/AddCardDashboard';
 import { ISessionUser } from '@/lib/api/types/types';
 import { AddDeck } from '@/components/AddDeck';
 import { WelcomeCard } from '@/components/WelcomeCard';
@@ -20,7 +19,6 @@ export default async function Draggable() {
         <AddDeck userId={sessionUser.id} isExposed={true} />
       </div>
       <div className="w-[1000px] h-[300px]">
-        {/* <AddCardDashboard sessionUser={sessionUser} /> */}
         <CardInteractions sUser={sessionUser} />
       </div>
     </section>

@@ -33,6 +33,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+import Typography from './Typography';
 
 const handlePostDeck = async (userId: string, formData: FormData) => {
   const name = formData.get('name') as string;
@@ -116,30 +117,27 @@ export function AddDeckForm({ className, setOpen, userId }: AddDeckFormProps) {
         return handlePostDeck(userId, form), setOpen(false);
       }}
     >
-      <fieldset className="gap-6 w-96 h-auto rounded-lg border p-4">
-        <legend className="-ml-1 px-1 text-sm font-medium">New Deck</legend>
-        <div>
-          <div className="grid gap-3">
-            <Label htmlFor="title-input">Deck Title</Label>
-            <Input
-              id="title-input"
-              type="text"
-              name="name"
-              placeholder="Title..."
-            />
-          </div>
-          <div className="grid gap-3 my-8">
-            <Label htmlFor="description-input">Deck Description</Label>
-            <Textarea
-              id="description-input"
-              placeholder="Description..."
-              name="description"
-              className="min-h-[9.5rem]"
-            />
-          </div>
+      <div>
+        <div className="grid gap-3">
+          <Label htmlFor="title-input">Deck Title</Label>
+          <Input
+            id="title-input"
+            type="text"
+            name="name"
+            placeholder="Title..."
+          />
         </div>
-        <Button type="submit">Create</Button>
-      </fieldset>
+        <div className="grid gap-3 my-8">
+          <Label htmlFor="description-input">Deck Description</Label>
+          <Textarea
+            id="description-input"
+            placeholder="Description..."
+            name="description"
+            className="min-h-[9.5rem]"
+          />
+        </div>
+      </div>
+      <Button type="submit">Create</Button>
     </form>
   );
 }

@@ -19,7 +19,6 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { IDeckInfo, ICardInfo } from '@/lib/api/types/types';
-// import { addCardsToDeckById } from '@/lib/api/handlers';
 
 interface CardExampleProps {
   deck: IDeckInfo | undefined;
@@ -69,39 +68,36 @@ const renderAnswerField = (cardType: string, backfield: string | string[]) => {
   }
 };
 
-export function CardExample({ deck, card }: CardExampleProps) {
+export const CardReview = ({ deck, card }: CardExampleProps) => {
   return (
-    <Card className="w-[99%] h-[90%] flex-col space-between">
+    <Card className="w-[95%] h-[85%] ">
       <CardHeader>
         <CardTitle>CARD QUESTION</CardTitle>
         <CardDescription>Deck: {deck?.name || 'Choose Deck'}</CardDescription>
       </CardHeader>
-      <CardContent className="h-[70%]">
-        {card?.imageURL ? (
+      <CardContent>
+        {card?.imageURL && (
           <img
             style={{ objectFit: 'cover' }}
             src={card.imageURL}
             alt="stand in for where an image could go"
             className="border border-primary rounded-md p-4 my-4 h-36 w-full"
           />
-        ) : (
-          <div className="h-36 w-full bg-secondary">Image goes here</div>
         )}
-        <div className="flex flex-col justify-evenly w-full items-center">
-          <div className="space-y-1.5 min-h-[50px] bg-secondary w-full rounded mt-4">
-            <Label htmlFor="question">
-              <p>Question:</p>
-            </Label>
-            <p id="question">{card?.frontField ?? 'Question Required...'}</p>
+
+        <div className="grid w-full items-center gap-4">
+          <div className="flex flex-col space-y-1.5">
+            <Label htmlFor="question">Question:</Label>
+            <h1 id="question">{card?.frontField ?? 'Question Required...'}</h1>
             {card?.subfield && <p>{card.subfield}</p>}
           </div>
-          <div className="space-y-1.5 min-h-[50px] bg-secondary w-full rounded mt-4">
+          <div className="flex flex-col space-y-1.5">
             {renderAnswerField(card?.answerType || '', card?.backField || '')}
           </div>
           <div>
             <p>{card?.extraField}</p>
           </div>
-          <div className="space-y-1.5 min-h-[50px] bg-secondary w-full rounded mt-4 flex-wrap">
+          <div className="flex-wrap">
             {card?.tags &&
               card?.tags.map((tag) => (
                 <Badge variant="default" className="bg-primary mx-0.5 mt-1">
@@ -111,10 +107,10 @@ export function CardExample({ deck, card }: CardExampleProps) {
           </div>
         </div>
       </CardContent>
-      <CardFooter className="flex justify-evenly">
+      <CardFooter className="flex justify-between">
         <Button variant="outline">Skip</Button>
         <Button>Answer</Button>
       </CardFooter>
     </Card>
   );
-}
+};

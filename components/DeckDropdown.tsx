@@ -8,6 +8,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import Typography from './Typography';
 import { getDecksInfoByUserId } from '@/lib/api/handlers';
 import { IDeckInfo, IResponse, ISessionUser } from '@/lib/api/types/types';
 
@@ -36,7 +37,6 @@ export const DeckDropdown = ({ sessionUser, setDeck }: DeckDropdownProps) => {
 
   return (
     <>
-      <Label htmlFor="choose-deck">Add to Deck:</Label>
       <Select onValueChange={(e) => handleDropdownClick(e)}>
         <SelectTrigger
           id="choose-deck"
@@ -58,10 +58,8 @@ export const DeckDropdown = ({ sessionUser, setDeck }: DeckDropdownProps) => {
               <SelectItem key={deckInfo.name} value={idx.toString()}>
                 <div className="flex items-start gap-3 text-muted-foreground">
                   <div className="grid gap-0.5">
-                    <p className="font-medium">{deckInfo.name}</p>
-                    <p className="text-xs" data-description>
-                      {deckInfo.description}
-                    </p>
+                    <Typography.Small text={deckInfo.name} />
+                    <Typography.Muted text={deckInfo.description} />
                   </div>
                 </div>
               </SelectItem>
