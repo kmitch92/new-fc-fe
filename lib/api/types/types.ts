@@ -3,6 +3,18 @@ import { ICard } from '../models/card-model';
 import { IDeck } from '../models/deck-model';
 import { IUser } from '../models/user-model';
 
+export interface IDeckOfCards {
+  deck: IDeckInfo;
+  cards: ICard[] | null[];
+}
+
+export interface IUserData {
+  user: ISessionUser | null;
+  setUser: (user: ISessionUser) => void;
+  decksOfCardsReview: IDeckOfCards[] | [];
+  setDecksOfCardsReview: (decks: IDeckOfCards[]) => void;
+}
+
 export interface IResponse {
   status: number;
   message: string;
@@ -15,7 +27,9 @@ export interface IResponse {
     | IUser[]
     | string
     | number
-    | IDeckInfo;
+    | IDeckInfo
+    | IDeckOfCards[]
+    | null[];
 }
 
 export interface IDeckInfo {

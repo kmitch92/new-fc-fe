@@ -1,6 +1,11 @@
 import { model, Schema, Document } from 'mongoose';
 import mongoose from 'mongoose';
 
+export interface IReviewHistory {
+  date: Date;
+  success: boolean;
+}
+
 export interface ICard extends Document {
   frontField: string;
   subfield?: string;
@@ -13,6 +18,8 @@ export interface ICard extends Document {
   nextReview: Date;
   totalReviews: number;
   failedReviews: number;
+  edits: Date[];
+  reviewHistory: IReviewHistory[];
   dateCreated: Date;
   ease: number;
   lastRandomMultiplier?: number;
@@ -62,6 +69,21 @@ export const CardSchema: Schema = new Schema<ICard>({
   dateCreated: {
     type: Date,
     required: true,
+  },
+  edits: {
+    type: [Date],
+    required: true,
+    default: [],
+  },
+  reviewHistory: {
+    type: [
+      {
+        date: Date,
+        success: Boolean,
+      },
+    ],
+    required: true,
+    default: [],
   },
   ease: {
     type: Number,

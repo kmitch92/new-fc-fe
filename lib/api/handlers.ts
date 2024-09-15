@@ -5,7 +5,7 @@ import { MUser, IUser } from './models/user-model';
 import { IDeck, MDeck } from './models/deck-model';
 import { ObjectId } from 'mongoose';
 import { spacedRepetition } from '../spaced-repetition/spacedRepetition';
-import { IResponse, IDeckInfo, ICardInfo } from './types/types';
+import { IResponse, IDeckInfo, ICardInfo, IDeckOfCards } from './types/types';
 
 class Response implements IResponse {
   status: number;
@@ -19,7 +19,10 @@ class Response implements IResponse {
     | IUser[]
     | string
     | number
-    | IDeckInfo;
+    | IDeckInfo
+    | IDeckOfCards[]
+    | null[];
+
   constructor({ status, message, ...rest }: IResponse) {
     this.status = status;
     this.message = message;
@@ -85,6 +88,67 @@ export const getDeckById = async (id: ObjectId) => {
           status: 200,
           message: 'Deck returned successfully',
           deck: deck,
+        })
+      )
+    );
+  } catch (err) {
+    let message = 'Unknown Error';
+    if (err instanceof Error) message = err.message;
+    return JSON.parse(
+      JSON.stringify(
+        new Response({
+          status: 500,
+          message: message,
+        })
+      )
+    );
+  }
+};
+
+const nextDayInSeconds = (daysInS: number) => {
+  const sPerDay = 3600 * 24;
+  return sPerDay * (Math.floor(daysInS / sPerDay) + 1);
+};
+
+// get all cards to review in all decks, return an array of objects with deckId and cardId fields
+export const getCardsToReview = async (userId: string): Promise<Response> => {
+  try {
+    await connectDB();
+    const user = await MUser.findById(userId);
+    const deckIds: ObjectId[] = user.decks;
+    const reviewCardsByDeck = await Promise.all(
+      deckIds.map(async (deckId) => {
+        const cards: ICard[] = await MDeck.findById(deckId, 'cards').find({
+          nextReview: {
+            $lte: new Date(nextDayInSeconds(new Date().getTime())),
+          },
+        });
+        const deckInfo: IDeckInfo | null = await MDeck.findOne(
+          { _id: deckId },
+          '_id name description'
+        );
+        if (!deckInfo) return null;
+        else {
+          const resultMember: IDeckOfCards = {
+            deck: {
+              id: deckInfo.id,
+              name: deckInfo.name,
+              description: deckInfo.description,
+            },
+            cards: cards,
+          };
+          return resultMember;
+        }
+      })
+    ).then((reviewCardsByDeck) => {
+      return reviewCardsByDeck;
+    });
+    return JSON.parse(
+      JSON.stringify(
+        new Response({
+          status: 200,
+          message: 'Cards to review returned successfully',
+          decks: reviewCardsByDeck as IDeckOfCards[],
         })
       )
     );

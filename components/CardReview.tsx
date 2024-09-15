@@ -1,3 +1,5 @@
+'use client';
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -18,11 +20,19 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { IDeckInfo, ICardInfo } from '@/lib/api/types/types';
+// import { IDeckInfo, ICardInfo } from '@/lib/api/types/types';
+import { IDeckOfCards } from '@/lib/api/types/types';
+import { ICard } from '../lib/api/models/card-model';
+import Typography from './Typography';
 
 interface CardExampleProps {
-  deck: IDeckInfo | undefined;
-  card: ICardInfo | undefined;
+  reviews: IDeckOfCards[];
+}
+
+interface CardWithInfo extends ICard {
+  deckName: string;
+  deckId: string;
+  deckDescription: string;
 }
 
 const renderAnswerField = (cardType: string, backfield: string | string[]) => {
@@ -68,18 +78,24 @@ const renderAnswerField = (cardType: string, backfield: string | string[]) => {
   }
 };
 
-export const CardReview = ({ deck, card }: CardExampleProps) => {
+interface CardViewProps {
+  cardWithInfo: CardWithInfo;
+}
+
+export const CardView = ({ cardWithInfo }: CardViewProps) => {
   return (
     <Card className="w-[95%] h-[85%] ">
       <CardHeader>
         <CardTitle>CARD QUESTION</CardTitle>
-        <CardDescription>Deck: {deck?.name || 'Choose Deck'}</CardDescription>
+        <CardDescription>
+          Deck: {cardWithInfo.deckName || 'Choose Deck'}
+        </CardDescription>
       </CardHeader>
       <CardContent>
-        {card?.imageURL && (
+        {cardWithInfo.imageURL && (
           <img
             style={{ objectFit: 'cover' }}
-            src={card.imageURL}
+            src={cardWithInfo.imageURL}
             alt="stand in for where an image could go"
             className="border border-primary rounded-md p-4 my-4 h-36 w-full"
           />
@@ -88,18 +104,23 @@ export const CardReview = ({ deck, card }: CardExampleProps) => {
         <div className="grid w-full items-center gap-4">
           <div className="flex flex-col space-y-1.5">
             <Label htmlFor="question">Question:</Label>
-            <h1 id="question">{card?.frontField ?? 'Question Required...'}</h1>
-            {card?.subfield && <p>{card.subfield}</p>}
+            <h1 id="question">
+              {cardWithInfo.frontField ?? 'Question Required...'}
+            </h1>
+            {cardWithInfo.subfield && <p>{cardWithInfo.subfield}</p>}
           </div>
           <div className="flex flex-col space-y-1.5">
-            {renderAnswerField(card?.answerType || '', card?.backField || '')}
+            {renderAnswerField(
+              cardWithInfo.answerType || '',
+              cardWithInfo.backField || ''
+            )}
           </div>
           <div>
-            <p>{card?.extraField}</p>
+            <p>{cardWithInfo.extraField}</p>
           </div>
           <div className="flex-wrap">
-            {card?.tags &&
-              card?.tags.map((tag) => (
+            {cardWithInfo.tags &&
+              cardWithInfo.tags.map((tag: string) => (
                 <Badge variant="default" className="bg-primary mx-0.5 mt-1">
                   {tag}
                 </Badge>
@@ -112,5 +133,41 @@ export const CardReview = ({ deck, card }: CardExampleProps) => {
         <Button>Answer</Button>
       </CardFooter>
     </Card>
+  );
+};
+
+export const CardReview = ({ reviews }: CardExampleProps) => {
+  const [cardsToReview, setCardsToReview] = useState<CardWithInfo[]>([]);
+  const [cardInReview, setCardInReview] = useState<CardWithInfo | null>(null);
+
+  reviews.forEach((deckOfCards) => {
+    deckOfCards.cards.forEach((card) => {
+      const cardWithInfo: CardWithInfo = {
+        ...card,
+        deckName: deckOfCards.deck.name ?? 'unknown',
+        deckId: deckOfCards.deck.id.toString() ?? 'unknown',
+        deckDescription: deckOfCards.deck.description ?? 'unknown',
+      } as CardWithInfo;
+      setCardsToReview((state) => [...state, cardWithInfo]);
+    });
+  });
+
+  const onReview = (card: CardWithInfo, answer: string) => {};
+
+  return (
+    <div className="flex flex-row">
+      <div>
+        <Typography.List
+          textArr={cardsToReview.slice(0, 10).map((card) => card.frontField)}
+        >
+          <></>
+        </Typography.List>
+      </div>
+      {cardInReview ? (
+        <CardView cardWithInfo={cardInReview} />
+      ) : (
+        <h1> No cards to review</h1>
+      )}
+    </div>
   );
 };

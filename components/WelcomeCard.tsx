@@ -12,11 +12,17 @@ import {
 } from '@/components/ui/card';
 import { Button } from './ui/button';
 import { useRouter } from 'next/navigation';
+import { IDeckOfCards } from '@/lib/api/types/types';
+
 interface WelcomeCardProps {
   session: Session;
+  decksOfCardsReview: IDeckOfCards[] | [];
 }
 
-export function WelcomeCard({ session }: WelcomeCardProps) {
+export function WelcomeCard({
+  session,
+  decksOfCardsReview = [],
+}: WelcomeCardProps) {
   const router = useRouter();
 
   return (
@@ -32,10 +38,16 @@ export function WelcomeCard({ session }: WelcomeCardProps) {
         />
       </CardContent>
       <CardFooter className="flex flex-col gap-8">
-        <p>
-          You have <strong>XX reviews</strong> in <strong>XX decks</strong>.
-          <br /> Ready to get started?
-        </p>
+        {decksOfCardsReview.length > 0 && (
+          <p>
+            You have{' '}
+            <strong>
+              {decksOfCardsReview.reduce((acc) => acc + 1, 0)} reviews
+            </strong>{' '}
+            in <strong>{decksOfCardsReview.length} decks</strong>.
+            <br /> Ready to get started?
+          </p>
+        )}
         <Button onClick={() => router.push('/learn')}>Start learning</Button>
       </CardFooter>
     </Card>
