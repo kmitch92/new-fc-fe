@@ -1,8 +1,8 @@
 'use server';
 import { connectDB } from './db';
-import { MCard, ICard } from './models/card-model';
-import { MUser, IUser } from './models/user-model';
-import { IDeck, MDeck } from './models/deck-model';
+import { Card, ICard } from './models/card-model';
+import { User, IUser } from './models/user-model';
+import { IDeck, Deck } from './models/deck-model';
 import { ObjectId } from 'mongoose';
 import { spacedRepetition } from '../spaced-repetition/spacedRepetition';
 import { IResponse, IDeckInfo, ICardInfo, IDeckOfCards } from './types/types';
@@ -43,14 +43,14 @@ export const postDeck = async (
 ) => {
   try {
     await connectDB();
-    const newDeck = await MDeck.create({
+    const newDeck = await Deck.create({
       name,
       description,
       cards,
       dateCreated: new Date(),
       lastUpdated: new Date(),
     });
-    await MUser.findByIdAndUpdate(userId, {
+    await User.findByIdAndUpdate(userId, {
       $addToSet: { decks: newDeck._id },
       lastUpdated: Date.now(),
     });
@@ -81,7 +81,7 @@ export const postDeck = async (
 export const getDeckById = async (id: ObjectId) => {
   try {
     await connectDB();
-    const deck = await MDeck.findById(id);
+    const deck = await Deck.findById(id);
     return JSON.parse(
       JSON.stringify(
         new Response({
@@ -114,16 +114,16 @@ const nextDayInSeconds = (daysInS: number) => {
 export const getCardsToReview = async (userId: string): Promise<Response> => {
   try {
     await connectDB();
-    const user = await MUser.findById(userId);
+    const user = await User.findById(userId);
     const deckIds: ObjectId[] = user.decks;
     const reviewCardsByDeck = await Promise.all(
       deckIds.map(async (deckId) => {
-        const cards: ICard[] = await MDeck.findById(deckId, 'cards').find({
+        const cards: ICard[] = await Deck.findById(deckId, 'cards').find({
           nextReview: {
             $lte: new Date(nextDayInSeconds(new Date().getTime())),
           },
         });
-        const deckInfo: IDeckInfo | null = await MDeck.findOne(
+        const deckInfo: IDeckInfo | null = await Deck.findOne(
           { _id: deckId },
           '_id name description'
         );
@@ -169,7 +169,7 @@ export const getCardsToReview = async (userId: string): Promise<Response> => {
 export const getDecksInfoByUserId = async (userId: string) => {
   try {
     await connectDB();
-    const user = await MUser.findById(userId);
+    const user = await User.findById(userId);
     const deckIds: ObjectId[] = user.decks;
     const promisedDeckInfos = deckIds.map((deckId) => {
       return getDeckInfoById(deckId);
@@ -201,7 +201,7 @@ export const getDecksInfoByUserId = async (userId: string) => {
 export const getDeckInfoById = async (id: ObjectId) => {
   try {
     await connectDB();
-    const deck = await MDeck.findById(id);
+    const deck = await Deck.findById(id);
     return JSON.parse(
       JSON.stringify(
         new Response({
@@ -237,7 +237,7 @@ export const addCardsToDeckById = async (
   try {
     await connectDB();
     const newCards = cards.map((card) => {
-      return new MCard({
+      return new Card({
         frontField: card.frontField,
         subfield: card.subfield || '',
         backField: card.backField,
@@ -252,7 +252,7 @@ export const addCardsToDeckById = async (
         dateCreated: new Date(),
       });
     });
-    await MDeck.findByIdAndUpdate(deckId, {
+    await Deck.findByIdAndUpdate(deckId, {
       $addToSet: { cards: newCards },
       lastUpdated: Date.now(),
     });
@@ -287,7 +287,7 @@ export const updateNextReviewAndEase = async (
 ) => {
   try {
     await connectDB();
-    const deck = await MDeck.findOne({ _id: deckId });
+    const deck = await Deck.findOne({ _id: deckId });
     const card = deck.find({
       cards: {
         $elemMatch: { _id: cardId },
@@ -336,7 +336,7 @@ export const updateExistingCard = async (
 ) => {
   try {
     await connectDB();
-    await MDeck.findOneAndUpdate(
+    await Deck.findOneAndUpdate(
       { _id: deckId, 'cards._id': cardId },
       {
         $set: {
@@ -377,7 +377,7 @@ export const updateExistingCard = async (
 export const deleteCardByIds = async (deckId: ObjectId, cardId: ObjectId) => {
   try {
     await connectDB();
-    await MDeck.findOneAndUpdate(
+    await Deck.findOneAndUpdate(
       { _id: deckId },
       { $pull: { cards: { _id: cardId } } },
       { new: true }
@@ -412,7 +412,7 @@ export const updateDeckDetailsById = async (
 ) => {
   try {
     await connectDB();
-    await MDeck.findByIdAndUpdate(deckId, {
+    await Deck.findByIdAndUpdate(deckId, {
       newName,
       newDescription,
       lastUpdated: Date.now(),
@@ -443,7 +443,7 @@ export const updateDeckDetailsById = async (
 export const deleteDeckById = async (deckId: ObjectId) => {
   try {
     await connectDB();
-    await MDeck.findByIdAndDelete(deckId);
+    await Deck.findByIdAndDelete(deckId);
     return JSON.parse(
       JSON.stringify(
         new Response({
@@ -470,7 +470,7 @@ export const deleteDeckById = async (deckId: ObjectId) => {
 export const getUserByEmail = async (email: string) => {
   try {
     await connectDB();
-    const user = await MUser.findOne({ email });
+    const user = await User.findOne({ email });
     return JSON.parse(
       JSON.stringify(
         new Response({
@@ -498,7 +498,7 @@ export const getUserByEmail = async (email: string) => {
 export const getUserById = async (userId: ObjectId) => {
   try {
     await connectDB();
-    const user = await MUser.findById(userId);
+    const user = await User.findById(userId);
     return JSON.parse(
       JSON.stringify(
         new Response({
@@ -526,7 +526,7 @@ export const getUserById = async (userId: ObjectId) => {
 export const updateUserById = async (userId: ObjectId, updatedUser: IUser) => {
   try {
     await connectDB();
-    const user = await MUser.findByIdAndUpdate(userId, updatedUser);
+    const user = await User.findByIdAndUpdate(userId, updatedUser);
     return JSON.parse(
       JSON.stringify(
         new Response({
@@ -554,7 +554,7 @@ export const updateUserById = async (userId: ObjectId, updatedUser: IUser) => {
 export const updateUserTagsById = async (userId: string, newTags: string[]) => {
   try {
     await connectDB();
-    await MUser.updateOne({ _id: userId }, { tagsUsed: newTags });
+    await User.updateOne({ _id: userId }, { tagsUsed: newTags });
     return JSON.parse(
       JSON.stringify(
         new Response({
@@ -581,7 +581,7 @@ export const updateUserTagsById = async (userId: string, newTags: string[]) => {
 export const deleteUserById = async (userId: ObjectId) => {
   try {
     await connectDB();
-    await MUser.findByIdAndDelete(userId);
+    await User.findByIdAndDelete(userId);
     return JSON.parse(
       JSON.stringify(
         new Response({

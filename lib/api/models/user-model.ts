@@ -90,5 +90,4 @@ const UserSchema: Schema = new Schema<IUser>({
   active: { type: Boolean, default: true },
 });
 
-export const MUser =
-  mongoose?.models?.MUser || model<IUser>('MUser', UserSchema);
+export const User = mongoose?.models?.User || model<IUser>('User', UserSchema);

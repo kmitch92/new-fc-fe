@@ -1,6 +1,6 @@
 import { NextAuthOptions } from 'next-auth';
-import { MUser } from '../api/models/user-model';
-import type { Session, Account, User } from 'next-auth';
+import { User } from '../api/models/user-model';
+import type { Session, Account, User as TUser } from 'next-auth';
 import type { JWT } from 'next-auth/jwt';
 
 import GoogleProvider from 'next-auth/providers/google';
@@ -37,7 +37,9 @@ export const authOptions: NextAuthOptions = {
     async session(params: { session: Session; token: JWT }): Promise<any> {
       let { session, token } = params;
       const userEmail = session.user?.email;
-      const dbJSONUser = await MUser.findOne({ email: userEmail });
+      const dbJSONUser = await User.findOne({ email: userEmail }).maxTimeMS(
+        1000
+      );
       if (!dbJSONUser) {
         throw new Error('User not found');
       }
@@ -53,19 +55,21 @@ export const authOptions: NextAuthOptions = {
       return session;
     },
 
-    async signIn(params: { user: User }): Promise<any> {
+    async signIn(params: { user: TUser }): Promise<any> {
       const { user } = params;
       console.log('Sign In Callback', user);
       try {
         await connectDB();
         // Check if user exists in DB
-        const existingUser = await MUser.findOne({ email: user.email });
+        const existingUser = await User.findOne({
+          email: user.email,
+        }).maxTimeMS(1000);
         if (existingUser) {
           console.log('User already exists in DB');
           return true;
         }
         // Create new user
-        const newUser = await MUser.create({
+        const newUser = await User.create({
           name: user.name as string,
           email: user.email as string,
           image: user.image as string,

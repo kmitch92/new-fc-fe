@@ -18,11 +18,16 @@ export const connectDB = async () => {
   //     process.exit(1);
   //   }
   // };
+  console.log('trying to connect to mongodb');
+  mongoose.set('debug', true);
+  mongoose.set('bufferCommands', false);
 
   if (cached.conn) {
+    console.log('using cached connection');
     return cached.conn;
   }
   if (!cached.promise) {
+    console.log('creating new connection');
     const opts = {
       bufferCommands: false,
     };

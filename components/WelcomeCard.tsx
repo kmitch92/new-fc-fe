@@ -1,7 +1,9 @@
 'use client';
 import * as React from 'react';
-import type { Session } from 'next-auth';
-
+import { useContext, useEffect } from 'react';
+import { UserContext } from '@/contexts/UserContext';
+import { useServerSessionUser } from '@/lib/hooks/useServerSession';
+import { ISessionUser } from '@/lib/api/types/types';
 import {
   Card,
   CardContent,
@@ -12,33 +14,38 @@ import {
 } from '@/components/ui/card';
 import { Button } from './ui/button';
 import { useRouter } from 'next/navigation';
-import { IDeckOfCards } from '@/lib/api/types/types';
+import { getCardsToReview } from '@/lib/api/handlers';
 
-interface WelcomeCardProps {
-  session: Session;
-  decksOfCardsReview: IDeckOfCards[] | [];
+interface IWelcomeCardProps {
+  sessionUser: ISessionUser;
 }
 
-export function WelcomeCard({
-  session,
-  decksOfCardsReview = [],
-}: WelcomeCardProps) {
+export function WelcomeCard({ sessionUser }: IWelcomeCardProps) {
   const router = useRouter();
+  const { user, setUser, decksOfCardsReview, setDecksOfCardsReview } =
+    useContext(UserContext);
+  // const sessionUser = useServerSessionUser() as unknown as ISessionUser;
+
+  useEffect(() => {
+    !user && setUser(sessionUser);
+    if (decksOfCardsReview?.length === 0) {
+      const reviews = getCardsToReview(sessionUser?.id);
+      //  @ts-ignore
+      setDecksOfCardsReview(reviews?.decks);
+    }
+  }, []);
 
   return (
     <Card className="w-[300px] h-[400px]">
       <CardHeader>
-        <CardTitle>Welcome, {session.user?.name}!</CardTitle>
+        <CardTitle>Welcome, {user?.name}!</CardTitle>
         <CardDescription>Get ready to learn!</CardDescription>
       </CardHeader>
       <CardContent>
-        <img
-          src={session.user?.image as string}
-          className="size-32 rounded-md"
-        />
+        <img src={user?.image as string} className="size-32 rounded-md" />
       </CardContent>
       <CardFooter className="flex flex-col gap-8">
-        {decksOfCardsReview.length > 0 && (
+        {decksOfCardsReview?.length > 0 && (
           <p>
             You have{' '}
             <strong>
