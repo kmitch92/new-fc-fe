@@ -9,6 +9,7 @@
 - create browse cards dashboard for card editing, deletion etc
 - hook browse cards up to db funcs.
 - implement redux for storing important information about the user session
+- add validation step to deck creation - deck names can't match existing etc
 
 - finish card component
     - look at schemas on back-end to see what fields should be added.

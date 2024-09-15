@@ -33,13 +33,21 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import Typography from './Typography';
 
-const handlePostDeck = async (userId: string, formData: FormData) => {
+const handlePostDeck = async (
+  userId: string,
+  formData: FormData,
+  formRef: React.RefObject<HTMLFormElement> | null
+) => {
   const name = formData.get('name') as string;
   const description = formData.get('description') as string;
 
-  await postDeck(userId, { name, description, cards: [] });
+  try {
+    await postDeck(userId, { name, description, cards: [] });
+    formRef && formRef?.current?.reset();
+  } catch (error) {
+    console.error(error);
+  }
 };
 interface AddDeckProps {
   userId: string;
@@ -48,6 +56,7 @@ interface AddDeckProps {
 export function AddDeck({ userId, isExposed = false }: AddDeckProps) {
   const [open, setOpen] = React.useState(false);
   const isDesktop = useMediaQuery('(min-width: 768px)');
+  const formRef = React.useRef<HTMLFormElement>(null);
 
   if (isDesktop && !isExposed) {
     return (
@@ -62,7 +71,7 @@ export function AddDeck({ userId, isExposed = false }: AddDeckProps) {
               Provide a title and description for the new deck.
             </DialogDescription>
           </DialogHeader>
-          <AddDeckForm setOpen={setOpen} userId={userId} />
+          <AddDeckForm setOpen={setOpen} userId={userId} formRef={formRef} />
         </DialogContent>
       </Dialog>
     );
@@ -76,7 +85,7 @@ export function AddDeck({ userId, isExposed = false }: AddDeckProps) {
               Provide a title and description for the new deck.
             </CardDescription>
           </CardHeader>
-          <AddDeckForm setOpen={setOpen} userId={userId} />
+          <AddDeckForm setOpen={setOpen} userId={userId} formRef={formRef} />
         </CardContent>
       </Card>
     );
@@ -93,7 +102,12 @@ export function AddDeck({ userId, isExposed = false }: AddDeckProps) {
               Provide a title and description for the new deck.
             </DrawerDescription>
           </DrawerHeader>
-          <AddDeckForm className="px-4" setOpen={setOpen} userId={userId} />
+          <AddDeckForm
+            className="px-4"
+            setOpen={setOpen}
+            userId={userId}
+            formRef={formRef}
+          />
           <DrawerFooter className="pt-2">
             <DrawerClose asChild>
               <Button variant="outline">Cancel</Button>
@@ -107,14 +121,21 @@ interface AddDeckFormProps {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   className?: string;
   userId: string;
+  formRef: React.RefObject<HTMLFormElement> | null;
 }
 
-export function AddDeckForm({ className, setOpen, userId }: AddDeckFormProps) {
+export function AddDeckForm({
+  className,
+  setOpen,
+  userId,
+  formRef,
+}: AddDeckFormProps) {
   return (
     <form
       className={cn('grid items-start gap-4', className)}
+      ref={formRef}
       action={(form) => {
-        return handlePostDeck(userId, form), setOpen(false);
+        return handlePostDeck(userId, form, formRef), setOpen(false);
       }}
     >
       <div>

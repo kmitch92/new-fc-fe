@@ -1,13 +1,15 @@
 import { WelcomeCard } from '@/components/WelcomeCard';
-import { auth } from '../app/api/auth/[...nextauth]/route';
 import React from 'react';
+import { useServerSessionUser } from '@/lib/hooks/useServerSession';
+
+import { ISessionUser } from '@/lib/api/types/types';
 
 export default async function Home() {
-  const sess = await auth();
+  const sessionUser = (await useServerSessionUser()) as ISessionUser;
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-12">
-      {sess && <WelcomeCard />}
+      {sessionUser && <WelcomeCard sessionUser={sessionUser} />}
     </main>
   );
 }
