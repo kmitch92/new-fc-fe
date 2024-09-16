@@ -1,10 +1,16 @@
-import { ISessionUser } from '@/lib/api/types/types';
+import { IDeckOfCards, ISessionUser } from '@/lib/api/types/types';
 import { AddCardDashboard } from './AddCardDashboard';
 import { EditCardDashboard } from './EditCardDashboard';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { CardReview } from './CardReview';
 
-export const CardInteractions = ({ sUser }: { sUser: ISessionUser }) => {
+export const CardInteractions = ({
+  sUser,
+  cardsToReview,
+}: {
+  sUser: ISessionUser;
+  cardsToReview: IDeckOfCards[];
+}) => {
   return (
     <Tabs defaultValue="add" className="w-[40vw]">
       <TabsList className="grid w-full grid-cols-3">
@@ -13,7 +19,7 @@ export const CardInteractions = ({ sUser }: { sUser: ISessionUser }) => {
         <TabsTrigger value="edit">edit</TabsTrigger>
       </TabsList>
       <TabsContent value="review">
-        <CardReview />
+        <CardReview reviews={cardsToReview} />
       </TabsContent>
       <TabsContent value="add">
         <AddCardDashboard sessionUser={sUser} />

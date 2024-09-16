@@ -105,13 +105,12 @@ export const getDeckById = async (id: ObjectId) => {
   }
 };
 
-const nextDayInSeconds = (daysInS: number) => {
-  const sPerDay = 3600 * 24;
-  return sPerDay * (Math.floor(daysInS / sPerDay) + 1);
+const nextDayInSeconds = (date: Date) => {
+  date.setHours(0, 0, 0, 0);
 };
 
 // get all cards to review in all decks, return an array of objects with deckId and cardId fields
-export const getCardsToReview = async (userId: string): Promise<Response> => {
+export const getCardsToReview = async (userId: string) => {
   try {
     await connectDB();
     const user = await User.findById(userId);
@@ -120,7 +119,7 @@ export const getCardsToReview = async (userId: string): Promise<Response> => {
       deckIds.map(async (deckId) => {
         const cards: ICard[] = await Deck.findById(deckId, 'cards').find({
           nextReview: {
-            $lte: new Date(nextDayInSeconds(new Date().getTime())),
+            $lte: await nextDayInSeconds(new Date()),
           },
         });
         const deckInfo: IDeckInfo | null = await Deck.findOne(

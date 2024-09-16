@@ -136,7 +136,7 @@ export const CardView = ({ cardWithInfo }: CardViewProps) => {
   );
 };
 
-export const CardReview = ({ reviews }: CardExampleProps) => {
+export const CardReview = ({ reviews = [] }: CardExampleProps) => {
   const [cardsToReview, setCardsToReview] = useState<CardWithInfo[]>([]);
   const [cardInReview, setCardInReview] = useState<CardWithInfo | null>(null);
 

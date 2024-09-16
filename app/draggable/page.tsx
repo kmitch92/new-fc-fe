@@ -4,9 +4,13 @@ import { ISessionUser } from '@/lib/api/types/types';
 import { AddDeck } from '@/components/AddDeck';
 import { WelcomeCard } from '@/components/WelcomeCard';
 import { CardInteractions } from '@/components/CardInteractions';
+import { getCardsToReview } from '@/lib/api/handlers';
 
 export default async function Draggable() {
   const sessionUser = (await useServerSessionUser()) as ISessionUser;
+
+  const cardsToReview = await getCardsToReview(sessionUser.id);
+  console.log(cardsToReview);
 
   return (
     <section className="h-[100vh] w-full px-4 grid grid-flow-col auto-cols-max">
@@ -17,7 +21,10 @@ export default async function Draggable() {
         <AddDeck userId={sessionUser.id} isExposed={true} />
       </div>
       <div className="w-[1000px] h-[300px]">
-        <CardInteractions sUser={sessionUser} />
+        <CardInteractions
+          sUser={sessionUser}
+          cardsToReview={cardsToReview.decks ?? []}
+        />
       </div>
     </section>
   );

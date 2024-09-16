@@ -26,14 +26,13 @@ export function WelcomeCard({ sessionUser }: IWelcomeCardProps) {
     useContext(UserContext);
   // const sessionUser = useServerSessionUser() as unknown as ISessionUser;
 
-  useEffect(() => {
-    !user && setUser(sessionUser);
-    if (decksOfCardsReview?.length === 0) {
-      const reviews = getCardsToReview(sessionUser?.id);
-      //  @ts-ignore
-      setDecksOfCardsReview(reviews?.decks);
-    }
-  }, []);
+  // useEffect(() => {
+  //   !user && setUser(sessionUser);
+  //   if (decksOfCardsReview?.length === 0) {
+  //     const reviews = getCardsToReview(sessionUser?.id);
+  //     setDecksOfCardsReview(reviews?.decks);
+  //   }
+  // }, []);
 
   return (
     <Card className="w-[300px] h-[400px]">
