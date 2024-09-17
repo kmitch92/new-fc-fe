@@ -25,11 +25,11 @@ import { IDeckOfCards } from '@/lib/api/types/types';
 import { ICard } from '../lib/api/models/card-model';
 import Typography from './Typography';
 
-interface CardExampleProps {
-  reviews: IDeckOfCards[];
+interface CardReviewProps {
+  reviews: CardWithInfo[];
 }
 
-interface CardWithInfo extends ICard {
+export interface CardWithInfo extends ICard {
   deckName: string;
   deckId: string;
   deckDescription: string;
@@ -136,23 +136,12 @@ export const CardView = ({ cardWithInfo }: CardViewProps) => {
   );
 };
 
-export const CardReview = ({ reviews = [] }: CardExampleProps) => {
-  const [cardsToReview, setCardsToReview] = useState<CardWithInfo[]>([]);
+export const CardReview = ({ reviews }: CardReviewProps) => {
+  const [cardsToReview, setCardsToReview] = useState<CardWithInfo[]>(reviews);
   const [cardInReview, setCardInReview] = useState<CardWithInfo | null>(null);
 
-  reviews.forEach((deckOfCards) => {
-    deckOfCards.cards.forEach((card) => {
-      const cardWithInfo: CardWithInfo = {
-        ...card,
-        deckName: deckOfCards.deck.name ?? 'unknown',
-        deckId: deckOfCards.deck.id.toString() ?? 'unknown',
-        deckDescription: deckOfCards.deck.description ?? 'unknown',
-      } as CardWithInfo;
-      setCardsToReview((state) => [...state, cardWithInfo]);
-    });
-  });
-
   const onReview = (card: CardWithInfo, answer: string) => {};
+  console.log(cardsToReview.slice(0, 10).map((card) => card.frontField));
 
   return (
     <div className="flex flex-row">
@@ -163,11 +152,6 @@ export const CardReview = ({ reviews = [] }: CardExampleProps) => {
           <></>
         </Typography.List>
       </div>
-      {cardInReview ? (
-        <CardView cardWithInfo={cardInReview} />
-      ) : (
-        <h1> No cards to review</h1>
-      )}
     </div>
   );
 };

@@ -147,7 +147,9 @@ export const getCardsToReview = async (userId: string) => {
         new Response({
           status: 200,
           message: 'Cards to review returned successfully',
-          decks: reviewCardsByDeck as IDeckOfCards[],
+          decks: reviewCardsByDeck.filter(
+            (deck) => deck?.cards.length
+          ) as IDeckOfCards[],
         })
       )
     );

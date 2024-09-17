@@ -9,7 +9,7 @@ export const CardInteractions = ({
   cardsToReview,
 }: {
   sUser: ISessionUser;
-  cardsToReview: IDeckOfCards[];
+  cardsToReview: IDeckOfCards[] | [];
 }) => {
   return (
     <Tabs defaultValue="add" className="w-[40vw]">
