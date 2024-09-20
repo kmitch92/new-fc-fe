@@ -105,55 +105,61 @@ export const getDeckById = async (id: ObjectId) => {
   }
 };
 
-const nextDayInSeconds = (date: Date) => {
-  date.setHours(0, 0, 0, 0);
-};
-
+console.log(
+  'check if this is tomorrow or yesterday',
+  new Date().setHours(0, 0, 0, 0)
+);
 // get all cards to review in all decks, return an array of objects with deckId and cardId fields
 export const getCardsToReview = async (userId: string) => {
+  let tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  tomorrow.setHours(0, 0, 0, 0);
+
   try {
     await connectDB();
     const user = await User.findById(userId);
     const deckIds: ObjectId[] = user.decks;
-    const reviewCardsByDeck = await Promise.all(
-      deckIds.map(async (deckId) => {
-        const cards: ICard[] = await Deck.findById(deckId, 'cards').find({
-          nextReview: {
-            $lte: await nextDayInSeconds(new Date()),
-          },
-        });
-        const deckInfo: IDeckInfo | null = await Deck.findOne(
-          { _id: deckId },
-          '_id name description'
-        );
-        if (!deckInfo) return null;
-        else {
-          const resultMember: IDeckOfCards = {
-            deck: {
-              id: deckInfo.id,
-              name: deckInfo.name,
-              description: deckInfo.description,
-            },
-            cards: cards,
-          };
-          return resultMember;
-        }
-      })
-    ).then((reviewCardsByDeck) => {
-      return reviewCardsByDeck;
+    //@ts-ignore
+    const decksOfCards: IDeck[] = deckIds.map(async (deckId) => {
+      console.log('in map');
+      //@ts-ignore
+      const deck: IDeck = await Deck.findById(deckId).find({
+        'cards.nextReview': {
+          $lte: tomorrow,
+        },
+      });
+      console.log('deck', deck);
+      //@ts-ignore
+      return deck[0] as unknown as IDeck;
+      // const deckInfo: IDeckInfo | null = await Deck.findOne(
+      //   { _id: deckId },
+      //   '_id name description'
+      // );
+      // if (!deckInfo) return null;
+      // else {
+      //   const resultMember: IDeckOfCards = {
+      //     deck: {
+      //       id: deckInfo.id,
+      //       name: deckInfo.name,
+      //       description: deckInfo.description,
+      //     },
+      //     cards: deckOfCards,
+      //   };
+      //   return resultMember;
+      // }
     });
+
     return JSON.parse(
       JSON.stringify(
         new Response({
           status: 200,
           message: 'Cards to review returned successfully',
-          decks: reviewCardsByDeck.filter(
-            (deck) => deck?.cards.length
-          ) as IDeckOfCards[],
+          decks: decksOfCards.filter((deck: IDeck) => deck?.cards?.length),
         })
       )
     );
   } catch (err) {
+    console.log(err);
     let message = 'Unknown Error';
     if (err instanceof Error) message = err.message;
     return JSON.parse(
