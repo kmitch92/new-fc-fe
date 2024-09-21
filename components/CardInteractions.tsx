@@ -3,25 +3,27 @@ import { AddCardDashboard } from './AddCardDashboard';
 import { EditCardDashboard } from './EditCardDashboard';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { CardReview, CardWithInfo } from './CardReview';
+import { useServerSessionUser } from '@/lib/hooks/useServerSession';
 
-export const CardInteractions = ({
-  sUser,
+export const CardInteractions = async ({
   cardsToReview,
 }: {
-  sUser: ISessionUser;
   cardsToReview: IDeckOfCards[] | [];
 }) => {
+  const sUser = (await useServerSessionUser()) as ISessionUser;
   const reviews: CardWithInfo[] = [];
+  cardsToReview.filter((deck) => deck != undefined && deck?.cards?.length > 0);
   cardsToReview.forEach((deckCards) => {
-    deckCards.cards.forEach((card) => {
-      const cardWithInfo: CardWithInfo = {
-        ...card,
-        deckName: deckCards.deck.name ?? 'unknown',
-        deckId: deckCards.deck.id.toString() ?? 'unknown',
-        deckDescription: deckCards.deck.description ?? 'unknown',
-      } as CardWithInfo;
-      reviews.push(cardWithInfo);
-    });
+    deckCards?.cards?.length > 0 &&
+      deckCards.cards.forEach((card) => {
+        const cardWithInfo: CardWithInfo = {
+          ...card,
+          deckName: deckCards.deck.name ?? 'unknown',
+          deckId: deckCards.deck.id.toString() ?? 'unknown',
+          deckDescription: deckCards.deck.description ?? 'unknown',
+        } as CardWithInfo;
+        reviews.push(cardWithInfo);
+      });
   });
 
   return (

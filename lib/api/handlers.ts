@@ -119,34 +119,15 @@ export const getCardsToReview = async (userId: string) => {
     await connectDB();
     const user = await User.findById(userId);
     const deckIds: ObjectId[] = user.decks;
-    //@ts-ignore
-    const decksOfCards: IDeck[] = deckIds.map(async (deckId) => {
+    const decksOfCards: Promise<IDeck>[] = deckIds.map(async (deckId) => {
       console.log('in map');
-      //@ts-ignore
-      const deck: IDeck = await Deck.findById(deckId).find({
+      const [deck] = await Deck.findById(deckId).find({
         'cards.nextReview': {
           $lte: tomorrow,
         },
       });
       console.log('deck', deck);
-      //@ts-ignore
-      return deck[0] as unknown as IDeck;
-      // const deckInfo: IDeckInfo | null = await Deck.findOne(
-      //   { _id: deckId },
-      //   '_id name description'
-      // );
-      // if (!deckInfo) return null;
-      // else {
-      //   const resultMember: IDeckOfCards = {
-      //     deck: {
-      //       id: deckInfo.id,
-      //       name: deckInfo.name,
-      //       description: deckInfo.description,
-      //     },
-      //     cards: deckOfCards,
-      //   };
-      //   return resultMember;
-      // }
+      return deck;
     });
 
     return JSON.parse(
@@ -154,7 +135,8 @@ export const getCardsToReview = async (userId: string) => {
         new Response({
           status: 200,
           message: 'Cards to review returned successfully',
-          decks: decksOfCards.filter((deck: IDeck) => deck?.cards?.length),
+          // @ts-ignore
+          decks: decksOfCards,
         })
       )
     );
@@ -173,37 +155,37 @@ export const getCardsToReview = async (userId: string) => {
   }
 };
 
-export const getDecksInfoByUserId = async (userId: string) => {
-  try {
-    await connectDB();
-    const user = await User.findById(userId);
-    const deckIds: ObjectId[] = user.decks;
-    const promisedDeckInfos = deckIds.map((deckId) => {
-      return getDeckInfoById(deckId);
-    });
-    const deckInfos = await Promise.all(promisedDeckInfos);
-    return JSON.parse(
-      JSON.stringify(
-        new Response({
-          status: 200,
-          message: 'Deck returned successfully',
-          decks: deckInfos.map((deckInfo) => deckInfo.deck),
-        })
-      )
-    );
-  } catch (err) {
-    let message = 'Unknown Error';
-    if (err instanceof Error) message = err.message;
-    return JSON.parse(
-      JSON.stringify(
-        new Response({
-          status: 500,
-          message: message,
-        })
-      )
-    );
-  }
-};
+// export const getDecksInfoByUserId = async (userId: string) => {
+//   try {
+//     await connectDB();
+//     const user = await User.findById(userId);
+//     const deckIds: ObjectId[] = user.decks;
+//     const promisedDeckInfos = deckIds.map((deckId) => {
+//       return getDeckInfoById(deckId);
+//     });
+//     const deckInfos = await Promise.all(promisedDeckInfos);
+//     return JSON.parse(
+//       JSON.stringify(
+//         new Response({
+//           status: 200,
+//           message: 'Deck returned successfully',
+//           decks: deckInfos.map((deckInfo) => deckInfo.deck),
+//         })
+//       )
+//     );
+//   } catch (err) {
+//     let message = 'Unknown Error';
+//     if (err instanceof Error) message = err.message;
+//     return JSON.parse(
+//       JSON.stringify(
+//         new Response({
+//           status: 500,
+//           message: message,
+//         })
+//       )
+//     );
+//   }
+// };
 
 export const getDeckInfoById = async (id: ObjectId) => {
   try {

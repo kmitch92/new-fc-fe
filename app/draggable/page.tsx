@@ -1,4 +1,4 @@
-import { useServerSessionUser } from '@/lib/hooks/useServerSession';
+'use client';
 
 import { ISessionUser } from '@/lib/api/types/types';
 import { AddDeck } from '@/components/AddDeck';
@@ -6,29 +6,55 @@ import { WelcomeCard } from '@/components/WelcomeCard';
 import { CardInteractions } from '@/components/CardInteractions';
 import { getCardsToReview } from '@/lib/api/handlers';
 
-export default async function Draggable() {
-  const sessionUser = (await useServerSessionUser()) as ISessionUser;
+import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels';
 
-  const cardsToReviewProm = await getCardsToReview(sessionUser.id);
-  const cardsToReview = await cardsToReviewProm.decks;
-
+export default function Draggable() {
   return (
-    <section className="h-[100vh] w-full px-4 grid grid-flow-col auto-cols-max">
-      <div>
-        <WelcomeCard
-          sessionUser={sessionUser}
-          cardsToReview={cardsToReview ?? []}
-        />
-      </div>
-      <div>
-        <AddDeck userId={sessionUser.id} isExposed={true} />
-      </div>
-      <div className="w-[1000px] h-[300px]">
-        <CardInteractions
-          sUser={sessionUser}
-          cardsToReview={cardsToReview ?? []}
-        />
-      </div>
+    <section className="h-[86vh] w-full">
+      <PanelGroup direction="horizontal">
+        <Panel collapsible>
+          <PanelGroup direction="vertical">
+            <Panel className="bg-primary border" minSize={25} maxSize={50}>
+              Welcome Card
+            </Panel>
+            <PanelResizeHandle />
+            <Panel className="bg-[red] border" minSize={25} maxSize={50}>
+              Account Info, credits, notes etc
+            </Panel>
+            <PanelResizeHandle />
+            <Panel
+              className="bg-[yellow] border"
+              minSize={25}
+              maxSize={50}
+            ></Panel>
+          </PanelGroup>
+        </Panel>
+        <PanelResizeHandle />
+        <Panel>
+          <PanelGroup direction="vertical">
+            <Panel className="bg-[magenta] border" maxSize={33} minSize={15}>
+              deck management
+            </Panel>
+            <PanelResizeHandle />
+            <Panel className="bg-[lightgreen] border" maxSize={85} minSize={67}>
+              card browser
+            </Panel>
+          </PanelGroup>
+        </Panel>
+
+        <PanelResizeHandle />
+        <Panel>
+          <PanelGroup direction="vertical">
+            <Panel className="bg-[navy] border" maxSize={33} minSize={15}>
+              Metrics
+            </Panel>
+            <PanelResizeHandle />
+            <Panel className="bg-[purple] border" maxSize={85} minSize={67}>
+              Reviews
+            </Panel>
+          </PanelGroup>
+        </Panel>
+      </PanelGroup>
     </section>
   );
 }
