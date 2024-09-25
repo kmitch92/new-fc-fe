@@ -4,17 +4,28 @@ import { Navbar } from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { ThemeProvider } from '@/contexts/ThemeContext';
 import { UserProvider } from '@/contexts/UserContext';
+import { useServerSessionUser } from '@/lib/hooks/useServerSession';
+import { getCardsToReview } from '@/lib/api/handlers';
+// import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 export const metadata: Metadata = {
   title: 'Flash Cards',
   description: 'Remembering Intelligently',
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  // const queryClient = new QueryClient();
+
+  const sUser = await useServerSessionUser();
+  let decksToReview;
+  if (sUser?.id) {
+    decksToReview = await getCardsToReview(sUser?.id as string);
+  }
+
   return (
     <html>
       <body
@@ -25,18 +36,20 @@ export default function RootLayout({
             'inset 0 0 500px 200px hsl(var(--background)), inset 0 0 600px 300px hsl(var(--background))',
         }}
       >
+        {/* <QueryClientProvider client={queryClient}> */}
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
           enableSystem
           disableTransitionOnChange
         >
-          <UserProvider>
+          <UserProvider fetchedUser={sUser} fetchedDecks={decksToReview}>
             <Navbar />
             {children}
             <Footer />
           </UserProvider>
         </ThemeProvider>
+        {/* </QueryClientProvider> */}
       </body>
     </html>
   );
