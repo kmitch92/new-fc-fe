@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { CardExample } from '@/components/CardExample';
-import { DeckDropdown } from './DeckDropdown';
+import { DeckDropdown } from './Deck/DeckDropdown';
 import { ICardInfo, IDeckInfo, ISessionUser } from '@/lib/api/types/types';
 import { Checkbox } from './ui/checkbox';
 import { Separator } from '@/components/ui/separator';

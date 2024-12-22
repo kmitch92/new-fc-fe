@@ -11,17 +11,17 @@ class Response implements IResponse {
   status: number;
   message: string;
   [key: string]:
-    | ICard
-    | ICard[]
-    | IDeck
-    | IDeck[]
-    | IUser
-    | IUser[]
-    | string
-    | number
-    | IDeckInfo
-    | IDeckOfCards[]
-    | null[];
+  | ICard
+  | ICard[]
+  | IDeck
+  | IDeck[]
+  | IUser
+  | IUser[]
+  | string
+  | number
+  | IDeckInfo
+  | IDeckOfCards[]
+  | null[];
 
   constructor({ status, message, ...rest }: IResponse) {
     this.status = status;
@@ -29,6 +29,8 @@ class Response implements IResponse {
     Object.assign(this, rest);
   }
 }
+
+const UNIX_DAY = 86400;
 
 // post a deck
 interface IPostDeck {
@@ -112,7 +114,7 @@ console.log(
 // get all cards to review in all decks, return an array of objects with deckId and cardId fields
 export const getCardsToReview = async (userId: string) => {
   let tomorrow = new Date();
-  tomorrow.setDate(tomorrow.getDate() + 1);
+  tomorrow.setDate(tomorrow.getDate());
   tomorrow.setHours(0, 0, 0, 0);
 
   try {
@@ -155,37 +157,37 @@ export const getCardsToReview = async (userId: string) => {
   }
 };
 
-// export const getDecksInfoByUserId = async (userId: string) => {
-//   try {
-//     await connectDB();
-//     const user = await User.findById(userId);
-//     const deckIds: ObjectId[] = user.decks;
-//     const promisedDeckInfos = deckIds.map((deckId) => {
-//       return getDeckInfoById(deckId);
-//     });
-//     const deckInfos = await Promise.all(promisedDeckInfos);
-//     return JSON.parse(
-//       JSON.stringify(
-//         new Response({
-//           status: 200,
-//           message: 'Deck returned successfully',
-//           decks: deckInfos.map((deckInfo) => deckInfo.deck),
-//         })
-//       )
-//     );
-//   } catch (err) {
-//     let message = 'Unknown Error';
-//     if (err instanceof Error) message = err.message;
-//     return JSON.parse(
-//       JSON.stringify(
-//         new Response({
-//           status: 500,
-//           message: message,
-//         })
-//       )
-//     );
-//   }
-// };
+export const getDecksInfoByUserId = async (userId: string) => {
+  try {
+    await connectDB();
+    const user = await User.findById(userId);
+    const deckIds: ObjectId[] = user.decks;
+    const promisedDeckInfos = deckIds.map((deckId) => {
+      return getDeckInfoById(deckId);
+    });
+    const deckInfos = await Promise.all(promisedDeckInfos);
+    return JSON.parse(
+      JSON.stringify(
+        new Response({
+          status: 200,
+          message: 'Deck returned successfully',
+          decks: deckInfos.map((deckInfo) => deckInfo.deck),
+        })
+      )
+    );
+  } catch (err) {
+    let message = 'Unknown Error';
+    if (err instanceof Error) message = err.message;
+    return JSON.parse(
+      JSON.stringify(
+        new Response({
+          status: 500,
+          message: message,
+        })
+      )
+    );
+  }
+};
 
 export const getDeckInfoById = async (id: ObjectId) => {
   try {

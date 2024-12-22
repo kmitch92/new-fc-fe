@@ -8,7 +8,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import Typography from './Typography';
+import Typography from '../Typography';
 import { getDecksInfoByUserId } from '@/lib/api/handlers';
 import { IDeckInfo, IResponse, ISessionUser } from '@/lib/api/types/types';
 
@@ -47,8 +47,8 @@ export const DeckDropdown = ({ sessionUser, setDeck }: DeckDropdownProps) => {
               dropdownLoading
                 ? 'Loading...'
                 : decksInfo?.length
-                ? 'Choose a deck'
-                : 'No Decks to show'
+                  ? 'Choose a deck'
+                  : 'No Decks to show'
             }
           />
         </SelectTrigger>

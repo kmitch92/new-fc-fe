@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { AddDeck } from '@/components/AddDeck';
+import { AddDeck } from '@/components/Deck/AddDeck';
 import { useServerSessionUser } from '@/lib/hooks/useServerSession';
 
 export default async function Learn() {
