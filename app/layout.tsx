@@ -6,7 +6,6 @@ import { ThemeProvider } from '@/contexts/ThemeContext';
 import { UserProvider } from '@/contexts/UserContext';
 import { useServerSessionUser } from '@/lib/hooks/useServerSession';
 import { getCardsToReview } from '@/lib/api/handlers';
-// import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 export const metadata: Metadata = {
   title: 'Flash Cards',
@@ -18,7 +17,6 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  // const queryClient = new QueryClient();
 
   const sUser = await useServerSessionUser();
   let decksToReview;
@@ -36,7 +34,6 @@ export default async function RootLayout({
             'inset 0 0 500px 200px hsl(var(--background)), inset 0 0 600px 300px hsl(var(--background))',
         }}
       >
-        {/* <QueryClientProvider client={queryClient}> */}
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
@@ -49,7 +46,6 @@ export default async function RootLayout({
             <Footer />
           </UserProvider>
         </ThemeProvider>
-        {/* </QueryClientProvider> */}
       </body>
     </html>
   );

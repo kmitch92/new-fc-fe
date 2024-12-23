@@ -36,7 +36,7 @@ const UNIX_DAY = 86400;
 interface IPostDeck {
   name: string;
   description: string;
-  cards: ICard[] | null | undefined;
+  cards?: ICard[];
 }
 
 export const postDeck = async (
