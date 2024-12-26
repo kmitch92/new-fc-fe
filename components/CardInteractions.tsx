@@ -26,7 +26,7 @@ export const CardInteractions = ({ cardsToReview, sessionUser }: CardInteraction
   });
 
   return (
-    <Tabs defaultValue="add" className="w-[40vw]">
+    <Tabs defaultValue="add" className="w-full">
       <TabsList className="grid w-full grid-cols-3">
         <TabsTrigger value="review">review</TabsTrigger>
         <TabsTrigger value="add">add</TabsTrigger>

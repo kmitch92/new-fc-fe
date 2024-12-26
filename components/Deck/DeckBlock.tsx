@@ -4,6 +4,7 @@ import { DeckDropdown } from "./DeckDropdown"
 import { IDeckInfo, ISessionUser } from "@/lib/api/types/types"
 import { AddDeck } from "./AddDeck";
 import { Card, CardDescription, CardHeader } from "../ui/card";
+import { ObjectId } from "mongoose";
 interface DeckBlockProps {
     activeDeck: IDeckInfo;
     setActiveDeck: Dispatch<SetStateAction<IDeckInfo>>;
@@ -17,6 +18,6 @@ export const DeckBlock = ({ activeDeck, setActiveDeck, sessionUser }: DeckBlockP
             <CardHeader>{activeDeck.name}</CardHeader>
             <CardDescription>{activeDeck.description}</CardDescription>
         </Card>
-        <AddDeck userId={sessionUser.id} />
+        <AddDeck userId={sessionUser?.id ?? "" as unknown as ObjectId} />
     </div>
 }

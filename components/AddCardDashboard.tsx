@@ -183,7 +183,7 @@ export const AddCardDashboard = ({ sessionUser }: AddCardDashboardProps) => {
               </div>
               <div className="grid gap-3">
                 <TagsComboBox
-                  userTags={sessionUser.tagsUsed}
+                  userTags={sessionUser?.tagsUsed ?? []}
                   setCardTags={setCardTags}
                 />
               </div>

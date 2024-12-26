@@ -4,8 +4,6 @@ import { IDeckInfo, IDeckOfCards, ISessionUser } from '@/lib/api/types/types';
 import { CardWithInfo } from '../CardReview';
 import { WelcomeCard } from '@/components/WelcomeCard';
 import { CardInteractions } from '@/components/CardInteractions';
-import { getCardsToReview } from '@/lib/api/handlers';
-import { useServerSessionUser } from '@/lib/hooks/useServerSession';
 
 import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels';
 
@@ -28,21 +26,21 @@ export default function Draggable({ sessionUser }: DraggableProps) {
     <section className="h-[86vh] w-full px-4">
       <PanelGroup direction="horizontal">
         {/* {//VERT} LEFT COLUMN  */}
-        <Panel maxSize={30} minSize={5}>
+        <Panel >
           <PanelGroup direction="vertical">
-            <Panel minSize={25} maxSize={50}>
+            <Panel >
               <WelcomeCard />
             </Panel>
             <PanelResizeHandle className="flex flex-row justify-center items-center">
               <DragHandleHorizontalIcon />
             </PanelResizeHandle>
-            <Panel className="bg-[red] border" minSize={25} maxSize={50}>
+            <Panel className="bg-[red] border">
               Account Info, credits, notes etc
             </Panel>
             <PanelResizeHandle className="flex flex-row justify-center items-center">
               <DragHandleHorizontalIcon />
             </PanelResizeHandle>
-            <Panel minSize={25} maxSize={50}>
+            <Panel >
               Misc? account settings?
 
             </Panel>
@@ -52,20 +50,24 @@ export default function Draggable({ sessionUser }: DraggableProps) {
           <DragHandleVerticalIcon />
         </PanelResizeHandle>
         {/* //VERT right COLUMN*/}
-        <Panel maxSize={95} minSize={70}>
+        <Panel>
           <PanelGroup direction="vertical">
-            <Panel maxSize={33} minSize={15}>
-              <div className='flex-row'>
-                <DeckBlock activeDeck={activeDeck} setActiveDeck={setActiveDeck} sessionUser={sessionUser} />
-                <Card>
-                  <h1>metrics placeholder</h1>
-                </Card>
-              </div>
+            <Panel >
+              <PanelGroup direction="horizontal">
+                <Panel>
+                  <DeckBlock activeDeck={activeDeck} setActiveDeck={setActiveDeck} sessionUser={sessionUser} />
+                </Panel>
+                <Panel>
+                  <Card>
+                    <h1>metrics placeholder</h1>
+                  </Card>
+                </Panel>
+              </PanelGroup>
             </Panel>
             <PanelResizeHandle className="flex flex-row justify-center items-center">
               <DragHandleHorizontalIcon />
             </PanelResizeHandle>
-            <Panel maxSize={85} minSize={67}>
+            <Panel>
               <CardInteractions cardsToReview={cardsToReview} sessionUser={sessionUser} />
             </Panel>
           </PanelGroup>
