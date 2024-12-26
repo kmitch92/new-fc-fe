@@ -14,7 +14,7 @@ import { IDeckInfo, IResponse, ISessionUser } from '@/lib/api/types/types';
 
 interface DeckDropdownProps {
   sessionUser: ISessionUser;
-  setDeck: React.Dispatch<React.SetStateAction<IDeckInfo | undefined>>;
+  setDeck: React.Dispatch<React.SetStateAction<IDeckInfo>>;
 }
 export const DeckDropdown = ({ sessionUser, setDeck }: DeckDropdownProps) => {
   const [decksInfo, setDecksInfo] = useState<IDeckInfo[]>([]);

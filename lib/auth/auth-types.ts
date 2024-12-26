@@ -6,6 +6,7 @@ export interface MySession extends Session {
     name: string;
     email: string;
     image: string;
+    tagsUsed: string[]
   };
 }
 export interface MyUser extends User {

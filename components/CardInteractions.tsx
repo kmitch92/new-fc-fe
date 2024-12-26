@@ -3,14 +3,13 @@ import { AddCardDashboard } from './AddCardDashboard';
 import { EditCardDashboard } from './EditCardDashboard';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { CardReview, CardWithInfo } from './CardReview';
-import { useServerSessionUser } from '@/lib/hooks/useServerSession';
 
-export const CardInteractions = async ({
-  cardsToReview,
-}: {
-  cardsToReview: IDeckOfCards[] | [];
-}) => {
-  const sUser = (await useServerSessionUser()) as ISessionUser;
+interface CardInteractionsProps {
+  cardsToReview: IDeckOfCards[];
+  sessionUser: ISessionUser;
+}
+
+export const CardInteractions = ({ cardsToReview, sessionUser }: CardInteractionsProps) => {
   const reviews: CardWithInfo[] = [];
   cardsToReview.filter((deck) => deck != undefined && deck?.cards?.length > 0);
   cardsToReview.forEach((deckCards) => {
@@ -37,10 +36,10 @@ export const CardInteractions = async ({
         <CardReview reviews={reviews} />
       </TabsContent>
       <TabsContent value="add">
-        <AddCardDashboard sessionUser={sUser} />
+        <AddCardDashboard sessionUser={sessionUser} />
       </TabsContent>
       <TabsContent value="edit">
-        <EditCardDashboard sessionUser={sUser} />
+        <EditCardDashboard sessionUser={sessionUser} />
       </TabsContent>
     </Tabs>
   );

@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, Dispatch, SetStateAction } from 'react';
 import { CornerDownLeft } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -74,7 +74,7 @@ export const AddCardDashboard = ({ sessionUser }: AddCardDashboardProps) => {
               {/*
                 deck selection 
                  */}
-              <DeckDropdown sessionUser={sessionUser} setDeck={setDeck} />
+              <DeckDropdown sessionUser={sessionUser} setDeck={setDeck as Dispatch<SetStateAction<IDeckInfo>>} />
 
               <div className="grid gap-3">
                 <Input
