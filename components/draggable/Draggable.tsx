@@ -26,21 +26,21 @@ export default function Draggable({ sessionUser }: DraggableProps) {
     <section className="h-[86vh] w-full px-4">
       <PanelGroup direction="horizontal">
         {/* {//VERT} LEFT COLUMN  */}
-        <Panel >
+        <Panel minSize={10} defaultSize={25} maxSize={40} >
           <PanelGroup direction="vertical">
-            <Panel >
+            <Panel minSize={10} maxSize={50} defaultSize={40}>
               <WelcomeCard />
             </Panel>
             <PanelResizeHandle className="flex flex-row justify-center items-center">
               <DragHandleHorizontalIcon />
             </PanelResizeHandle>
-            <Panel className="bg-[red] border">
+            <Panel className="bg-[red] border" minSize={10} defaultSize={30} maxSize={50}>
               Account Info, credits, notes etc
             </Panel>
             <PanelResizeHandle className="flex flex-row justify-center items-center">
               <DragHandleHorizontalIcon />
             </PanelResizeHandle>
-            <Panel >
+            <Panel minSize={10} maxSize={50} defaultSize={30}>
               Misc? account settings?
 
             </Panel>
@@ -50,9 +50,9 @@ export default function Draggable({ sessionUser }: DraggableProps) {
           <DragHandleVerticalIcon />
         </PanelResizeHandle>
         {/* //VERT right COLUMN*/}
-        <Panel>
+        <Panel minSize={60} defaultSize={75} maxSize={90}>
           <PanelGroup direction="vertical">
-            <Panel >
+            <Panel minSize={10} defaultSize={25} maxSize={40}>
               <PanelGroup direction="horizontal">
                 <Panel>
                   <DeckBlock activeDeck={activeDeck} setActiveDeck={setActiveDeck} sessionUser={sessionUser} />
@@ -67,7 +67,7 @@ export default function Draggable({ sessionUser }: DraggableProps) {
             <PanelResizeHandle className="flex flex-row justify-center items-center">
               <DragHandleHorizontalIcon />
             </PanelResizeHandle>
-            <Panel>
+            <Panel minSize={60} defaultSize={75} maxSize={90}>
               <CardInteractions cardsToReview={cardsToReview} sessionUser={sessionUser} />
             </Panel>
           </PanelGroup>

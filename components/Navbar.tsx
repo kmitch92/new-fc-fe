@@ -29,38 +29,6 @@ import { signOut } from 'next-auth/react';
 import { Button } from './ui/button';
 import { Separator } from './ui/separator';
 
-const components: { title: string; href: string; description: string }[] = [
-  {
-    title: 'Blah',
-    href: '',
-    description: 'Blah Blah Blah Blah',
-  },
-  {
-    title: 'Blah',
-    href: '',
-    description: 'Blah Blah Blah Blah.',
-  },
-  {
-    title: 'Blah',
-    href: '',
-    description: 'Blah Blah Blah Blah.',
-  },
-  {
-    title: 'Blah',
-    href: '',
-    description: 'Blah Blah Blah Blah.',
-  },
-  {
-    title: 'Blah',
-    href: '',
-    description: 'Blah Blah Blah Blah.',
-  },
-  {
-    title: 'Blah',
-    href: '',
-    description: 'Blah Blah Blah Blah.',
-  },
-];
 
 export function Navbar() {
   return (
@@ -72,25 +40,6 @@ export function Navbar() {
               <Link href="/" legacyBehavior passHref>
                 <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                   FLASHCARDS
-                </NavigationMenuLink>
-              </Link>
-            </NavigationMenuItem>
-          </NavigationMenuList>
-        </NavigationMenu>
-
-        <NavigationMenu className="mr-24">
-          <NavigationMenuList>
-            <NavigationMenuItem>
-              <Link href="/learn" legacyBehavior passHref>
-                <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                  Learn
-                </NavigationMenuLink>
-              </Link>
-            </NavigationMenuItem>
-            <NavigationMenuItem>
-              <Link href="/draggable" legacyBehavior passHref>
-                <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                  Draggable
                 </NavigationMenuLink>
               </Link>
             </NavigationMenuItem>
