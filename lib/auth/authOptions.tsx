@@ -6,6 +6,7 @@ import type { JWT } from 'next-auth/jwt';
 import GoogleProvider from 'next-auth/providers/google';
 import GithubProvider from 'next-auth/providers/github';
 import { connectDB } from '../api/db';
+import { signOut } from 'next-auth/react';
 
 export const authOptions: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
@@ -37,9 +38,15 @@ export const authOptions: NextAuthOptions = {
     async session(params: { session: Session; token: JWT }): Promise<any> {
       let { session, token } = params;
       const userEmail = session.user?.email;
-      const dbJSONUser = await User.findOne({ email: userEmail }).maxTimeMS(
-        1000
-      );
+      let dbJSONUser;
+      try {
+        dbJSONUser = await User.findOne({ email: userEmail }).maxTimeMS(
+          1000
+        );
+      } catch (err) {
+        console.log(err)
+        throw new Error('User not found');
+      }
       if (!dbJSONUser) {
         throw new Error('User not found');
       }
