@@ -55,7 +55,7 @@ export const DeckDropdown = ({ sessionUser, setDeck }: DeckDropdownProps) => {
         <SelectContent>
           {decksInfo?.length &&
             decksInfo.map((deckInfo, idx) => (
-              <SelectItem key={deckInfo.name} value={idx.toString()}>
+              <SelectItem key={deckInfo.id.toString()} value={idx.toString()}>
                 <div className="flex items-start gap-3 text-muted-foreground">
                   <div className="grid gap-0.5">
                     <Typography.Small text={deckInfo.name} />

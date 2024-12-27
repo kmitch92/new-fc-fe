@@ -26,7 +26,7 @@ export default async function RootLayout({
   }
 
   return (
-    <html>
+    <html suppressHydrationWarning={true}>
       <body
         style={{
           backgroundImage: 'url(/crosses-variant.png)',

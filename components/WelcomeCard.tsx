@@ -31,9 +31,9 @@ export function WelcomeCard() {
         <div className='border'>
           <h1>Expect reviews here</h1>
           {Array.isArray(decksOfCardsReview) && decksOfCardsReview.map((deckOfCards) => {
-            return (<div key={deckOfCards.deck?.id.toString()}>
-              <h1>{deckOfCards.deck?.name ?? deckOfCards.deck?.id.toString() ?? "undefined"}</h1>
-              <ul>
+            return (<div key={deckOfCards.deck?.id.toString() ?? Math.random()}>
+              <h1 key={deckOfCards.deck?.id.toString() + "title"}>{deckOfCards.deck?.name ?? deckOfCards.deck?.id.toString() ?? "undefined"}</h1>
+              <ul key={deckOfCards.deck?.id.toString() + "list"}>
                 {Array.isArray(deckOfCards.cards) && deckOfCards.cards.map((card) => <li key={card?.frontField}>{card?.frontField}</li>)}
               </ul>
             </div>)
