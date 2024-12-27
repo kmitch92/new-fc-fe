@@ -21,7 +21,8 @@ export default async function RootLayout({
   const sUser = await useServerSessionUser();
   let decksToReview;
   if (sUser?.id) {
-    decksToReview = await getCardsToReview(sUser?.id as string);
+    const decksToReviewResponse = await getCardsToReview(sUser?.id as string);
+    if (decksToReviewResponse.status === 200) { decksToReview = decksToReviewResponse.decks }
   }
 
   return (

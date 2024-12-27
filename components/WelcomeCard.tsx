@@ -1,6 +1,4 @@
 'use client';
-import { IDeckOfCards, ISessionUser } from '@/lib/api/types/types';
-import { IDeck } from '@/lib/api/models/deck-model';
 import {
   Card,
   CardContent,
@@ -9,24 +7,19 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-// import { useServerSessionUser } from '@/lib/hooks/useServerSession';
 import { useContext } from 'react';
 import { UserContext } from '@/contexts/UserContext';
 
-// interface IWelcomeCardProps {
-//   cardsToReview: IDeckOfCards[] | IDeck[] | [];
-// }
 
 export function WelcomeCard() {
-// { cardsToReview }: IWelcomeCardProps
-  // const sessionUser = (await useServerSessionUser()) as ISessionUser;
   const { user, decksOfCardsReview } = useContext(UserContext);
-
-  console.log('welcome card!!', {
-    // ...cardsToReview,
+  console.dir({
+    1: "IN THE WELCOME CARD",
+    2: "///////////////////",
     user,
     decksOfCardsReview,
-  });
+  })
+
   return (
     <Card className="w-[300px] h-[400px]">
       <CardHeader>
@@ -35,6 +28,17 @@ export function WelcomeCard() {
       </CardHeader>
       <CardContent>
         <img src={user?.image as string} className="size-32 rounded-md" />
+        <div className='border'>
+          <h1>Expect reviews here</h1>
+          {Array.isArray(decksOfCardsReview) && decksOfCardsReview.map((deckOfCards) => {
+            return (<div key={deckOfCards.deck?.id.toString()}>
+              <h1>{deckOfCards.deck?.name ?? deckOfCards.deck?.id.toString() ?? "undefined"}</h1>
+              <ul>
+                {Array.isArray(deckOfCards.cards) && deckOfCards.cards.map((card) => <li key={card?.frontField}>{card?.frontField}</li>)}
+              </ul>
+            </div>)
+          })}
+        </div>
       </CardContent>
       <CardFooter className="flex flex-col gap-8"></CardFooter>
     </Card>

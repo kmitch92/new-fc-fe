@@ -7,6 +7,8 @@ import { ObjectId } from 'mongoose';
 import { spacedRepetition } from '../spaced-repetition/spacedRepetition';
 import { IResponse, IDeckInfo, ICardInfo, IDeckOfCards } from './types/types';
 
+const UNIX_DAY = 86400;
+
 class Response implements IResponse {
   status: number;
   message: string;
@@ -111,23 +113,27 @@ console.log(
 );
 // get all cards to review in all decks, return an array of objects with deckId and cardId fields
 export const getCardsToReview = async (userId: string) => {
-  let tomorrow = new Date();
-  tomorrow.setDate(tomorrow.getDate() + 1);
-  tomorrow.setHours(0, 0, 0, 0);
+  // let tomorrow = new Date();
+  // tomorrow.setDate(tomorrow.getDate() + 1);
+  // tomorrow.setHours(0, 0, 0, 0);
+  const tomorrow = Date.now() + UNIX_DAY - Date.now() % UNIX_DAY;
 
   try {
     await connectDB();
     const user = await User.findById(userId);
     const deckIds: ObjectId[] = user.decks;
+    console.log("HANDLERS line 125: deckIds")
+    console.dir(deckIds)
     const decksOfCards: Promise<IDeck>[] = deckIds.map(async (deckId) => {
-      console.log('in map');
       const [deck] = await Deck.findById(deckId).find({
         'cards.nextReview': {
           $lte: tomorrow,
         },
       });
-      console.log('deck', deck);
-      return deck;
+      if (deck !== undefined) {
+        console.log('deck', deck);
+        return deck;
+      }
     });
 
     return JSON.parse(

@@ -19,17 +19,17 @@ export interface IResponse {
   status: number;
   message: string;
   [key: string]:
-    | ICard
-    | ICard[]
-    | IDeck
-    | IDeck[]
-    | IUser
-    | IUser[]
-    | string
-    | number
-    | IDeckInfo
-    | IDeckOfCards[]
-    | null[];
+  | ICard
+  | ICard[]
+  | IDeck
+  | IDeck[]
+  | IUser
+  | IUser[]
+  | string
+  | number
+  | IDeckInfo
+  | IDeckOfCards[]
+  | null[];
 }
 
 export interface IDeckInfo {
