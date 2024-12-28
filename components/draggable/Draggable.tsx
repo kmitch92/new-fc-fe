@@ -1,7 +1,6 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { IDeckInfo, ISessionUser } from '@/lib/api/types/types';
-import { CardWithInfo } from '../CardReview';
 import { WelcomeCard } from '@/components/WelcomeCard';
 import { CardInteractions } from '@/components/CardInteractions';
 
@@ -13,21 +12,29 @@ import {
 } from '@radix-ui/react-icons';
 import { DeckBlock } from '@/components/Deck/DeckBlock';
 import { ObjectId } from 'mongoose';
-import { CardReview } from '../CardReview';
 import { Card } from '../ui/card';
 import { IDeck } from '@/lib/api/models/deck-model';
 import { getCardsToReview } from '@/lib/api/handlers';
+
 interface DraggableProps {
   sessionUser: ISessionUser
 }
+
+export interface IReviewInfo {
+  deckNumber: number;
+  cardNumber: number;
+}
+
 export default function Draggable({ sessionUser }: DraggableProps) {
   const [activeDeck, setActiveDeck] = useState<IDeckInfo>({ id: "" as unknown as ObjectId, name: "", description: "" })
   const [cardsToReview, setCardsToReview] = useState<IDeck[]>([])
+  const [reviewInfo, setReviewInfo] = useState<IReviewInfo>({ deckNumber: 0, cardNumber: 0 })
 
   useEffect(() => {
     getCardsToReview(sessionUser.decks).then((result) => {
       const decks: IDeck[] = result.decks as IDeck[]
       setCardsToReview(decks)
+      setReviewInfo({ deckNumber: decks.length, cardNumber: decks.reduce((total, deck: IDeck) => total + deck.cards.length, 0) })
     })
   }, [])
 
@@ -38,7 +45,7 @@ export default function Draggable({ sessionUser }: DraggableProps) {
         <Panel minSize={10} defaultSize={25} maxSize={40} >
           <PanelGroup direction="vertical">
             <Panel minSize={10} maxSize={50} defaultSize={40}>
-              <WelcomeCard sessionUser={sessionUser} />
+              <WelcomeCard sessionUser={sessionUser} reviewInfo={reviewInfo} />
             </Panel>
             <PanelResizeHandle className="flex flex-row justify-center items-center">
               <DragHandleHorizontalIcon />

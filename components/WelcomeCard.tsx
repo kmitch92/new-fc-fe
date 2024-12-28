@@ -1,4 +1,3 @@
-'use client';
 import {
   Card,
   CardContent,
@@ -7,17 +6,16 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-// import { useContext } from 'react';
-// import { UserContext } from '@/contexts/UserContext';
 import { ISessionUser } from '@/lib/api/types/types';
+import { IReviewInfo } from './draggable/Draggable';
+import Typography from './Typography';
 
 interface IWelcomeCardProps {
   sessionUser: ISessionUser;
+  reviewInfo: IReviewInfo;
 }
 
-export function WelcomeCard({ sessionUser }: IWelcomeCardProps) {
-  // const { user, decksOfCardsReview } = useContext(UserContext);
-  console.log("WelcomeCard", sessionUser)
+export function WelcomeCard({ sessionUser, reviewInfo }: IWelcomeCardProps) {
 
   return (
     <Card className="w-[300px] h-[400px]">
@@ -27,18 +25,9 @@ export function WelcomeCard({ sessionUser }: IWelcomeCardProps) {
       </CardHeader>
       <CardContent>
         <img src={sessionUser?.image as string} className="size-32 rounded-md" />
-        {/* <div className='border'> */}
-        {/* <h1>Expect reviews here</h1> */}
-        {/* {Array.isArray(decksOfCardsReview) && decksOfCardsReview.map((deckOfCards) => {
-
-            return (<div key={deckOfCards?.id.toString() ?? Math.random()}>
-              <h1 key={deckOfCards?.id.toString() + "title"}>{deckOfCards.name ?? deckOfCards?.id.toString() ?? "undefined"}</h1>
-              <ul key={deckOfCards?.id.toString() + "list"}>
-                {Array.isArray(deckOfCards.cards) && deckOfCards.cards.map((card) => <li key={card?.frontField}>{card?.frontField}</li>)}
-              </ul>
-            </div>)
-          })} */}
-        {/* </div> */}
+        <div className='border'>
+          <Typography.P>You have {reviewInfo.cardNumber} outstanding reviews in {reviewInfo.deckNumber} decks</Typography.P>
+        </div>
       </CardContent>
       <CardFooter className="flex flex-col gap-8"></CardFooter>
     </Card>

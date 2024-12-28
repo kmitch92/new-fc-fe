@@ -35,8 +35,6 @@ export const AddCardDashboard = ({ sessionUser }: AddCardDashboardProps) => {
   const [subfieldChecked, setSubfieldChecked] = useState<boolean>(false);
   const [subfieldValue, setSubfieldValue] = useState<string>('');
 
-  console.log(sessionUser);
-
   const handleSubmit = (card: ICardInfo, deckId: string) => {
     addCardsToDeckById([card], deckId);
     card.tags && updateUserTagsById(sessionUser.id, card.tags);
