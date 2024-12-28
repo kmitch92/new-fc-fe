@@ -16,6 +16,7 @@ import { Card } from '../ui/card';
 import { IDeck } from '@/lib/api/models/deck-model';
 import { getCardsToReview } from '@/lib/api/handlers';
 import { CardBrowser } from '../CardBrowser';
+import { UserMetrics } from '../UserMetrics';
 
 interface DraggableProps {
   sessionUser: ISessionUser
@@ -43,15 +44,17 @@ export default function Draggable({ sessionUser }: DraggableProps) {
     <section className="h-[86vh] w-full px-4">
       <PanelGroup direction="horizontal">
         {/* {//VERT} LEFT COLUMN  */}
-        <Panel minSize={10} defaultSize={25} maxSize={40} >
+        <Panel minSize={10} defaultSize={50} maxSize={90} >
           <PanelGroup direction="vertical">
-            <Panel minSize={10} maxSize={50} defaultSize={40}>
+            <Panel minSize={10} maxSize={90} defaultSize={50}>
               <WelcomeCard sessionUser={sessionUser} reviewInfo={reviewInfo} />
             </Panel>
             <PanelResizeHandle className="flex flex-row justify-center items-center">
               <DragHandleHorizontalIcon />
             </PanelResizeHandle>
-            <CardBrowser />
+            <Panel minSize={10} maxSize={90} defaultSize={50}>
+              <CardBrowser />
+            </Panel>
           </PanelGroup>
         </Panel>
         <PanelResizeHandle className="flex flex-row justify-center items-center">
@@ -70,7 +73,7 @@ export default function Draggable({ sessionUser }: DraggableProps) {
                 </PanelResizeHandle>
                 <Panel>
                   <Card>
-                    <h1>metrics placeholder</h1>
+                    <UserMetrics />
                   </Card>
                 </Panel>
               </PanelGroup>
