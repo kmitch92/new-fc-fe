@@ -52,7 +52,7 @@ const handleUpdateDeck = async (
     }
 };
 interface EditDeckProps {
-    deckInfo: IDeckInfo;
+    deckInfo: IDeckInfo | null;
     isExposed?: boolean;
 }
 export function EditDeck({ deckInfo, isExposed = false }: EditDeckProps) {
@@ -60,7 +60,7 @@ export function EditDeck({ deckInfo, isExposed = false }: EditDeckProps) {
     const isDesktop = useMediaQuery('(min-width: 768px)');
     const formRef = React.useRef<HTMLFormElement>(null);
 
-    if (isDesktop && !isExposed) {
+    if (deckInfo?.id && isDesktop && !isExposed) {
         return (
             <Dialog open={open} onOpenChange={setOpen}>
                 <DialogTrigger asChild>
@@ -77,7 +77,7 @@ export function EditDeck({ deckInfo, isExposed = false }: EditDeckProps) {
                 </DialogContent>
             </Dialog>
         );
-    } else if (isDesktop && isExposed) {
+    } else if (deckInfo?.id && isDesktop && isExposed) {
         return (
             <Card className="max-w-[425px]">
                 <CardContent className="max-w-[425px]">
@@ -91,7 +91,7 @@ export function EditDeck({ deckInfo, isExposed = false }: EditDeckProps) {
                 </CardContent>
             </Card>
         );
-    } else
+    } else if (deckInfo?.id) {
         return (
             <Drawer open={open} onOpenChange={setOpen}>
                 <DrawerTrigger asChild>
@@ -118,6 +118,7 @@ export function EditDeck({ deckInfo, isExposed = false }: EditDeckProps) {
                 </DrawerContent>
             </Drawer>
         );
+    } else return <Button variant="outline" disabled>Edit Deck</Button>
 }
 interface EditDeckFormProps {
     setOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -154,8 +155,8 @@ export function EditDeckForm({
                     <Label htmlFor="description-input">Deck Description</Label>
                     <Textarea
                         id="description-input"
-                        placeholder="Description..."
-                        name={deckInfo.description}
+                        placeholder={deckInfo.description}
+                        name="description"
                         className="min-h-[9.5rem]"
                     />
                 </div>

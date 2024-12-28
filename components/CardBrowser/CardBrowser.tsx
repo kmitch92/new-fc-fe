@@ -18,7 +18,7 @@ export const CardBrowser = ({ cardInfos }: ICardBrowserProps) => {
             <Typography.H1>
                 CARD BROWSER
             </Typography.H1>
-            <div className="container mx-auto py-10">
+            <div className="container w-full mx-1 py-2">
                 <DataTable columns={columns} data={cardRows} />
             </div>
         </div>

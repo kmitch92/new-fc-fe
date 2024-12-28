@@ -14,6 +14,7 @@
 - make a document fragment system to split large decks over multiple documents
 - reorganise filestructure for a feature based system 
 - create a request a feature/ report a bug button, that allows users to tell devs about issues or things they want 
+- validate edit deck, make sure values have been added and active deck selected
 
 - implement redux for storing important information about the user session
 - add validation step to deck creation - deck names can't match existing etc

@@ -71,7 +71,7 @@ export const EditCardDashboard = ({ sessionUser }: CardDashboardProps) => {
               {/*
                 deck selection 
                  */}
-              <DeckDropdown sessionUser={sessionUser} setDeck={setDeck as Dispatch<SetStateAction<IDeckInfo>>} />
+              <DeckDropdown sessionUser={sessionUser} setDeck={setDeck as Dispatch<SetStateAction<IDeckInfo | null>>} />
 
               <div className="grid gap-3">
                 <Label htmlFor="question">

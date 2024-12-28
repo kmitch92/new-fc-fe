@@ -14,7 +14,7 @@ import { IDeckInfo, IResponse, ISessionUser } from '@/lib/api/types/types';
 
 interface DeckDropdownProps {
   sessionUser: ISessionUser;
-  setDeck: React.Dispatch<React.SetStateAction<IDeckInfo>>;
+  setDeck: React.Dispatch<React.SetStateAction<IDeckInfo | null>>;
 }
 export const DeckDropdown = ({ sessionUser, setDeck }: DeckDropdownProps) => {
   const [decksInfo, setDecksInfo] = useState<IDeckInfo[]>([]);
@@ -32,11 +32,15 @@ export const DeckDropdown = ({ sessionUser, setDeck }: DeckDropdownProps) => {
   }, []);
 
   const handleDropdownClick = (e: string) => {
-    setDeck(decksInfo[parseInt(e)]);
+    if (e == "None") {
+      setDeck(null)
+    } else {
+      setDeck(decksInfo[parseInt(e)]);
+    }
   };
 
   return (
-    <>
+    <div className="h-12">
       <Select onValueChange={(e) => handleDropdownClick(e)}>
         <SelectTrigger
           id="choose-deck"
@@ -53,6 +57,14 @@ export const DeckDropdown = ({ sessionUser, setDeck }: DeckDropdownProps) => {
           />
         </SelectTrigger>
         <SelectContent>
+          <SelectItem key={"null-deck"} value={"None"}>
+            <div className="flex items-start gap-3 text-muted-foreground">
+              <div className="grid gap-0.5">
+                <Typography.Small text={"None"} />
+                <Typography.Muted text={"Deselect"} />
+              </div>
+            </div>
+          </SelectItem>
           {decksInfo?.length &&
             decksInfo.map((deckInfo, idx) => (
               <SelectItem key={deckInfo.id.toString()} value={idx.toString()}>
@@ -66,6 +78,6 @@ export const DeckDropdown = ({ sessionUser, setDeck }: DeckDropdownProps) => {
             ))}
         </SelectContent>
       </Select>
-    </>
+    </div>
   );
 };

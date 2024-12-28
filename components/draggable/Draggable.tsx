@@ -11,7 +11,6 @@ import {
   DragHandleVerticalIcon,
 } from '@radix-ui/react-icons';
 import { DeckBlock } from '@/components/Deck/DeckBlock';
-import { ObjectId } from 'mongoose';
 import { Card } from '../ui/card';
 import { IDeck } from '@/lib/api/models/deck-model';
 import { getCardsToReview } from '@/lib/api/handlers';
@@ -28,7 +27,7 @@ export interface IReviewInfo {
 }
 
 export default function Draggable({ sessionUser }: DraggableProps) {
-  const [activeDeck, setActiveDeck] = useState<IDeckInfo>({ id: "" as unknown as ObjectId, name: "", description: "" })
+  const [activeDeck, setActiveDeck] = useState<IDeckInfo | null>(null)
   const [cardsToReview, setCardsToReview] = useState<IDeck[]>([])
   const [reviewInfo, setReviewInfo] = useState<IReviewInfo>({ deckNumber: 0, cardNumber: 0 })
   const [cardInfos, setCardInfos] = useState<ICardExtra[]>([])
