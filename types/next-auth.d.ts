@@ -1,3 +1,4 @@
+import { ObjectId } from 'mongoose';
 import NextAuth from 'next-auth';
 
 declare module 'next-auth' {
@@ -11,6 +12,7 @@ declare module 'next-auth' {
       name: string;
       email: string;
       image: string;
+      decks: ObjectId[];
       tagsUsed: string[];
     };
   }

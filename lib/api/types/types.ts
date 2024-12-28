@@ -3,16 +3,12 @@ import { ICard } from '../models/card-model';
 import { IDeck } from '../models/deck-model';
 import { IUser } from '../models/user-model';
 
-export interface IDeckOfCards {
-  deck: IDeckInfo;
-  cards: ICard[] | null[];
-}
 
 export interface IUserData {
   user: ISessionUser | null;
   setUser: (user: ISessionUser) => void;
-  decksOfCardsReview: IDeckOfCards[] | [];
-  setDecksOfCardsReview: (decks: IDeckOfCards[]) => void;
+  decksOfCardsReview: IDeck[] | [];
+  setDecksOfCardsReview: (decks: IDeck[]) => void;
 }
 
 export interface IResponse {
@@ -28,7 +24,6 @@ export interface IResponse {
   | string
   | number
   | IDeckInfo
-  | IDeckOfCards[]
   | null[];
 }
 
@@ -53,5 +48,6 @@ export interface ISessionUser {
   name: string;
   email: string;
   image: string;
+  decks: ObjectId[];
   tagsUsed: string[];
 }

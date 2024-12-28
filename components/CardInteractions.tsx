@@ -1,25 +1,26 @@
-import { IDeckOfCards, ISessionUser } from '@/lib/api/types/types';
+import { ISessionUser } from '@/lib/api/types/types';
 import { AddCardDashboard } from './AddCardDashboard';
 import { EditCardDashboard } from './EditCardDashboard';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { CardReview, CardWithInfo } from './CardReview';
+import { IDeck } from '@/lib/api/models/deck-model';
 
 interface CardInteractionsProps {
-  cardsToReview: IDeckOfCards[];
+  cardsToReview: IDeck[];
   sessionUser: ISessionUser;
 }
 
 export const CardInteractions = ({ cardsToReview, sessionUser }: CardInteractionsProps) => {
   const reviews: CardWithInfo[] = [];
-  cardsToReview.filter((deck) => deck != undefined && deck?.cards?.length > 0);
+  cardsToReview.filter((deck: IDeck) => deck != undefined && deck?.cards?.length > 0);
   cardsToReview.forEach((deckCards) => {
     deckCards?.cards?.length > 0 &&
-      deckCards.cards.forEach((card) => {
+      deckCards?.cards.forEach((card) => {
         const cardWithInfo: CardWithInfo = {
           ...card,
-          deckName: deckCards.deck.name ?? 'unknown',
-          deckId: deckCards.deck.id.toString() ?? 'unknown',
-          deckDescription: deckCards.deck.description ?? 'unknown',
+          deckName: deckCards?.name ?? 'unknown',
+          deckId: deckCards?.id?.toString() ?? 'unknown',
+          deckDescription: deckCards?.description ?? 'unknown',
         } as CardWithInfo;
         reviews.push(cardWithInfo);
       });

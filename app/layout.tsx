@@ -18,12 +18,18 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
 
-  const sUser = await useServerSessionUser();
-  let decksToReview;
-  if (sUser?.id) {
-    const decksToReviewResponse = await getCardsToReview(sUser?.id as string);
-    if (decksToReviewResponse.status === 200) { decksToReview = decksToReviewResponse.decks }
-  }
+  // let decksToReview;
+  // let sUser;
+  // useServerSessionUser().then((sessionUser) => {
+  //   if (sessionUser) {
+  //     console.log("sessionUser", sessionUser)
+  //     sUser = sessionUser;
+  //     getCardsToReview(sessionUser.decks).then((result) => {
+  //       decksToReview = result.decks;
+  //     })
+  //   }
+  // })
+
 
   return (
     <html suppressHydrationWarning={true}>
@@ -41,11 +47,11 @@ export default async function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <UserProvider fetchedUser={sUser} fetchedDecks={decksToReview}>
-            <Navbar />
-            {children}
-            <Footer />
-          </UserProvider>
+          {/* <UserProvider fetchedUser={sUser} fetchedDecks={decksToReview}> */}
+          <Navbar />
+          {children}
+          <Footer />
+          {/* </UserProvider> */}
         </ThemeProvider>
       </body>
     </html>

@@ -1,6 +1,6 @@
 'use client';
 import { useState, useEffect } from 'react';
-import { IDeckInfo, IDeckOfCards, ISessionUser } from '@/lib/api/types/types';
+import { IDeckInfo, ISessionUser } from '@/lib/api/types/types';
 import { CardWithInfo } from '../CardReview';
 import { WelcomeCard } from '@/components/WelcomeCard';
 import { CardInteractions } from '@/components/CardInteractions';
@@ -15,12 +15,21 @@ import { DeckBlock } from '@/components/Deck/DeckBlock';
 import { ObjectId } from 'mongoose';
 import { CardReview } from '../CardReview';
 import { Card } from '../ui/card';
+import { IDeck } from '@/lib/api/models/deck-model';
+import { getCardsToReview } from '@/lib/api/handlers';
 interface DraggableProps {
   sessionUser: ISessionUser
 }
 export default function Draggable({ sessionUser }: DraggableProps) {
   const [activeDeck, setActiveDeck] = useState<IDeckInfo>({ id: "" as unknown as ObjectId, name: "", description: "" })
-  const [cardsToReview, setCardsToReview] = useState<IDeckOfCards[]>([])
+  const [cardsToReview, setCardsToReview] = useState<IDeck[]>([])
+
+  useEffect(() => {
+    getCardsToReview(sessionUser.decks).then((result) => {
+      const decks: IDeck[] = result.decks as IDeck[]
+      setCardsToReview(decks)
+    })
+  }, [])
 
   return (
     <section className="h-[86vh] w-full px-4">
@@ -29,7 +38,7 @@ export default function Draggable({ sessionUser }: DraggableProps) {
         <Panel minSize={10} defaultSize={25} maxSize={40} >
           <PanelGroup direction="vertical">
             <Panel minSize={10} maxSize={50} defaultSize={40}>
-              <WelcomeCard />
+              <WelcomeCard sessionUser={sessionUser} />
             </Panel>
             <PanelResizeHandle className="flex flex-row justify-center items-center">
               <DragHandleHorizontalIcon />

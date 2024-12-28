@@ -2,14 +2,14 @@
 
 import { createContext, useEffect, useState } from 'react';
 import { ISessionUser } from '@/lib/api/types/types';
-import { IDeckOfCards } from '@/lib/api/types/types';
 import { IUserData } from '@/lib/api/types/types';
+import { IDeck } from '@/lib/api/models/deck-model';
 
 export const UserContext = createContext<IUserData>({
   user: null,
-  setUser: (_user: ISessionUser) => {},
+  setUser: (_user: ISessionUser) => { },
   decksOfCardsReview: [],
-  setDecksOfCardsReview: (decks: IDeckOfCards[]) => {},
+  setDecksOfCardsReview: (_decks: IDeck[]) => { },
 });
 
 export function UserProvider({
@@ -18,17 +18,18 @@ export function UserProvider({
   children,
 }: {
   fetchedUser: ISessionUser | undefined;
-  fetchedDecks: IDeckOfCards[] | undefined;
+  fetchedDecks: IDeck[] | undefined;
   children: React.ReactNode;
 }) {
   const [user, setUser] = useState<ISessionUser | null>(null);
-  const [decksOfCardsReview, setDecksOfCardsReview] = useState<IDeckOfCards[]>(
+  const [decksOfCardsReview, setDecksOfCardsReview] = useState<IDeck[]>(
     []
   );
 
   useEffect(() => {
     fetchedUser && setUser(fetchedUser);
     fetchedDecks && setDecksOfCardsReview(fetchedDecks);
+    console.log("CONTEXT CHANGED", user, decksOfCardsReview)
   }, [fetchedUser, fetchedDecks]);
 
   return (

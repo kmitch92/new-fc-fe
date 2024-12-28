@@ -5,7 +5,7 @@ import { User, IUser } from './models/user-model';
 import { IDeck, Deck } from './models/deck-model';
 import { ObjectId } from 'mongoose';
 import { spacedRepetition } from '../spaced-repetition/spacedRepetition';
-import { IResponse, IDeckInfo, ICardInfo, IDeckOfCards } from './types/types';
+import { IResponse, IDeckInfo, ICardInfo } from './types/types';
 
 const UNIX_DAY = 86400;
 
@@ -22,7 +22,6 @@ class Response implements IResponse {
   | string
   | number
   | IDeckInfo
-  | IDeckOfCards[]
   | null[];
 
   constructor({ status, message, ...rest }: IResponse) {
@@ -107,45 +106,40 @@ export const getDeckById = async (id: ObjectId) => {
   }
 };
 
-console.log(
-  'check if this is tomorrow or yesterday',
-  new Date().setHours(0, 0, 0, 0)
-);
 // get all cards to review in all decks, return an array of objects with deckId and cardId fields
-export const getCardsToReview = async (userId: string) => {
-  // let tomorrow = new Date();
-  // tomorrow.setDate(tomorrow.getDate() + 1);
-  // tomorrow.setHours(0, 0, 0, 0);
-  const tomorrow = Date.now() + UNIX_DAY - Date.now() % UNIX_DAY;
+export const getCardsToReview = async (userDecks: ObjectId[]): Promise<IResponse> => {
+  let now = new Date();
+  let tomorrow = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
 
   try {
     await connectDB();
-    const user = await User.findById(userId);
-    const deckIds: ObjectId[] = user.decks;
-    console.log("HANDLERS line 125: deckIds")
-    console.dir(deckIds)
-    const decksOfCards: Promise<IDeck>[] = deckIds.map(async (deckId) => {
-      const [deck] = await Deck.findById(deckId).find({
-        'cards.nextReview': {
-          $lte: tomorrow,
-        },
-      });
-      if (deck !== undefined) {
-        console.log('deck', deck);
-        return deck;
-      }
-    });
+    const promisedDecksOfCards: Promise<IDeck>[] = userDecks.map(async (deckId) => {
+      const deck = await Deck.findById(deckId)
+      deck?.cards.filter((card: ICard) => {
+        const nextReviewMilis = card.nextReview.valueOf()
+        const tomorrowMilis = tomorrow.valueOf();
+        return nextReviewMilis <= tomorrowMilis
+      })
 
-    return JSON.parse(
-      JSON.stringify(
-        new Response({
-          status: 200,
-          message: 'Cards to review returned successfully',
-          // @ts-ignore
-          decks: decksOfCards,
-        })
-      )
-    );
+      if (deck !== undefined && deck.cards.length > 0) {
+        return deck
+      }
+    }
+    )
+    return Promise.all(promisedDecksOfCards).then((results) => {
+      results = results.filter(result => result !== undefined)
+      console.log("AND THE RESULT IS: ", results)
+      return JSON.parse(
+        JSON.stringify(
+          new Response({
+            status: 200,
+            message: 'Cards to review returned successfully',
+            decks: results,
+          })
+        )
+      );
+    })
+
   } catch (err) {
     console.log(err);
     let message = 'Unknown Error';
