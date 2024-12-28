@@ -1,6 +1,6 @@
 import { Share } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { AddCardDashboard } from '@/components/AddCardDashboard';
+import { AddCardDashboard } from '@/components/CardInteractions/AddCardDashboard';
 import { useServerSessionUser } from '@/lib/hooks/useServerSession';
 
 export default async function CreateCard() {

@@ -1,8 +1,8 @@
 'use client';
 import { useState, useEffect } from 'react';
-import { IDeckInfo, ISessionUser } from '@/lib/api/types/types';
-import { WelcomeCard } from '@/components/WelcomeCard';
-import { CardInteractions } from '@/components/CardInteractions';
+import { ICardExtra, IDeckInfo, ISessionUser } from '@/lib/api/types/types';
+import { WelcomeCard } from '@/components/draggable/WelcomeCard';
+import { CardInteractions } from '@/components/CardInteractions/CardInteractions';
 
 import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels';
 
@@ -15,7 +15,7 @@ import { ObjectId } from 'mongoose';
 import { Card } from '../ui/card';
 import { IDeck } from '@/lib/api/models/deck-model';
 import { getCardsToReview } from '@/lib/api/handlers';
-import { CardBrowser } from '../CardBrowser';
+import { CardBrowser } from '../CardBrowser/CardBrowser';
 import { UserMetrics } from '../UserMetrics';
 
 interface DraggableProps {
@@ -31,12 +31,25 @@ export default function Draggable({ sessionUser }: DraggableProps) {
   const [activeDeck, setActiveDeck] = useState<IDeckInfo>({ id: "" as unknown as ObjectId, name: "", description: "" })
   const [cardsToReview, setCardsToReview] = useState<IDeck[]>([])
   const [reviewInfo, setReviewInfo] = useState<IReviewInfo>({ deckNumber: 0, cardNumber: 0 })
+  const [cardInfos, setCardInfos] = useState<ICardExtra[]>([])
 
   useEffect(() => {
     getCardsToReview(sessionUser.decks).then((result) => {
       const decks: IDeck[] = result.decks as IDeck[]
       setCardsToReview(decks)
       setReviewInfo({ deckNumber: decks.length, cardNumber: decks.reduce((total, deck: IDeck) => total + deck.cards.length, 0) })
+
+      const cardsWithInfo: ICardExtra[] = []
+
+      decks.forEach((deck) => {
+        deck.cards.forEach((card) => {
+          const cardInfo: ICardExtra = card as ICardExtra
+          cardInfo.deckInfo = { id: deck.id, name: deck.name, description: deck.description }
+          cardsWithInfo.push(cardInfo)
+        })
+      })
+
+      setCardInfos(cardsWithInfo)
     })
   }, [])
 
@@ -53,7 +66,7 @@ export default function Draggable({ sessionUser }: DraggableProps) {
               <DragHandleHorizontalIcon />
             </PanelResizeHandle>
             <Panel minSize={10} maxSize={90} defaultSize={50}>
-              <CardBrowser />
+              <CardBrowser cardInfos={cardInfos} />
             </Panel>
           </PanelGroup>
         </Panel>

@@ -33,7 +33,11 @@ export interface IDeckInfo {
   description: string;
 }
 
-export interface ICardInfo {
+export interface ICardExtra extends ICard {
+  deckInfo: IDeckInfo
+}
+
+export interface ICardSubmission {
   frontField: string;
   subfield?: string;
   backField: string | string[];

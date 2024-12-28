@@ -5,7 +5,7 @@ import { User, IUser } from './models/user-model';
 import { IDeck, Deck } from './models/deck-model';
 import { ObjectId } from 'mongoose';
 import { spacedRepetition } from '../spaced-repetition/spacedRepetition';
-import { IResponse, IDeckInfo, ICardInfo } from './types/types';
+import { IResponse, IDeckInfo, ICardSubmission } from './types/types';
 import mongoose from 'mongoose';
 
 class Response implements IResponse {
@@ -220,7 +220,7 @@ export const getDeckInfoById = async (id: ObjectId) => {
 
 // update a deck with one or many new cards
 export const addCardsToDeckById = async (
-  cards: ICardInfo[],
+  cards: ICardSubmission[],
   deckId: string
 ) => {
   try {

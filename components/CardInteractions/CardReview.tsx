@@ -20,10 +20,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-// import { IDeckInfo, ICardInfo } from '@/lib/api/types/types';
-import { IDeckOfCards } from '@/lib/api/types/types';
-import { ICard } from '../lib/api/models/card-model';
-import Typography from './Typography';
+import { ICard } from '../../lib/api/models/card-model';
+import Typography from '../Typography';
 
 interface CardReviewProps {
   reviews: CardWithInfo[];
@@ -140,7 +138,7 @@ export const CardReview = ({ reviews }: CardReviewProps) => {
   const [cardsToReview, setCardsToReview] = useState<CardWithInfo[]>(reviews);
   const [cardInReview, setCardInReview] = useState<CardWithInfo | null>(null);
 
-  const onReview = (card: CardWithInfo, answer: string) => {};
+  const onReview = (card: CardWithInfo, answer: string) => { };
   console.log(cardsToReview.slice(0, 10).map((card) => card.frontField));
 
   return (

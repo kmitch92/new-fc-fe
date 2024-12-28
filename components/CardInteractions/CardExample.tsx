@@ -18,12 +18,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { IDeckInfo, ICardInfo } from '@/lib/api/types/types';
+import { IDeckInfo, ICardSubmission } from '@/lib/api/types/types';
 // import { addCardsToDeckById } from '@/lib/api/handlers';
 
 interface CardExampleProps {
   deck: IDeckInfo | undefined;
-  card: ICardInfo | undefined;
+  card: ICardSubmission | undefined;
 }
 
 const renderAnswerField = (cardType: string, backfield: string | string[]) => {

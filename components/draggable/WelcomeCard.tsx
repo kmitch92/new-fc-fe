@@ -6,8 +6,8 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { ISessionUser } from '@/lib/api/types/types';
-import { IReviewInfo } from './draggable/Draggable';
-import Typography from './Typography';
+import { IReviewInfo } from './Draggable';
+import Typography from '../Typography';
 
 interface IWelcomeCardProps {
   sessionUser: ISessionUser;

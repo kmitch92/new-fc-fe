@@ -5,14 +5,14 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { CardExample } from '@/components/CardExample';
-import { DeckDropdown } from './Deck/DeckDropdown';
-import { ICardInfo, IDeckInfo, ISessionUser } from '@/lib/api/types/types';
-import { Checkbox } from './ui/checkbox';
+import { CardExample } from '@/components/CardInteractions/CardExample';
+import { DeckDropdown } from '../Deck/DeckDropdown';
+import { ICardSubmission, IDeckInfo, ISessionUser } from '@/lib/api/types/types';
+import { Checkbox } from '../ui/checkbox';
 import { Separator } from '@/components/ui/separator';
 import { addCardsToDeckById, updateUserTagsById } from '@/lib/api/handlers';
 import { AnswerField } from './AnswerField';
-import { TagsComboBox } from './TagsComboBox';
+import { TagsComboBox } from '../TagsComboBox';
 import { CardTypeDropdown } from './CardTypeDropdown';
 
 interface CardDashboardProps {
@@ -36,7 +36,7 @@ export const EditCardDashboard = ({ sessionUser }: CardDashboardProps) => {
 
   console.log(sessionUser);
 
-  const handleSubmit = (card: ICardInfo, deckId: string) => {
+  const handleSubmit = (card: ICardSubmission, deckId: string) => {
     addCardsToDeckById([card], deckId);
     card.tags && updateUserTagsById(sessionUser.id, card.tags);
     setCardQuestion('');

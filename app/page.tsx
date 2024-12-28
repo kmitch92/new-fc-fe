@@ -1,4 +1,4 @@
-import { WelcomeCard } from '@/components/WelcomeCard';
+import { WelcomeCard } from '@/components/draggable/WelcomeCard';
 import React from 'react';
 import { useServerSessionUser } from '@/lib/hooks/useServerSession';
 
