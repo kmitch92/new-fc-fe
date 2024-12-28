@@ -15,6 +15,7 @@ import { ObjectId } from 'mongoose';
 import { Card } from '../ui/card';
 import { IDeck } from '@/lib/api/models/deck-model';
 import { getCardsToReview } from '@/lib/api/handlers';
+import { CardBrowser } from '../CardBrowser';
 
 interface DraggableProps {
   sessionUser: ISessionUser
@@ -50,16 +51,7 @@ export default function Draggable({ sessionUser }: DraggableProps) {
             <PanelResizeHandle className="flex flex-row justify-center items-center">
               <DragHandleHorizontalIcon />
             </PanelResizeHandle>
-            <Panel className="bg-[red] border" minSize={10} defaultSize={30} maxSize={50}>
-              Account Info, credits, notes etc
-            </Panel>
-            <PanelResizeHandle className="flex flex-row justify-center items-center">
-              <DragHandleHorizontalIcon />
-            </PanelResizeHandle>
-            <Panel minSize={10} maxSize={50} defaultSize={30}>
-              Misc? account settings?
-
-            </Panel>
+            <CardBrowser />
           </PanelGroup>
         </Panel>
         <PanelResizeHandle className="flex flex-row justify-center items-center">
@@ -73,6 +65,9 @@ export default function Draggable({ sessionUser }: DraggableProps) {
                 <Panel>
                   <DeckBlock activeDeck={activeDeck} setActiveDeck={setActiveDeck} sessionUser={sessionUser} />
                 </Panel>
+                <PanelResizeHandle className="flex flex-row justify-center items-center">
+                  <DragHandleVerticalIcon />
+                </PanelResizeHandle>
                 <Panel>
                   <Card>
                     <h1>metrics placeholder</h1>
