@@ -7,6 +7,7 @@ import GoogleProvider from 'next-auth/providers/google';
 import GithubProvider from 'next-auth/providers/github';
 import { connectDB } from '../api/db';
 import { signOut } from 'next-auth/react';
+import mongoose from 'mongoose';
 
 export const authOptions: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,

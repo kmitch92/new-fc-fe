@@ -48,7 +48,7 @@ export interface ICardSubmission {
 }
 
 export interface ISessionUser {
-  id: string;
+  id: ObjectId;
   name: string;
   email: string;
   image: string;

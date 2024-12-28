@@ -6,7 +6,6 @@ import { IDeck, Deck } from './models/deck-model';
 import { ObjectId } from 'mongoose';
 import { spacedRepetition } from '../spaced-repetition/spacedRepetition';
 import { IResponse, IDeckInfo, ICardSubmission } from './types/types';
-import mongoose from 'mongoose';
 
 class Response implements IResponse {
   status: number;
@@ -155,7 +154,7 @@ export const getCardsToReview = async (userDecks: ObjectId[]): Promise<IResponse
   }
 };
 
-export const getDecksInfoByUserId = async (userId: string) => {
+export const getDecksInfoByUserId = async (userId: ObjectId) => {
   try {
     await connectDB();
     const user = await User.findById(userId);
@@ -191,6 +190,39 @@ export const getDeckInfoById = async (id: ObjectId) => {
   try {
     await connectDB();
     const deck = await Deck.findById(id);
+    return JSON.parse(
+      JSON.stringify(
+        new Response({
+          status: 200,
+          message: 'Deck returned successfully',
+          deck: {
+            id: deck._id,
+            name: deck.name,
+            description: deck.description,
+          },
+        })
+      )
+    );
+  } catch (err) {
+    let message = 'Unknown Error';
+    if (err instanceof Error) message = err.message;
+    return JSON.parse(
+      JSON.stringify(
+        new Response({
+          status: 500,
+          message: message,
+        })
+      )
+    );
+  }
+};
+
+export const editDeckInfoById = async (id: ObjectId, newName: string, newDescription: string) => {
+  try {
+    await connectDB();
+    const deck = await Deck.findByIdAndUpdate(id, {
+      name: newName, description: newDescription
+    }, { new: true });
     return JSON.parse(
       JSON.stringify(
         new Response({
@@ -540,7 +572,7 @@ export const updateUserById = async (userId: ObjectId, updatedUser: IUser) => {
 };
 
 // update user by id
-export const updateUserTagsById = async (userId: string, newTags: string[]) => {
+export const updateUserTagsById = async (userId: ObjectId, newTags: string[]) => {
   try {
     await connectDB();
     await User.updateOne({ _id: userId }, { tagsUsed: newTags });
