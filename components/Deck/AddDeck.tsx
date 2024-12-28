@@ -33,9 +33,10 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+import { ObjectId } from 'mongoose';
 
 const handlePostDeck = async (
-  userId: string,
+  userId: ObjectId,
   formData: FormData,
   formRef: React.RefObject<HTMLFormElement> | null
 ) => {
@@ -50,7 +51,7 @@ const handlePostDeck = async (
   }
 };
 interface AddDeckProps {
-  userId: string;
+  userId: ObjectId;
   isExposed?: boolean;
 }
 export function AddDeck({ userId, isExposed = false }: AddDeckProps) {
@@ -120,7 +121,7 @@ export function AddDeck({ userId, isExposed = false }: AddDeckProps) {
 interface AddDeckFormProps {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   className?: string;
-  userId: string;
+  userId: ObjectId;
   formRef: React.RefObject<HTMLFormElement> | null;
 }
 

@@ -2,7 +2,6 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
@@ -18,18 +17,17 @@ interface IWelcomeCardProps {
 export function WelcomeCard({ sessionUser, reviewInfo }: IWelcomeCardProps) {
 
   return (
-    <Card className="w-[300px] h-[400px]">
+    <Card className="w-full h-full flex-col justify-evenly">
       <CardHeader>
         <CardTitle>Welcome, {sessionUser?.name}!</CardTitle>
         <CardDescription>Get ready to learn!</CardDescription>
       </CardHeader>
       <CardContent>
         <img src={sessionUser?.image as string} className="size-32 rounded-md" />
-        <div className='border'>
+        <div className='border p-2 my-2 flex-col justify-evenly'>
           <Typography.P>You have {reviewInfo.cardNumber} outstanding reviews in {reviewInfo.deckNumber} decks</Typography.P>
         </div>
       </CardContent>
-      <CardFooter className="flex flex-col gap-8"></CardFooter>
     </Card>
   );
 }

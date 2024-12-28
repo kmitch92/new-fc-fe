@@ -6,8 +6,7 @@ import { IDeck, Deck } from './models/deck-model';
 import { ObjectId } from 'mongoose';
 import { spacedRepetition } from '../spaced-repetition/spacedRepetition';
 import { IResponse, IDeckInfo, ICardInfo } from './types/types';
-
-const UNIX_DAY = 86400;
+import mongoose from 'mongoose';
 
 class Response implements IResponse {
   status: number;
@@ -39,7 +38,7 @@ interface IPostDeck {
 }
 
 export const postDeck = async (
-  userId: string,
+  userId: ObjectId,
   { name, description, cards = [] }: IPostDeck
 ) => {
   try {
@@ -48,6 +47,7 @@ export const postDeck = async (
       name,
       description,
       cards,
+      creator: userId,
       dateCreated: new Date(),
       lastUpdated: new Date(),
     });

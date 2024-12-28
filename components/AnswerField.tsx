@@ -19,9 +19,10 @@ export const AnswerField = ({
     <div className="grid gap-3">
       <fieldset className="grid gap-6 rounded-lg border p-4 bg-background">
         {multipleChoiceOptions.map((_, idx) => (
-          <div className="grid gap-2">
+          <div className="grid gap-2" key={`answerfield-div-${idx}`}>
             <Input
               id={`answer-option${idx}`}
+              key={`answer-options-${idx}`}
               type="text"
               placeholder={`Option ${idx + 1}`}
               onChange={(e: React.BaseSyntheticEvent) =>

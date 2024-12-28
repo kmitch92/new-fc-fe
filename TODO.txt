@@ -8,12 +8,19 @@
 - hook user settings dashboard up to db funcs
 - create browse cards dashboard for card editing, deletion etc
 - hook browse cards up to db funcs.
+- add anki style declarative review answer type, trusting user
+- add cloze style answering, both with input answers and declarative answers
+- make layout mobile friendly
+- make a document fragment system to split large decks over multiple documents
+- reorganise filestructure for a feature based system 
+- create a request a feature/ report a bug button, that allows users to tell devs about issues or things they want 
+
 - implement redux for storing important information about the user session
 - add validation step to deck creation - deck names can't match existing etc
 
 - finish card component
-    - look at schemas on back-end to see what fields should be added.
-    - make the layout respond to card type chosen
+    X - look at schemas on back-end to see what fields should be added.
+    X - make the layout respond to card type chosen
     the form should have the exact same layout as the final card - edit should transform card into form with fields autofilled with previous value.
     getting add card done quickly is important as needed to start testing
     - add delete card functionality 
@@ -27,20 +34,22 @@
     - will need to tell you how many reviews per deck, how many decks with reviews and total review numbers.
     - will need to add a progress bar which tells you how far through your reviews you are.
 X- create user dashboard. great templates available on shadcn blocks
-- update welcome card so that reviews are apparent on entering app 
-O  - metrics on usage
-O    - browse cards and decks using shadcn data tables and pagination, clicking one brings it up as a modal for editing.   
-O- create file upload for mass card import - also necessary for img upload.
+X update welcome card so that reviews are apparent on entering app 
+- metrics on usage
+- browse cards and decks using shadcn data tables and pagination, clicking one brings it up as a modal for editing.   
+- create file upload for mass card import - also necessary for img upload.
 - create s3 bucket for image/media storage
     - do proper research ahead of time to secure bucket and limit types of media uploads possible.
     - limit storage dependent on credits.
-- seems to be an error where mongodb doesnt initialise if not via sign in - ie the jwt session is still active from previous log in
+X - seems to be an error where mongodb doesnt initialise if not via sign in - ie the jwt session is still active from previous log in
+- fix session handling/ JWT error so sign out before app close not required for proper sign in on return
 - create app logo
 - create initial ai contact point for card gen
 - create pipeline for saving notes to user db, langchain iteration, flashcard creation, and final user edit/approve stage.
 - create a 'find more cards' button, which calls llm, searches based on card content, brings in info and generates cards. should bring in links as well.
 -create a create variants ai call that feeds in the card info and creates cards that come at it from other directions.
 - create minimal browser extension for dispatching user notes to db
+- create browser DNS extension for adding card review rules for certain sites
 - create payments system via stripe API so that user can buy credits or a monthly membership.
 - create cost breakdown component that calculates cost of credits per action
 - create a data-viz page where people can see metrics for their interactions with the app
