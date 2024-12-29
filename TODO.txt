@@ -16,6 +16,10 @@
 - create a request a feature/ report a bug button, that allows users to tell devs about issues or things they want 
 - validate edit deck, make sure values have been added and active deck selected
 - make deck dropdown fully controlled so that the value displayed always reflects state, and so that the current selection is deselectable. Also, style it so that description doesnt appear outside of select boundary
+- add validation/error handling to all inputs to make sure that everything is as controlled and as regularised as possible
+- add react query for proper data fetching
+- add functionality to card browser card drop down menu
+- add proper pagionation card logic so that all cards don't have to be stored in state
 
 - implement redux for storing important information about the user session
 - add validation step to deck creation - deck names can't match existing etc

@@ -14,11 +14,11 @@ export const CardBrowser = ({ cardInfos }: ICardBrowserProps) => {
     })
 
     return (
-        <div className="h-[500px] w-[400px] bg-[red] border">
+        <div className="h-[500px] w-full bg-[red] border">
             <Typography.H1>
                 CARD BROWSER
             </Typography.H1>
-            <div className="container w-full mx-1 py-2">
+            <div className="mx-1 w-full py-2">
                 <DataTable columns={columns} data={cardRows} />
             </div>
         </div>
