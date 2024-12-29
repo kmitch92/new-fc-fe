@@ -3,8 +3,10 @@ import { useState } from "react"
 
 import {
     ColumnDef,
+    ColumnFiltersState,
     flexRender,
     getCoreRowModel,
+    getFilteredRowModel,
     getPaginationRowModel,
     useReactTable,
     getSortedRowModel,
@@ -21,6 +23,7 @@ import {
 } from "@/components/ui/table"
 
 import { Button } from "../ui/button"
+import { Input } from "../ui/input"
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
@@ -32,6 +35,9 @@ export function DataTable<TData, TValue>({
     data,
 }: DataTableProps<TData, TValue>) {
     const [sorting, setSorting] = useState<SortingState>([])
+    const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(
+        []
+    )
 
     const table = useReactTable({
         data,
@@ -40,13 +46,26 @@ export function DataTable<TData, TValue>({
         getPaginationRowModel: getPaginationRowModel(),
         onSortingChange: setSorting,
         getSortedRowModel: getSortedRowModel(),
+        onColumnFiltersChange: setColumnFilters,
+        getFilteredRowModel: getFilteredRowModel(),
         state: {
             sorting,
+            columnFilters,
         }
     })
 
     return (
         <div>
+            <div className="flex items-center p-2">
+                <Input
+                    placeholder="Filter Cards..."
+                    value={(table.getColumn("frontField")?.getFilterValue() as string) ?? ""}
+                    onChange={(event) =>
+                        table.getColumn("frontField")?.setFilterValue(event.target.value)
+                    }
+                    className="max-w-sm"
+                />
+            </div>
             <div className="rounded-md mx-2 border">
                 <Table>
                     <TableHeader>
