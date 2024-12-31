@@ -1,4 +1,4 @@
-import { ISessionUser } from '@/lib/api/types/types';
+import { ICardExtra, IDeckInfo, ISessionUser } from '@/lib/api/types/types';
 import { AddCardDashboard } from './AddCardDashboard';
 import { EditCardDashboard } from './EditCardDashboard';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -8,9 +8,11 @@ import { IDeck } from '@/lib/api/models/deck-model';
 interface CardInteractionsProps {
   cardsToReview: IDeck[];
   sessionUser: ISessionUser;
+  activeCard: ICardExtra | null
+  activeDeck: IDeckInfo | null
 }
 
-export const CardInteractions = ({ cardsToReview, sessionUser }: CardInteractionsProps) => {
+export const CardInteractions = ({ cardsToReview, sessionUser, activeCard, activeDeck }: CardInteractionsProps) => {
   const reviews: CardWithInfo[] = [];
   cardsToReview.filter((deck: IDeck) => deck != undefined && deck?.cards?.length > 0);
   cardsToReview.forEach((deckCards) => {

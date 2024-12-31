@@ -28,6 +28,7 @@ export interface IReviewInfo {
 
 export default function Draggable({ sessionUser }: DraggableProps) {
   const [activeDeck, setActiveDeck] = useState<IDeckInfo | null>(null)
+  const [activeCard, setActiveCard] = useState<ICardExtra | null>(null)
   const [cardsToReview, setCardsToReview] = useState<IDeck[]>([])
   const [reviewInfo, setReviewInfo] = useState<IReviewInfo>({ deckNumber: 0, cardNumber: 0 })
   const [cardInfos, setCardInfos] = useState<ICardExtra[]>([])
@@ -71,7 +72,7 @@ export default function Draggable({ sessionUser }: DraggableProps) {
               <DragHandleHorizontalIcon />
             </PanelResizeHandle>
             <Panel minSize={20} maxSize={80} defaultSize={60}>
-              <CardBrowser cardInfos={cardInfos} />
+              <CardBrowser cardInfos={cardInfos} setActiveCard={setActiveCard} setActiveDeck={setActiveDeck} activeCard={activeCard} />
             </Panel>
           </PanelGroup>
         </Panel>
@@ -82,7 +83,7 @@ export default function Draggable({ sessionUser }: DraggableProps) {
         <Panel minSize={60} defaultSize={75} maxSize={90}>
           <PanelGroup direction="vertical">
             <Panel minSize={60} defaultSize={75} maxSize={90}>
-              <CardInteractions cardsToReview={cardsToReview} sessionUser={sessionUser} />
+              <CardInteractions cardsToReview={cardsToReview} sessionUser={sessionUser} activeCard={activeCard} activeDeck={activeDeck} />
             </Panel>
           </PanelGroup>
         </Panel>

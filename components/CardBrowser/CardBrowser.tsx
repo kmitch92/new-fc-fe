@@ -1,12 +1,17 @@
+import { Dispatch, SetStateAction } from "react";
 import { ICardExtra } from "@/lib/api/types/types";
 import { RowData, columns } from "./columns"
 import { DataTable } from "./DataTable"
+import { IDeckInfo } from "@/lib/api/types/types";
 
 interface ICardBrowserProps {
     cardInfos: ICardExtra[];
+    setActiveDeck: Dispatch<SetStateAction<IDeckInfo | null>>
+    setActiveCard: Dispatch<SetStateAction<ICardExtra | null>>
+    activeCard: ICardExtra | null
 }
 
-export const CardBrowser = ({ cardInfos }: ICardBrowserProps) => {
+export const CardBrowser = ({ cardInfos, setActiveCard, setActiveDeck, activeCard }: ICardBrowserProps) => {
 
     const cardRows: RowData[] = cardInfos.map((card) => {
         return { frontField: card.frontField, deckName: card.deckInfo.name, nextReview: card.nextReview }
