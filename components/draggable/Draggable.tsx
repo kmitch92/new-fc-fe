@@ -33,7 +33,7 @@ export default function Draggable({ sessionUser }: DraggableProps) {
   const [cardInfos, setCardInfos] = useState<ICardExtra[]>([])
 
   useEffect(() => {
-    getCardsToReview(sessionUser.decks).then((result) => {
+    sessionUser?.decks && getCardsToReview(sessionUser.decks).then((result) => {
       const decks: IDeck[] = result.decks as IDeck[]
       setCardsToReview(decks)
       setReviewInfo({ deckNumber: decks.length, cardNumber: decks.reduce((total, deck: IDeck) => total + deck.cards.length, 0) })
@@ -48,7 +48,7 @@ export default function Draggable({ sessionUser }: DraggableProps) {
         })
       })
 
-      setCardInfos(cardsWithInfo)
+      cardsWithInfo.length && setCardInfos(cardsWithInfo)
     })
   }, [])
 
@@ -58,13 +58,19 @@ export default function Draggable({ sessionUser }: DraggableProps) {
         {/* {//VERT} LEFT COLUMN  */}
         <Panel minSize={10} defaultSize={50} maxSize={90} >
           <PanelGroup direction="vertical">
-            <Panel minSize={10} maxSize={90} defaultSize={50}>
+            <Panel minSize={10} maxSize={40} defaultSize={25}>
               <WelcomeCard sessionUser={sessionUser} reviewInfo={reviewInfo} />
             </Panel>
             <PanelResizeHandle className="flex flex-row justify-center items-center">
               <DragHandleHorizontalIcon />
             </PanelResizeHandle>
-            <Panel minSize={10} maxSize={90} defaultSize={50}>
+            <Panel minSize={10} maxSize={40} defaultSize={15}>
+              <DeckBlock activeDeck={activeDeck} setActiveDeck={setActiveDeck} sessionUser={sessionUser} />
+            </Panel>
+            <PanelResizeHandle className="flex flex-row justify-center items-center">
+              <DragHandleHorizontalIcon />
+            </PanelResizeHandle>
+            <Panel minSize={20} maxSize={80} defaultSize={60}>
               <CardBrowser cardInfos={cardInfos} />
             </Panel>
           </PanelGroup>
@@ -75,24 +81,6 @@ export default function Draggable({ sessionUser }: DraggableProps) {
         {/* //VERT right COLUMN*/}
         <Panel minSize={60} defaultSize={75} maxSize={90}>
           <PanelGroup direction="vertical">
-            <Panel minSize={10} defaultSize={25} maxSize={40}>
-              <PanelGroup direction="horizontal">
-                <Panel>
-                  <DeckBlock activeDeck={activeDeck} setActiveDeck={setActiveDeck} sessionUser={sessionUser} />
-                </Panel>
-                <PanelResizeHandle className="flex flex-row justify-center items-center">
-                  <DragHandleVerticalIcon />
-                </PanelResizeHandle>
-                <Panel>
-                  <Card>
-                    <UserMetrics />
-                  </Card>
-                </Panel>
-              </PanelGroup>
-            </Panel>
-            <PanelResizeHandle className="flex flex-row justify-center items-center">
-              <DragHandleHorizontalIcon />
-            </PanelResizeHandle>
             <Panel minSize={60} defaultSize={75} maxSize={90}>
               <CardInteractions cardsToReview={cardsToReview} sessionUser={sessionUser} />
             </Panel>

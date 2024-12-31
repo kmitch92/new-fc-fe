@@ -6,6 +6,7 @@ import { ThemeProvider } from '@/contexts/ThemeContext';
 import { UserProvider } from '@/contexts/UserContext';
 import { useServerSessionUser } from '@/lib/hooks/useServerSession';
 import { getCardsToReview } from '@/lib/api/handlers';
+import { SiteFooter } from '@/components/SiteFooter';
 
 export const metadata: Metadata = {
   title: 'Flash Cards',
@@ -17,19 +18,6 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-
-  // let decksToReview;
-  // let sUser;
-  // useServerSessionUser().then((sessionUser) => {
-  //   if (sessionUser) {
-  //     console.log("sessionUser", sessionUser)
-  //     sUser = sessionUser;
-  //     getCardsToReview(sessionUser.decks).then((result) => {
-  //       decksToReview = result.decks;
-  //     })
-  //   }
-  // })
-
 
   return (
     <html suppressHydrationWarning={true}>
@@ -50,7 +38,7 @@ export default async function RootLayout({
           {/* <UserProvider fetchedUser={sUser} fetchedDecks={decksToReview}> */}
           <Navbar />
           {children}
-          <Footer />
+          <SiteFooter />
           {/* </UserProvider> */}
         </ThemeProvider>
       </body>

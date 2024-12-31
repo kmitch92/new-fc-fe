@@ -23,9 +23,11 @@ export function WelcomeCard({ sessionUser, reviewInfo }: IWelcomeCardProps) {
         <CardDescription>Get ready to learn!</CardDescription>
       </CardHeader>
       <CardContent>
-        <img src={sessionUser?.image as string} className="size-32 rounded-md" />
-        <div className='border p-2 my-2 flex-col justify-evenly'>
-          <Typography.P>You have {reviewInfo.cardNumber} outstanding reviews in {reviewInfo.deckNumber} decks</Typography.P>
+        <div className='p-1 flex'>
+          <img src={sessionUser?.image as string} className="size-24 rounded-md" />
+          <div className='w-3/4 px-2 justify-end'>
+            <Typography.P>You have {reviewInfo.cardNumber} outstanding reviews in {reviewInfo.deckNumber} decks</Typography.P>
+          </div>
         </div>
       </CardContent>
     </Card>
